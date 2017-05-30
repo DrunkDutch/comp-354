@@ -34,12 +34,12 @@ public class Driver {
 		System.out.println("Creating decks and validating them...");
 		mFirstDeck = Parser.Instance().DeckCreation(LOCATION_FIRST_DECK);
 		if(!IsDeckValid(mFirstDeck)) {
-			System.out.println("Deck is invalid");
+			System.out.println("First Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
 		mSecondDeck = Parser.Instance().DeckCreation(LOCATION_SECOND_DECK);
 		if(!IsDeckValid(mSecondDeck)) {
-			System.out.println("Deck is invalid");
+			System.out.println("Second Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
 		
@@ -83,6 +83,8 @@ public class Driver {
 			return false;
 		if(deckHasMoreThanFourNoneEnergyCard(deck))
 			return false;
+		if(!allCardsArePlayableInDeck(deck))
+			return false;
 		return true;
 	}
 	
@@ -101,48 +103,14 @@ public class Driver {
 	}
 	
 	private static boolean deckHasMoreThanFourNoneEnergyCard(ArrayList<Card> deck) {
-		
-		ArrayList<Card> deckWithNonEnergyCards = new ArrayList<Card>();
-		for(int i = 0; i < deck.size(); ++i) {
-			if(!(deck.get(i) instanceof EnergyCard)) {
-				deckWithNonEnergyCards.add(deck.get(i));
-			}
-		}
-		System.out.println("deckWithNonEnergyCards size is " + deckWithNonEnergyCards.size());
-		
-		//if(deckWithNonEnergyCards.get(0) instanceof myClass) {
-			
-//		}
-		for(int i = 0; i < deckWithNonEnergyCards.size(); ++i) {
-			Card currentCard = deckWithNonEnergyCards.get(i);
-			TrainerCard trainerCard = null;
-			Pokemon pokemon = null;
-			if(currentCard instanceof TrainerCard)
-				trainerCard = (TrainerCard)currentCard;
-			else if(currentCard instanceof Pokemon)
-				pokemon = (Pokemon)currentCard;
-			
-			if(trainerCard != null) {
-				for(int j = i + 1; j < deckWithNonEnergyCards.size(); ++j) {
-					if(deckWithNonEnergyCards.get(j) instanceof TrainerCard) {
-						//if(((TrainerCard)deckWithNonEnergyCards.get(j)).g)
-					}
-				}
-			}
-			Class currentClass = deckWithNonEnergyCards.get(i).getClass();
-			int cardCount = 1;
-			
-		}
-		
-		deckWithNonEnergyCards.get(0).getClass();
      
+		// TODO
 		return false;
 	}
 	
 	private static boolean allCardsArePlayableInDeck(ArrayList<Card> deck) {
 		
 		// TODO
-		
 		return true;
 	}
 }
