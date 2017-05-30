@@ -124,21 +124,80 @@ public class Parser {
 		if(cardContents.matches("(.*):pokemon:(.*)"))
 		{
 			System.out.println("Created PokemonCard");
-			String[] results = cardContents.split(":");
-			String pokemonName = results[0];
-			int hpIndex = 0;
+			// split the line with 2 delimiters : and ,
+			String[] results = cardContents.split(":|\\,");
+			String pokemonName = null;
+			String basePokemonName = null;
+			int hpIndex = -1;
 			int hp = 0;
+			ArrayList<String> categories = new ArrayList<String>();
+			int retreatIndex = -1;
+			int retreatCost = 0;
+			int abilitiesIndex = -1;
+			ArrayList<Ability> abilities = new ArrayList<Ability>();
+			
+			// parse pokemon name
+			pokemonName = results[0];
+			
+			// parse initial hp, we are assuming the first integer will be the HP value
 			for(int i = 1; i < results.length - 1; ++i) {
 				try {
 					hp = Integer.parseInt(results[i]);
 					hpIndex = i;
 					break;
-				} catch (NumberFormatException e) {
-					
+				} catch (NumberFormatException e) {}
+			}
+			
+			// parse pokemon categories
+			for(int i = 1; i <  hpIndex; ++i) {
+				if(results[i].equals("cat")) {
+					categories.add(results[i+1]);
+					if(results[i+1].equals("stage-one")) {
+						basePokemonName = results[i+2];
+						++i;
+					}
+					++i;
 				}
 			}
-			//c = new Pokemon("pokemon");
-
+			
+			for(int i = 0; i < results.length; ++i) {
+				if(results[i].equals("retreat")) {
+					retreatIndex = i;
+					break;
+				}
+			}
+			
+			// in case we have a label called "retreat"
+			if(retreatIndex != -1) {
+				int retreatCostIndex = hpIndex + 4;
+				// parse pokemon retreat cost
+				try {
+					retreatCost = Integer.parseInt(results[retreatCostIndex]);	
+				} catch (NumberFormatException e) {}
+			} else {
+				// in case there is no retreat information due to typo, we will set the cost to 1
+				retreatCost = 1;
+			}
+			
+			for(int i = 0; i < results.length; ++i) {
+				if(results[i].equals("attacks")) {
+					abilitiesIndex = i;
+					break;
+				}
+			}
+			
+			if(abilitiesIndex != -1) {
+				// parse pokemon abilities
+				for(int i = abilitiesIndex + 1; i < results.length; i += 4) {
+					try {
+						int abilityIndex = Integer.parseInt(results[i]);
+						abilities.add(new Ability(this.mAbilitiesList.get(abilityIndex - 1)));
+					} catch (NumberFormatException e) {}
+				} 
+			}
+			c = new Pokemon(pokemonName, categories, hp, retreatCost, abilities);
+			if(basePokemonName != null) 
+				((Pokemon)c).setBasePokemonName(basePokemonName);
 		}
 		else if(cardContents.matches("(.*)trainer(.*)"))
 		{

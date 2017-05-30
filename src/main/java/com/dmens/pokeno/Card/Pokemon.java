@@ -15,14 +15,15 @@ public class Pokemon extends Card {
 	private ArrayList<String> mCategories;
 	private ArrayList<Ability> mAbilities;
 	private int retreatCost;
-	private Pokemon basePokemon;
+	private String mBasePokemonName;
     private boolean poisoned;
     private boolean confused;
     private boolean paralyzed;
     private boolean sleep;
 
     private Pokemon(){}
-	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<String> abilities){
+    
+	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
 		super(name);
 	}
 	
@@ -49,6 +50,11 @@ public class Pokemon extends Card {
 
 	public void removeEnergy(ArrayList<EnergyCard> energy){}
 
+	public void setBasePokemonName(String basePokemonName) {
+		assert basePokemonName != null;
+		mBasePokemonName = basePokemonName;
+	}
+	
     public void setPoisoned(boolean poisoned) {
         this.poisoned = poisoned;
     }
@@ -89,8 +95,8 @@ public class Pokemon extends Card {
         return retreatCost;
     }
 
-    public Pokemon getBasePokemon() {
-        return basePokemon;
+    public String getBasePokemonName() {
+        return mBasePokemonName;
     }
 
     public boolean isPoisoned() {
