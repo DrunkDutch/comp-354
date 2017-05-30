@@ -67,7 +67,6 @@ public class Player {
     	
     	// note that we are drawing from the end of the deck list for better performance
     	for(int i = 0; i < numOfCards; ++i) {
-    		int deckSize = mDeck.size();
     		Card card = mDeck.get(mDeck.size() - 1);
         	mDeck.remove(card);
         	mHand.add(card);
