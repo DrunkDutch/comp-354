@@ -10,23 +10,27 @@ public class Pokemon extends Card {
 
     private static final Logger LOG = LogManager.getLogger(Pokemon.class);
 
-    private int HP;
-    private int damage;
-    private ArrayList<EnergyCard> attachedEnergy;
+    private int mHP;
+    private int mDamage;
+    private ArrayList<EnergyCard> mAttachedEnergy;
 	private ArrayList<String> mCategories;
 	private ArrayList<Ability> mAbilities;
     private ArrayList<Tuple<Ability, ArrayList<Integer>>> mAbilitiesAndCost;
-	private int retreatCost;
+	private int mRetreatCost;
 	private String mBasePokemonName;
-    private boolean poisoned;
-    private boolean confused;
-    private boolean paralyzed;
-    private boolean sleep;
+    private boolean mPoisoned;
+    private boolean mConfused;
+    private boolean mParalyzed;
+    private boolean mSleep;
 
     private Pokemon(){}
     
 	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
 		super(name);
+		mCategories = categories;
+		mHP = initialHP;
+		mRetreatCost = retreatCost;
+		mAbilities = abilities;
 	}
 
 	//This constructor is just here as a place holder until the parser is written to handle the new ability format
@@ -63,43 +67,43 @@ public class Pokemon extends Card {
 	}
 	
     public void setPoisoned(boolean poisoned) {
-        this.poisoned = poisoned;
+        this.mPoisoned = poisoned;
     }
 
     public void setConfused(boolean confused) {
-        this.confused = confused;
+        this.mConfused = confused;
     }
 
     public void setParalyzed(boolean paralyzed) {
-        this.paralyzed = paralyzed;
+        this.mParalyzed = paralyzed;
     }
 
     public void setSleep(boolean sleep) {
-        this.sleep = sleep;
+        this.mSleep = sleep;
     }
 
     public int getHP() {
-        return HP;
+        return mHP;
     }
 
     public int getDamage() {
-        return damage;
+        return mDamage;
     }
 
     public ArrayList<EnergyCard> getAttachedEnergy() {
-        return attachedEnergy;
+        return mAttachedEnergy;
     }
 
-    public ArrayList<String> getmCategories() {
+    public ArrayList<String> getCategories() {
         return mCategories;
     }
 
-    public ArrayList<Ability> getmAbilities() {
+    public ArrayList<Ability> getAbilities() {
         return mAbilities;
     }
 
     public int getRetreatCost() {
-        return retreatCost;
+        return mRetreatCost;
     }
 
     public String getBasePokemonName() {
@@ -107,22 +111,22 @@ public class Pokemon extends Card {
     }
 
     public boolean isPoisoned() {
-        return poisoned;
+        return mPoisoned;
     }
 
     public boolean isConfused() {
-        return confused;
+        return mConfused;
     }
 
     public boolean isParalyzed() {
-        return paralyzed;
+        return mParalyzed;
     }
 
     public boolean isSleep() {
-        return sleep;
+        return mSleep;
     }
 
     public void evolvePokemon(Pokemon basePokemon){
-	    this.damage = basePokemon.getDamage();
+	    this.mDamage = basePokemon.getDamage();
     }
 }

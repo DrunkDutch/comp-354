@@ -22,8 +22,17 @@ public class TrainerCard extends Card {
 
 	public TrainerCard(String description){}
 
+	public String getCategory() {
+		return this.mCategory;
+	}
+	
+	public ArrayList<Ability> getAbilities() {
+		return this.mAbilities;
+	}
+	
 	public String toString()
 	{
+		//TODO: we need to display the content of abilities not its reference
 		return String.format("|TRAINER CARD|\n|%s|\n||%s||\n|%s|\n", this.getName(), this.mCategory, this.mAbilities);
 	}
 }

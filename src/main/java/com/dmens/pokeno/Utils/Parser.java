@@ -31,14 +31,21 @@ public class Parser {
 	/*
 	 * lazy instantiation
 	 */
-	public static Parser Instance( )
-	{
+	public static Parser Instance( ) {
 		if(instance == null)
 		{
 			instance = new Parser();
 		}
 		
 		return instance;
+	}
+	
+	public ArrayList<String> GetCardList() {
+		return mCardList;
+	}
+	
+	public ArrayList<String> GetAbilitiesList() {
+		return mAbilitiesList;
 	}
 	
 	/*
@@ -48,6 +55,8 @@ public class Parser {
 	{
 
 		InputStream in = Thread.currentThread().getContextClassLoader().getResourceAsStream(location);
+		if(in == null)
+			throw new FileNotFoundException();
 		Scanner scanner = new Scanner(in, ENCODING);
 		
 		ArrayList<String> contents = new ArrayList<String>();
@@ -75,7 +84,7 @@ public class Parser {
 		}
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 		
@@ -93,7 +102,7 @@ public class Parser {
 		}
 		catch (FileNotFoundException e)
 		{
-			e.printStackTrace();
+			//e.printStackTrace();
 			return false;
 		}
 		
