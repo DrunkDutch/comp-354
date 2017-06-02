@@ -278,19 +278,26 @@ public class Parser {
 			
 			if(abilitiesIndex != -1) {
 				// parse pokemon abilities
-								
-				//abilities.add(CreateAbility(this.mAbilitiesList.get(Integer.parseInt(results[abilitiesIndex + 4]))));
-				
+																		
 				for(int i = abilitiesIndex + 4; i < results.length; i += 4){
 					try {						
 						int abilityIndex = Integer.parseInt(results[i]);				
-												
+						
 						abilities.add(CreateAbility(this.mAbilitiesList.get(abilityIndex - 1)));
+						
 					} catch (NumberFormatException e) {System.out.print("EXXXXXXXXCEPTION");}
 				}
 			}
+			
+			Ability ability = abilities.get(0);
+			
+			Tuple<Ability, String, Integer> tuple = new Tuple<Ability, String, Integer>(ability, "colorless", 1);
 
-			c = new Pokemon(pokemonName, categories, hp, retreatCost, abilities);
+			c = new Pokemon(pokemonName, categories, hp, retreatCost);
+			
+			((Pokemon)c).AddAbilityAndCost(tuple);
+			
+			
 			if(basePokemonName != null) 
 				((Pokemon)c).setBasePokemonName(basePokemonName);
 			else

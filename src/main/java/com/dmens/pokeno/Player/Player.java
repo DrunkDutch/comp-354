@@ -231,7 +231,7 @@ public class Player {
         }
         if (card instanceof EnergyCard)
         {
-            //mActivePokemon.addEnergy((EnergyCard) card);
+            mActivePokemon.addEnergy((EnergyCard) card);
         }
         mHand.remove(card);
     }

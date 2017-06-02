@@ -17,57 +17,40 @@ public class Pokemon extends Card {
     private ArrayList<EnergyCard> mAttachedEnergy;
 	private ArrayList<String> mCategories;
 	private ArrayList<Ability> mAbilities;
-    private ArrayList<Tuple<Ability, ArrayList<EnergyCard>>> mAbilitiesAndCost;
+    private ArrayList<Tuple<Ability, String, Integer>> mAbilitiesAndCost;
 	private int mRetreatCost;
 	private String mBasePokemonName;
     private boolean mPoisoned;
     private boolean mConfused;
     private boolean mParalyzed;
     private boolean mSleep;
-
-    private Pokemon(){}
     
-	public Pokemon(String name, ArrayList<String> categories, int initialHP, int retreatCost, ArrayList<Ability> abilities){
-		super(name);
-		mCategories = categories;
-		mHP = initialHP;
-		mRetreatCost = retreatCost;
-		mAbilities = abilities;
-		mAttachedEnergy = new ArrayList<EnergyCard>();
-		mAbilitiesAndCost = new ArrayList<Tuple<Ability, ArrayList<EnergyCard>>>();
-	}
-
-	//This constructor is just here as a place holder until the parser is written to handle the new ability format
-    public Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost, ArrayList<Tuple<Ability, ArrayList<EnergyCard>>> abilities){
+    public Pokemon(String name, ArrayList<String> categories, int initialHP, Integer retreatCost){
         super(name);
         mCategories = categories;
         mHP = initialHP;
         mRetreatCost = retreatCost;
         mAbilities = new ArrayList<Ability>();
         mAttachedEnergy = new ArrayList<EnergyCard>();
-        mAbilitiesAndCost = new ArrayList<Tuple<Ability, ArrayList<EnergyCard>>>(abilities);
+        mAbilitiesAndCost = new ArrayList<Tuple<Ability, String, Integer>>();
     }
 	
 	public void AddCategory(String category)
 	{
 		this.mCategories.add(category);
 	}
-
-	public void AddAbility(Ability ability){
-        this.mAbilities.add(ability);
-    }
 	
-	public void AddAbilityAndCost(Tuple<Ability, ArrayList<EnergyCard>> ability)
+	public void AddAbilityAndCost(Tuple<Ability, String, Integer> tuple)
 	{
-		this.mAbilitiesAndCost.add(ability);
+		this.mAbilitiesAndCost.add(tuple);
 	}
 
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();
-		for (Ability ability: mAbilities)
+		for (Tuple<Ability, String, Integer> tuple: mAbilitiesAndCost)
 		{
-			abilitiesAsList.append("--" + ability.toString() + "\n");
+			abilitiesAsList.append(String.format("--T:%s C:%d\t",  tuple.y, tuple.z) + tuple.x.toString() + "\n");
 		}
 		
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());

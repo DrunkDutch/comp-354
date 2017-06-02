@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import org.junit.Assert;
 
 public class TupleTest {
-
+	/*
     Ability testAbility = new Ability("Test Ability");
     ArrayList<Integer> energyCost = new ArrayList<Integer>();
 
@@ -25,6 +25,6 @@ public class TupleTest {
         Assert.assertEquals("Test Ability", testTuple.x.getName());
         Assert.assertEquals(2, testTuple.y.get(0).intValue());
     }
-
+*/
 
 }
