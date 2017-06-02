@@ -26,7 +26,7 @@ import org.junit.Ignore;
  * @author Conor
  */
 public class MulligansTest {
-    
+
     @Ignore
     @Test
     public void TestBasicPokemonValidation()
@@ -34,11 +34,11 @@ public class MulligansTest {
         ArrayList<Card> deck1 = new ArrayList<Card>();
         ArrayList<Card> deck2 = new ArrayList<Card>();
         
-        Pokemon basic = new Pokemon("Basic",null,1,1,null);
+        Pokemon basic = new Pokemon("Basic",null,1,1);
         assertNotNull(basic);
         basic.setBasePokemonName("Basic");
         
-        Pokemon evolved = new Pokemon("BasicKing",null,2,1,null);
+        Pokemon evolved = new Pokemon("BasicKing",null,2,1);
         evolved.setBasePokemonName("Basic");
         assertNotNull(evolved);
         
