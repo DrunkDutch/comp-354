@@ -7,7 +7,7 @@ import java.util.Stack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.Effect;

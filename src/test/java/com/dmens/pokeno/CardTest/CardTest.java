@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import org.junit.Assert;
 import org.junit.Test;
 
-import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.ability.AbilityCost;
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;

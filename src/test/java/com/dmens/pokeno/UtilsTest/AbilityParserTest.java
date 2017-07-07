@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.utils.AbilityParser;
 
 public class AbilityParserTest {

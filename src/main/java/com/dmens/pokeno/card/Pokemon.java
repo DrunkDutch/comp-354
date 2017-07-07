@@ -7,8 +7,8 @@ import java.util.Map;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.ability.AbilityCost;
+import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.Ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
 
 public class Pokemon extends Card {

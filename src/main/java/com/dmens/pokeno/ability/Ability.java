@@ -1,4 +1,4 @@
-package com.dmens.pokeno.ability;
+package com.dmens.pokeno.Ability;
 
 import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.effect.*;

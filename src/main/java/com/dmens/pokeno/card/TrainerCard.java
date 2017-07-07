@@ -1,6 +1,6 @@
 package com.dmens.pokeno.card;
 
-import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.effect.Effect;
 
 import org.apache.logging.log4j.LogManager;

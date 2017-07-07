@@ -3,7 +3,7 @@ package com.dmens.pokeno.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.Ability.Ability;
 import com.dmens.pokeno.utils.AbilityParser;
 import com.dmens.pokeno.utils.FileUtils;
 
