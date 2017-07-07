@@ -10,6 +10,7 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.database.CardsDatabase;
 
 public class Pokemon extends Card {
 
@@ -22,16 +23,20 @@ public class Pokemon extends Card {
 	private String mPokemonType;
     private ArrayList<AbilityCost> mAbilitiesAndCost;
 	private int mRetreatCost;
-	private String mBasePokemonName;
     private boolean mPoisoned;
     private boolean mConfused;
     private boolean mParalyzed;
     private boolean mSleep;
     
+    // Stage-one attributes
+    private Pokemon mBaseCardReference;
+    private String mBasePokemonName;
+    
     public Pokemon(String name){
     	super(name);
     	mAttachedEnergy = new ArrayList<EnergyCard>();
         mAbilitiesAndCost = new ArrayList<AbilityCost>();
+        mRetreatCost = -1;
     }
     
     public Pokemon(String name, String category, int initialHP, Integer retreatCost){
@@ -75,12 +80,7 @@ public class Pokemon extends Card {
 
 	public String toString()
 	{
-		StringBuilder abilitiesAsList = new StringBuilder();
-//		for (AbilityCost tuple: mAbilitiesAndCost)
-//		{
-//			abilitiesAsList.append(String.format("--T:%s C:%d\t",  tuple.y, tuple.z) + tuple.x.toString() + "\n");
-//		}
-		
+		StringBuilder abilitiesAsList = new StringBuilder();		
 		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
 	}
 	
@@ -201,6 +201,9 @@ public class Pokemon extends Card {
         return mAttachedEnergy;
     }
     public int getRetreatCost() {
+    	// Evolved Pokemon can get retreat cost from base or define it
+    	if(this.isEvolvedCategory() && this.mRetreatCost == -1)
+    		return ((Pokemon)((CardsDatabase)CardsDatabase.getInstance()).queryByName(this.mBasePokemonName)).getRetreatCost();
         return mRetreatCost;
     }
 
@@ -229,9 +232,30 @@ public class Pokemon extends Card {
     		return true;
     	return false;
     }
-
-    public void evolvePokemon(Pokemon basePokemon){
-	    this.mDamage = basePokemon.getDamage();
+    /**
+     * 
+     * @param basePokemon base type pokemon to evolve from
+     * @return True if evolution was successful, false otherwise
+     */
+    public boolean evolvePokemon(Pokemon basePokemon){
+    	if(basePokemon.getName().equalsIgnoreCase(this.getBasePokemonName())){
+		    this.mDamage = basePokemon.getDamage();
+		    // transfer energy
+		    transferEnergy(basePokemon);
+		    //  keep base reference for discard
+		    mBaseCardReference = basePokemon;
+		    return true;
+    	}else{
+    		return false;
+    	}
+    }
+    
+    public Pokemon getBaseCardReference(){
+    	return mBaseCardReference;
+    }
+    
+    private void transferEnergy(Pokemon base){
+    	this.mAttachedEnergy = base.getAttachedEnergy();
     }
     
     public ArrayList<AbilityCost> getAbilitiesAndCost(){

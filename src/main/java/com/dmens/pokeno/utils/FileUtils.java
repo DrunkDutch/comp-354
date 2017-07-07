@@ -27,7 +27,7 @@ public class FileUtils {
 	private static final String DATA_FOLDER = "data/";
 	
 	 public static List<String> getFilesFromFolder(String folder, String extension){
-		 System.out.println(getResourcesLocation());
+		 LOG.debug("Getting file list from folder: " + getResourcesLocation());
 		 List <String> fileList = new ArrayList<String>();
         try {
         	
@@ -47,7 +47,6 @@ public class FileUtils {
 	 
 	 public static String getResourcesLocation(){
 		 String location = FileUtils.class.getClassLoader().getResource(DATA_FOLDER).toString();
-		 LOG.info("Getting Resources location: "+ location);
 		 if(location.contains(".jar!")){
 			 createJarFileSystem(location);
 		 }
@@ -56,7 +55,6 @@ public class FileUtils {
 	 
 	 public static List<String> getFileContentsAsList(String fileRelativeLocation){
 		 try {
-			 System.out.println(getResourcesLocation()+fileRelativeLocation);
 			return Files.readAllLines(Paths.get(URI.create(getResourcesLocation()+fileRelativeLocation)));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -65,7 +63,6 @@ public class FileUtils {
 	 }
 	 
 	 public static ImageIcon getFileAsImageIcon(String fileRelativeLocation, int width, int height){
-		 System.out.println(getResourcesLocation()+fileRelativeLocation);
 		ImageIcon imageIcon = new ImageIcon(FileUtils.class.getClassLoader().getResource(DATA_FOLDER+fileRelativeLocation));
 		Image image = imageIcon.getImage(); // transform it 
         Image newimg = image.getScaledInstance(width, height,  java.awt.Image.SCALE_SMOOTH); // scale it the smooth way  
@@ -75,7 +72,7 @@ public class FileUtils {
 	 private static void createJarFileSystem(String location){
 		 if(fileSystemBuilt)
 			 return;
-		 System.out.println("Building JAR file system");
+		 LOG.debug("Building JAR file system");
 		 try {
 			FileSystems.newFileSystem(URI.create(location), Collections.<String, Object>emptyMap());
 			fileSystemBuilt = true;

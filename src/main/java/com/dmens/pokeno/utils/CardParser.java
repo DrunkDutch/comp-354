@@ -67,6 +67,8 @@ public class CardParser {
 	}
 	
 	private static void setRetreatCost(Stack<String> cardStack, Pokemon p){
+		if(p.isEvolvedCategory() && !cardStack.peek().equals("retreat"))
+			return;
 		cardStack.pop();	// retreat
 		cardStack.pop();	// cat
 		cardStack.pop();	// colorless

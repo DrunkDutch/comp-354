@@ -43,7 +43,7 @@ public class AIPlayer extends Player {
             // Use trainer cards in hand
             
             // Attack if possible
-            GameController.useActivePokemonForPlayer(1, 0);
+            //GameController.useActivePokemonForPlayer(1, 0);
 
         }
         

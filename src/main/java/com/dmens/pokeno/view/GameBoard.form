@@ -206,7 +206,7 @@
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="PlayerBenchPanel" pref="908" max="32767" attributes="0"/>
+                          <Component id="PlayerBenchPanel" pref="964" max="32767" attributes="0"/>
                           <Component id="PlayerHandPanel" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="14" max="-2" attributes="0"/>
@@ -364,7 +364,7 @@
                           <Component id="ViewDamageField" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="OpponentRewardCardLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="106" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="68" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" attributes="0">
                               <EmptySpace min="-2" pref="2" max="-2" attributes="0"/>

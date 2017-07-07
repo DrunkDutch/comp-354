@@ -52,25 +52,24 @@ public class GameController {
 		Deck mFirstDeck = null;
 		Deck mSecondDeck = null;
 		
-		board = new GameBoard();
-        board.setVisible(true);
+		setBoard(new GameBoard());
         
 		Deck[] chosenDecks = chooseDeck();
 		
 		// Deck creation and validation
-		System.out.println("Creating decks and validating them...");
+		LOG.trace("Creating decks and validating them...");
 		mFirstDeck = chosenDecks[0];
 		if(!mFirstDeck.checkValidity()) {
-			System.out.println("First Deck is invalid");
+			LOG.info("First Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
 		mSecondDeck = chosenDecks[1];
 		if(!mSecondDeck.checkValidity()) {
-			System.out.println("Second Deck is invalid");
+			LOG.info("Second Deck is invalid");
 			// TODO: how do we handle invalid deck?
 		}
 		// Create Players and assign decks
-		System.out.println("Creating players and assigning decks...");
+		LOG.trace("Creating players and assigning decks...");
 		Player homePlayer = new Player(mFirstDeck);
 		Player adversaryPlayer = new AIPlayer(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
@@ -81,12 +80,8 @@ public class GameController {
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(homePlayer);
 		mPlayers.add(adversaryPlayer);
-        
-        AtomicReference<Boolean> readyToStart = new AtomicReference<>(true);
-        do
-        {
+        do {
         	// Draw Cards and check for mulligans
-        	System.out.println(mPlayers.get(0).getDeck().size());
         	mPlayers.stream()
         	.filter(player->!player.getIsReadyToStart())
         	.forEach(player-> {
@@ -96,18 +91,20 @@ public class GameController {
             // Execute mulligans
             mPlayers.stream()
             .filter(player->player.isInMulliganState())
-            .forEach(player->{
-            	player.mulligan();
-            	readyToStart.set(player.getIsReadyToStart());;
-            });
+            .forEach(player->player.mulligan());
             
         // Repeat until no more mulligans
-		}while(!readyToStart.get());
+		} while(!homePlayer.getIsReadyToStart() || !adversaryPlayer.getIsReadyToStart());
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
+	}
+	
+	public static void setBoard(GameBoard newBoard){
+		board = newBoard;
+        board.setVisible(true);
 	}
 	
 	public static boolean useCardForPlayer(Card card, int player){
@@ -118,12 +115,17 @@ public class GameController {
 		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	
+	public static void setActivePokemonOnBoard(Pokemon pokemon, boolean player){
+		board.setActivePokemon(pokemon, player);
+	}
+	
 	public static void startAITurn(){
 		mPlayers.get(1).startTurn();
 	}
 	
-	public static void displayMessage(String msg){
+	public static int displayMessage(String msg){
 		JOptionPane.showMessageDialog(null, msg);
+		return 0;
 	}
 	
 	public static Player getHomePlayer() {
@@ -186,6 +188,10 @@ public class GameController {
         board.setEnergyPreview(getAttachedEnergyList(energies));
     }
     
+    public static void updateBenchedPokemon(List<Pokemon> bench, boolean player){
+    	board.updateBench(bench, player);
+    }
+    
     public static ArrayList<Integer> getAttachedEnergyList(Map<EnergyTypes, Integer> energies){
         ArrayList<Integer> energyList = new ArrayList<Integer>(5);
         energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
@@ -225,7 +231,6 @@ public class GameController {
     	List<Deck> deckList = new ArrayList<Deck>();
     	ArrayList<Component> deckButtons = new ArrayList<Component>();
 		for (String fileEntry : FileUtils.getFilesFromFolder(LOCATION_DECKS, ".txt")) {
-			System.out.println(LOCATION_DECKS+"/"+fileEntry);
 			deckButtons.add(getButton(optionPane, fileEntry, FileUtils.getFileAsImageIcon("images/deckIcon.png", 100, 125), deckList.size()));
 			deckList.add(DeckCreator.Instance().DeckCreation(LOCATION_DECKS+"/"+fileEntry));
 	    }
@@ -254,7 +259,6 @@ public class GameController {
           public void actionPerformed(ActionEvent actionEvent) {
             // Return position in deck list
             optionPane.setValue(orderPosition);
-            System.out.println(button.getText());
           }
         };
         button.addActionListener(actionListener);
@@ -265,6 +269,9 @@ public class GameController {
     {
         return JOptionPane.showOptionDialog(null, prompt, title,
         0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
-        //System.out.println("Value: " + returnValue);
+    }
+    
+    public static int displayConfirmDialog(String message, String title){
+    	return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
     }
 }
