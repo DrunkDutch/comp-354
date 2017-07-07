@@ -77,6 +77,10 @@ public class Player {
         return mDiscards;
     }
     
+    public Player getOpponent() {
+    	return this.opponent;
+    }
+    
     public void shuffleDeck(){
        this.mDeck.shuffle();
     }
@@ -227,6 +231,10 @@ public class Player {
     }
     
     private void cleanActivePokemon(){
+    	ArrayList<EnergyCard> attachedEnergy = mActivePokemon.getAttachedEnergy();
+    	for(int i = 0; i < attachedEnergy.size(); ++i) {
+    		mDiscards.addCard(attachedEnergy.get(i));
+    	}
     	mDiscards.addCard(mActivePokemon);
     	mActivePokemon = null;
     	GameController.updateGraveyard(mDiscards.size(), humanPlayer);

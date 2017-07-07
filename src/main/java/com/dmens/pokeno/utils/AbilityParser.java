@@ -8,11 +8,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.effect.ApplyStatus;
-import com.dmens.pokeno.effect.Damage;
-import com.dmens.pokeno.effect.Effect;
-import com.dmens.pokeno.effect.EffectTypes;
-import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.*;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
@@ -45,6 +41,8 @@ public class AbilityParser {
 			return getHealEffect(effectStack);
 		case APPLYSTAT:
 			return getApplyStatusEffect(effectStack);
+		case DRAW:
+			return getDrawCardEffect(effectStack);
 		default:
 			return null;
 		}
@@ -81,6 +79,22 @@ public class AbilityParser {
 		String status = getStatus(effectStack);
 		String target = effectStack.pop();
 		return new ApplyStatus(target, status); 
+	}
+	
+	private static Effect getDrawCardEffect(Stack<String> effectStack){
+		int value = 0;
+		String target = "";
+		
+		if(effectStack.size() == 2) {
+			target = effectStack.pop();
+			value = Integer.parseInt(effectStack.pop());
+
+		} else if(effectStack.size() == 1) {
+			target = "self";
+			value = Integer.parseInt(effectStack.pop());
+		}
+
+		return new DrawCard(value, target); 
 	}
 	
 	private static String getStatus(Stack<String> effectStack){

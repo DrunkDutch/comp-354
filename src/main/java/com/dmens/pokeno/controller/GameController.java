@@ -144,12 +144,21 @@ public class GameController {
 		mIsHomePlayerPlaying = isPlaying;
 	}
 	
+	public static Player getActivePlayer() {
+		if(mIsHomePlayerPlaying) {
+			return mPlayers.get(0);
+		} else {
+			return mPlayers.get(1);
+		}
+	}
+	
 	public static void checkGameStatus(){
 		
 	}
 	
-	public static void updateHand(Hand hand, boolean player){
+	public static int updateHand(Hand hand, boolean player){
 		board.updateHand(hand, player);
+		return 0;
 	}
         
     public static void updateDeck(int deckSize, boolean player){
