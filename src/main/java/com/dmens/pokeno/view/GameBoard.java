@@ -77,6 +77,16 @@ public class GameBoard extends javax.swing.JFrame {
     	});
     }
     
+    public void updateBench(List<Pokemon> bench, boolean player){
+    	if (player)
+            PlayerBenchPanel.removeAll();
+        else
+            OpponentBenchPanel.removeAll();
+    	bench.forEach(pokemon -> {
+    		addCardToBench(pokemon, player);
+    	});
+    }
+    
     public void addCardToHand(Card card, boolean player)
     {
         JTextField newCard = new JTextField();
@@ -890,7 +900,7 @@ public class GameBoard extends javax.swing.JFrame {
                             .addComponent(jLabel2))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(PlayerBenchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 908, Short.MAX_VALUE)
+                            .addComponent(PlayerBenchPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 964, Short.MAX_VALUE)
                             .addComponent(PlayerHandPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addGap(14, 14, 14))
                     .addGroup(layout.createSequentialGroup()
@@ -1014,7 +1024,7 @@ public class GameBoard extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(ViewDamageField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(OpponentRewardCardLabel3))
-                        .addGap(106, 106, 106)
+                        .addGap(68, 68, 68)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(2, 2, 2)

@@ -3,12 +3,18 @@ package com.dmens.pokeno.database;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.dmens.pokeno.Ability.Ability;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.utils.AbilityParser;
 import com.dmens.pokeno.utils.FileUtils;
 
 public class AbilitiesDatabase extends Database<Ability>{
 	private static Database<Ability> database;
+	
+	private static final Logger LOG = LogManager.getLogger(AbilitiesDatabase.class);
 	
 	public static Database<Ability> getInstance(){
 		if(database == null)
@@ -23,7 +29,7 @@ public class AbilitiesDatabase extends Database<Ability>{
 	public void initialize(String ablitiesFilePath){
 		List<String> list = FileUtils.getFileContentsAsList(ablitiesFilePath);
 		list.forEach(line -> {
-			System.out.println(line);
+			LOG.trace("Abilities DB: "+line);
 			db.add(AbilityParser.getAbilityFromString(line));
 		});
 	}
