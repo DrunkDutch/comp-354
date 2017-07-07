@@ -1,17 +1,41 @@
 package com.dmens.pokeno.AbilityTest;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import static org.junit.Assert.*;
+import static org.powermock.api.support.membermodification.MemberMatcher.method;
+import static org.powermock.api.support.membermodification.MemberModifier.stub;
+
+import java.util.Arrays;
+
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.effect.*;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.deck.Deck;
+import com.dmens.pokeno.effect.ApplyStatus;
+import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.DrawCard;
+import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.player.Player;
 
 /**
 *
 * @author James
 */
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({GameController.class})
+@PowerMockIgnore("javax.management.*")
 public class AbilityTest {
 	
 	 static String mAbilityName = "Ability";
@@ -20,6 +44,15 @@ public class AbilityTest {
 	 static int mEffectValueDifferent = 10;
 	 static String mEffectStatus = "asleep";
 	 static String mEffectStatusDifferent = "poisoned";
+	 
+	 @Before
+	 public void setup(){
+		 AbilitiesDatabase.getInstance().initialize("abilities.txt");
+		 CardsDatabase.getInstance().initialize("cards.txt");
+		 
+		//Mocks
+		PowerMockito.mockStatic(GameController.class);
+	 }
 
     @Test
     public void abilityTest(){
@@ -77,6 +110,25 @@ public class AbilityTest {
     	
     	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
     	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
+    }
+    
+    @Test
+    public void testDrawEffect(){
+    	Deck deck = new Deck();
+    	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Tierno"),
+    			new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
+    	Player player = new Player(deck);
+    	
+    	stub(method(GameController.class, "updateHand")).toReturn(0);
+    	stub(method(GameController.class, "getActivePlayer")).toReturn(player);
+    	// Draw Tierno
+    	player.drawCardsFromDeck(1);
+    	assertEquals(1, player.getHand().size());
+    	assertEquals("Tierno", player.getHand().getCards().get(0).getName());
+    	// Use Tierno
+    	player.useCard(player.getHand().getCards().get(0));
+    	// Expect hand size to be 3 now
+    	assertEquals(3, player.getHand().size());
     }
 
 }

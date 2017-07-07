@@ -19,7 +19,7 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 	private static String[] supportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat", "Shellder", "Frogadier", "Machoke", "Electivire"};
-	private static String[] supportedTrainer = {};
+	private static String[] supportedTrainer = {"Tierno"};
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
@@ -46,7 +46,7 @@ public class CardsDatabase extends Database<Card>{
 		Card card = super.query(index);
 		if(card.isType(CardTypes.POKEMON) && !Arrays.asList(supportedPokemon).contains(card.getName())){
 			return new EnergyCard("Colorless", "colorless");
-		}else if(card.isType(CardTypes.TRAINER) && !Arrays.asList(supportedTrainer).contains(index)){
+		}else if(card.isType(CardTypes.TRAINER) && !Arrays.asList(supportedTrainer).contains(card.getName())){
 			return new EnergyCard("Colorless", "colorless");
 		}
 		return card.copy();

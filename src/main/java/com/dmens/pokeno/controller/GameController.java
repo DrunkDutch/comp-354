@@ -156,8 +156,9 @@ public class GameController {
 		
 	}
 	
-	public static void updateHand(Hand hand, boolean player){
+	public static int updateHand(Hand hand, boolean player){
 		board.updateHand(hand, player);
+		return 0;
 	}
         
     public static void updateDeck(int deckSize, boolean player){
