@@ -324,9 +324,11 @@ public class Player {
         ArrayList<String> buttons = new ArrayList<String>(); 
         if (mActivePokemon != null)
             buttons.add("Active " + mActivePokemon.getName());
+        int i = 0;
         for (Pokemon p : mBenchedPokemon)
         {
-            buttons.add(p.getName());
+            buttons.add(p.getName() + " " + i);
+            i++;
         }
         if (cancelable)
             buttons.add("Cancel");
@@ -396,22 +398,12 @@ public class Player {
                 else
                     benchPokemon(pokemon);
                 break;
-            case ENERGY: //Working here
-                if (mActivePokemon == null)
-                    return false;
-                String[] buttons = new String[mBenchedPokemon.size()+2];
-                buttons[0] = "Active " + mActivePokemon.getName();
-                buttons[buttons.length-1] = "Cancel";
-                int i = 1;
-                for (Pokemon p : mBenchedPokemon)
-                {
-                    buttons[i] = mBenchedPokemon.get(i-1).getName();
-                    i++;
-                }
-                int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", "Which Pokemon would you like to attach it to?");
+            case ENERGY:
+                int cardNum = createPokemonOptionPane("Select a Pokemon", "Which Pokemon would you like to attach the energy to?", true);
+                System.out.println("Selection: " + cardNum); //Removeme
                 if (cardNum == 0)
                     setEnergy(card, mActivePokemon);
-                else if (cardNum == buttons.length-1)
+                else if (cardNum == -1)
                     return false;
                 else
                     setEnergy(card, mBenchedPokemon.get(cardNum-1));
