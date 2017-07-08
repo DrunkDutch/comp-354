@@ -5,14 +5,11 @@
  */
 package com.dmens.pokeno.view;
 
-import java.awt.Image;
-
-import javax.swing.ImageIcon;
-
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.utils.FileUtils;
 
 /**
@@ -22,6 +19,7 @@ import com.dmens.pokeno.utils.FileUtils;
 public class PokemonCardPanel extends javax.swing.JPanel {
     private String POKEMON_ICON_IMAGE = "images/pokemon.png";
     private String ENERGY_ICON_IMAGE = "images/energy.png";
+    private String TRAINER_ICON_IMAGE = "images/backpackIcon.png";
 
     /**
      * Creates new form PokemonCardPanel
@@ -42,7 +40,8 @@ public class PokemonCardPanel extends javax.swing.JPanel {
                 setEnergy(e.getCategory().toString());
                 break;
             case TRAINER:
-                // TODO Implement Trainer cards
+                TrainerCard t = (TrainerCard)  card;
+                setTrainerCard(t);
                 break;
         }
         
@@ -59,7 +58,8 @@ public class PokemonCardPanel extends javax.swing.JPanel {
                 setEnergy(e.getCategory().toString());
                 break;
             case TRAINER:
-                // TODO Implement Trainer cards
+            	TrainerCard t = (TrainerCard)  card;
+                setTrainerCard(t);
                 break;
         }
     }
@@ -111,6 +111,15 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         description2.setText("");
         damage1.setText("");
         damage2.setText("");
+    }
+    
+    private void setTrainerCard(TrainerCard trainer){
+    	cardName.setText(trainer.getName());
+        imageLabel.setIcon(FileUtils.getFileAsImageIcon(TRAINER_ICON_IMAGE, 120, 120));
+        // Ability 1 field becomes card category
+        ability1.setText(trainer.getCategory());
+        // description 1 covers the ability
+        description1.setText(trainer.getAbility().toString());
     }
 
     /**
