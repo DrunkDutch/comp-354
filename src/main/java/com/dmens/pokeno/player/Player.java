@@ -342,12 +342,14 @@ public class Player {
     
     private Pokemon choosePokemonToEvolve(Pokemon evolution){
     	List<Pokemon> choiceList = new ArrayList<Pokemon>();
-    	String message = "Which Pokemon would you like to attach it to?";
-    	if(mActivePokemon.getName().equals(evolution.getBasePokemonName()))
-    			choiceList.add(mActivePokemon);
-    	choiceList.addAll(mBenchedPokemon.stream().filter(pokemon -> pokemon.getName().equals(evolution.getBasePokemonName())).collect(Collectors.toList()));
     	StringBuilder sb = new StringBuilder();
-    	choiceList.forEach(choice -> sb.append(choice.getName()+"-"));
+    	String message = "Which Pokemon would you like to attach it to?";
+    	if(mActivePokemon != null && mActivePokemon.getName().equals(evolution.getBasePokemonName()))
+    			choiceList.add(mActivePokemon);
+    	if(mBenchedPokemon != null){
+	    	choiceList.addAll(mBenchedPokemon.stream().filter(pokemon -> pokemon.getName().equals(evolution.getBasePokemonName())).collect(Collectors.toList()));
+	    	choiceList.forEach(choice -> sb.append(choice.getName()+"-"));
+    	}
     	String[] buttons = null;
     	if(choiceList.isEmpty()){
     		String[] button = {"Back"};
@@ -359,11 +361,15 @@ public class Player {
 	    	if(choiceList.get(0).equals(mActivePokemon))
 	    		buttons[0] = "Active " + buttons[0];
     	}
-	    	int cardNum = GameController.dispayCustomOptionPane(buttons, "Card Select", message);
+	    	int cardNum = choosePokemonInScreen(buttons, "Card Select", message);
 	    	if(cardNum == buttons.length-1)
 	    		return null;
 	    	else
 	    		return choiceList.get(cardNum);
+    }
+    
+    public int choosePokemonInScreen(Object[] options, String title, String message){
+    	return GameController.dispayCustomOptionPane(options, "Card Select", message);
     }
     
     public void swapPokemonFromBench(Pokemon before, Pokemon after){
