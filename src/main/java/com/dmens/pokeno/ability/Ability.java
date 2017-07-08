@@ -41,6 +41,10 @@ public class Ability {
      */
     public void addEffect(Effect e)
 	{
+    	if(e == null) {
+    		return;
+    	}
+    	
     	this.mEffects.add(e);
 	} 
     
@@ -126,6 +130,24 @@ public class Ability {
     	   if(effect.getClass() == ApplyStatus.class)
     	   {
     		   return (ApplyStatus) effect;
+    	   }
+    	}
+    	 return null;
+    }
+    
+	/*
+     * Get the single DrawCard effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as DrawCard.
+     */
+    public DrawCard getDrawCardEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == DrawCard.class)
+    	   {
+    		   return (DrawCard) effect;
     	   }
     	}
     	 return null;

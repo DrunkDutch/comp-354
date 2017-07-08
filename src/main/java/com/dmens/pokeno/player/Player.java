@@ -77,6 +77,10 @@ public class Player {
         return mDiscards;
     }
     
+    public Player getOpponent() {
+    	return this.opponent;
+    }
+    
     public void shuffleDeck(){
        this.mDeck.shuffle();
     }
@@ -227,6 +231,10 @@ public class Player {
     }
     
     private void cleanActivePokemon(){
+    	ArrayList<EnergyCard> attachedEnergy = mActivePokemon.getAttachedEnergy();
+    	for(int i = 0; i < attachedEnergy.size(); ++i) {
+    		mDiscards.addCard(attachedEnergy.get(i));
+    	}
     	mDiscards.addCard(mActivePokemon);
     	mActivePokemon = null;
     	GameController.updateGraveyard(mDiscards.size(), humanPlayer);
@@ -264,11 +272,13 @@ public class Player {
     }
     
     private void notifyMulligan(){
-    	 int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
-         if (reply == JOptionPane.YES_OPTION){
-          	this.drawCardsFromDeck(1);
-          	GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
-         }
+        if (!this.isInMulliganState()) {
+            int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
+            if (reply == JOptionPane.YES_OPTION) {
+                this.drawCardsFromDeck(1);
+                GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
+            }
+        }
     }
 
     // for checking if player should declare a mulligan on their starting hand
