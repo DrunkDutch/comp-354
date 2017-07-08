@@ -385,9 +385,9 @@ public class Player {
             	Pokemon pokemon = (Pokemon) card;
             	if(pokemon.isEvolvedCategory()){
             		Pokemon toEvolve = choosePokemonToEvolve(pokemon);
-            		// If Active was chosen
             		if(toEvolve == null)
             			return false;
+            		// If Active was chosen
             		if(toEvolve.equals(mActivePokemon)){
             			LOG.info("Active Pokemon is evolving!");
             			pokemon.evolvePokemon(mActivePokemon);
