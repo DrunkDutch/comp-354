@@ -26,7 +26,6 @@ import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.player.Player;
->>>>>>> d7b9cb630fe748fc8d89c3df0d78cd4b6b1266ad
 
 /**
 *
@@ -55,61 +54,95 @@ public class AbilityTest {
 	 }
 
     @Test
-    public void abilityTest(){
-        
-    	Ability ability = new Ability(mAbilityName);
-    	Assert.assertEquals(ability.getName(), mAbilityName);
-    	
-    	// Stand alone Effects
-    	Heal heal = new Heal(mEffectTarget, mEffectValue);
-    	Assert.assertEquals(heal.getTarget(), mEffectTarget);
-    	Assert.assertEquals(heal.getValue(), mEffectValue);
-    	
-    	Damage damage = new Damage(mEffectTarget, mEffectValue);
-    	Assert.assertEquals(damage.getTarget(), mEffectTarget);
-    	Assert.assertEquals(damage.getValue(), mEffectValue);
-    	
-    	ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
-    	Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
-    	Assert.assertEquals(applyStatus.getStatus(), mEffectStatus);
-    	
-    	DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
-    	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
-    	Assert.assertEquals(drawCard.getValue(), mEffectValue);
-    	
-    	// Add each Effect to the Ability
+    public void testAbilityName() {
+
+		Ability ability = new Ability(mAbilityName);
+		Assert.assertEquals(ability.getName(), mAbilityName);
+	}
+
+	@Test
+	public void testHealEffect() {
+
+		Heal heal = new Heal(mEffectTarget, mEffectValue);
+		Assert.assertEquals(heal.getTarget(), mEffectTarget);
+		Assert.assertEquals(heal.getValue(), mEffectValue);
+	}
+
+	@Test
+	public void testDamageEffect() {
+
+		Damage damage = new Damage(mEffectTarget, mEffectValue);
+		Assert.assertEquals(damage.getTarget(), mEffectTarget);
+		Assert.assertEquals(damage.getValue(), mEffectValue);
+	}
+
+	@Test
+	public void testApplyingStatus() {
+
+		ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
+		Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
+		Assert.assertEquals(applyStatus.getStatus(), mEffectStatus);
+	}
+
+	@Test
+	public void testDrawCard() {
+
+		DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
+		Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
+		Assert.assertEquals(drawCard.getValue(), mEffectValue);
+	}
+
+	//! Test the addEffect() method for the Ability class.
+	@Test
+	public void testAddEffect(){
+
+		// Create a new ability
+		Ability ability = new Ability(mAbilityName);
+
+    	// Add heal effect to the ability
+		Heal heal = new Heal(mEffectTarget, mEffectValue);
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
     	Assert.assertEquals(ability.getHealEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getHealEffect().getValue(), mEffectValue);
-    	
+
+    	// Add damage effect to the ability.
+		Damage damage = new Damage(mEffectTarget, mEffectValue);
     	ability.addEffect(damage);
     	Assert.assertEquals(ability.getDamageEffect(), damage);
     	Assert.assertEquals(ability.getDamageEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDamageEffect().getValue(), mEffectValue);
-    	
+
+    	// Add apply-status effect to the ability.
+		ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
     	ability.addEffect(applyStatus);
     	Assert.assertEquals(ability.getApplyStatusEffect(), applyStatus);
     	Assert.assertEquals(ability.getApplyStatusEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getApplyStatusEffect().getStatus(), mEffectStatus);    
-    	
+
+    	// Add draw-card effect to the ability.
+		DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
     	ability.addEffect(drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect(), drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
-    	
-    	// change effects... check that effects in abilities are unaffected
-    	heal = new Heal(mEffectTarget, mEffectValueDifferent);
-    	Assert.assertNotEquals(ability.getHealEffect(), heal);
-    	
-    	damage = new Damage(mEffectTarget, mEffectValueDifferent);
-    	Assert.assertNotEquals(ability.getDamageEffect(), damage);
-    	
-    	applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);
-    	Assert.assertNotEquals(ability.getApplyStatusEffect(), applyStatus);
-    	
-    	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
-    	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
+
+		/* Test if effects in ability object are not modified by changes
+			to the effects.
+		 */
+
+		drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
+		Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
+
+		applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);
+		Assert.assertNotEquals(ability.getApplyStatusEffect(), applyStatus);
+
+		damage = new Damage(mEffectTarget, mEffectValueDifferent);
+		Assert.assertNotEquals(ability.getDamageEffect(), damage);
+
+		heal = new Heal(mEffectTarget, mEffectValueDifferent);
+		Assert.assertNotEquals(ability.getHealEffect(), heal);
+
     }
     
     @Test
