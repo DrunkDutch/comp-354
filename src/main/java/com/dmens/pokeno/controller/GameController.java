@@ -42,7 +42,7 @@ public class GameController {
 	private static ArrayList<Player> mPlayers = null;
 	
 	private static boolean mGameOver = false;
-	private static boolean mIsHomePlayerPlaying = false;
+	private static boolean mIsHomePlayerPlaying = true;
 	
     public static GameBoard board;
         
@@ -98,6 +98,7 @@ public class GameController {
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
+
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
 	}

@@ -83,5 +83,22 @@ public class AIPlayer extends Player {
             mBench.remove(mBench.get(0));
         }
         
+        public Pokemon getDamangedPokemon() {
+        	Pokemon damagedPokemon = null;
+        	if(getActivePokemon() != null) {
+        		if(getActivePokemon().getDamage() > 0) {
+        			damagedPokemon = getActivePokemon();       		}
+        	} else {
+        		for(Pokemon p : getBenchedPokemon()) {
+        			if(p.getDamage() > 0) {
+        				damagedPokemon = p;
+        				break;
+        			}
+        		}
+        	}
+        	
+        	return damagedPokemon;
+        }
+        
 	//TODO: implement AI specific functions
 }

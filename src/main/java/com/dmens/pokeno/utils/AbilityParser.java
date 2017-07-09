@@ -51,8 +51,14 @@ public class AbilityParser {
 	private static String getTarget(Stack<String> effectStack){
 		effectStack.pop();	// target
 		String target = effectStack.pop();
-		if(target.contains("choice"))
-			return null;
+		if(target.contains("choice")) {
+			target = effectStack.pop();
+			if(target.equals("your")) {
+				return target;
+			} else {
+				return null;
+			}
+		}
 		return target;
 	}
 	

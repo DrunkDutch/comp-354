@@ -319,7 +319,7 @@ public class Player {
         return cardNum;
     }
     
-    private int createPokemonOptionPane(String title, String message, boolean cancelable)
+    public int createPokemonOptionPane(String title, String message, boolean cancelable)
     {
         ArrayList<String> buttons = new ArrayList<String>(); 
         if (mActivePokemon != null)
