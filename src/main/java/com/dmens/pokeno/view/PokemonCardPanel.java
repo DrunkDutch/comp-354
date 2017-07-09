@@ -14,6 +14,7 @@ import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.utils.FileUtils;
+import com.dmens.pokeno.effect.*;
 
 /**
  *
@@ -84,14 +85,35 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         AbilityCost ability = poke.getAbilitiesAndCost().get(0);
         this.ability1.setText(ability.getAbility().getName());
         this.description1.setText(ability.showCosts());
-        this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
+        
+        //is it a simple ApplyStatus effect or a simple Damage effect
+        if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof ApplyStatus)
+       	{
+        	this.damage1.setText(ability.getAbility().getApplyStatusEffect().getStatus());
+        }
+        else if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof Damage)
+        {
+        	this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
+        }
+        
         // Set ability 2 if present
-        if(poke.getAbilitiesAndCost().size() >= 2){
+        if(poke.getAbilitiesAndCost().size() >= 2)
+        {
             ability = poke.getAbilitiesAndCost().get(1);
             this.ability2.setText(ability.getAbility().getName());
             this.description2.setText(ability.showCosts());
-            this.damage2.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
-        }else{
+            //is it a simple ApplyStatus effect or a simple Damage effect
+            if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof ApplyStatus)
+           	{
+            	this.damage2.setText(ability.getAbility().getApplyStatusEffect().getStatus());
+            }
+            else if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof Damage)
+            {
+            	this.damage2.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
+            }
+        }
+        else
+        {
             this.ability2.setText("");
             this.description2.setText("");
             this.damage2.setText("");
@@ -100,6 +122,7 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         //this.ability1.setText(abilities[0]);
         //this.ability2.setText(abilities[1]);
     }
+    
     
     private void setEnergy(String cat){
         cardName.setText("Energy - "+ (Character.toUpperCase(cat.charAt(0)) + cat.substring(1)));

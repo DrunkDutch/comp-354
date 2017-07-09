@@ -15,6 +15,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.Pokemon;
@@ -32,6 +35,9 @@ public class GameBoard extends javax.swing.JFrame {
     /**
      * Creates new form GameBoard
      */
+	
+	private static final Logger LOG = LogManager.getLogger(GameBoard.class);
+	
     public GameBoard() {
     	 try {
  			this.setContentPane(new JLabel(new ImageIcon(getClass().getClassLoader().getResource("data/images/background.jpg"))));
@@ -157,6 +163,7 @@ public class GameBoard extends javax.swing.JFrame {
     
     public void addStatus(int type, boolean player)
     {
+    	LOG.debug((player ? "Home's " : "AI's ") + " active - setting flag " +  type + ".");
         if (player)
             switch(type)
             {
@@ -176,7 +183,29 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
-    public void clearStatus(boolean player)
+    public void clearStatus(int type, boolean player)
+    {
+    	LOG.debug((player ? "Home's " : "AI's ") + " active - clearing flag " +  type + ".");
+        if (player)
+            switch(type)
+            {
+                case 0: PlayerParalyzedLabel.setText(""); break;
+                case 1: PlayerAsleepLabel.setText(""); break;
+                case 2: PlayerStuckLabel.setText(""); break;
+                case 3: PlayerPoisonedLabel.setText(""); break;
+            }
+        else
+            switch(type)
+            {
+                case 0: OpponentParalyzedLabel.setText(""); break;
+                case 1: OpponentAsleepLabel.setText(""); break;
+                case 2: OpponentStuckLabel.setText(""); break;
+                case 3: OpponentPoisonedLabel.setText(""); break;
+            }
+        update();
+    }
+    
+    public void clearAllStatus(boolean player)
     {
         if (player)
         {
@@ -329,7 +358,7 @@ public class GameBoard extends javax.swing.JFrame {
             PlayerDamageField.setText(Integer.toString(card.getDamage()));
             
             clearEnergy(true);
-            clearStatus(true);
+            clearAllStatus(true);
             //TODO - setEnergy(card.attachedEnergies, true);
             //if(card.poisoned) {addStatus(3, true)}
             //...
@@ -343,7 +372,7 @@ public class GameBoard extends javax.swing.JFrame {
                 OpponentDamageField.setText(Integer.toString(card.getDamage()));
             
             clearEnergy(false);
-            clearStatus(false);
+            clearAllStatus(false);
             //TODO - setEnergy(card.attachedEnergies, false);
             //if(card.poisoned) {addStatus(3, false)}
             //...
@@ -1092,12 +1121,18 @@ public class GameBoard extends javax.swing.JFrame {
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
         if(GameController.useActivePokemonForPlayer(0,0))
-            GameController.startAITurn();
+        {
+        	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
+    		GameController.startAITurn();
+        }
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
         if(GameController.useActivePokemonForPlayer(0,1))
-            GameController.startAITurn();
+        {
+    		GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
+    		GameController.startAITurn();
+        }
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
@@ -1105,7 +1140,8 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
-        GameController.startAITurn();
+    	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
+    	GameController.startAITurn();
     }//GEN-LAST:event_PassBtnActionPerformed
 
     private void ViewColorlessEnergyFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ViewColorlessEnergyFieldActionPerformed
