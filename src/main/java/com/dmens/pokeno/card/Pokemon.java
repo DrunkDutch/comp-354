@@ -105,6 +105,16 @@ public class Pokemon extends Card {
 			return;
 		}
 		mDamage -= damageToRemove;
+		
+		if(GameController.board == null) {
+			return;
+		}
+		
+		if(this == GameController.getHomePlayer().getActivePokemon()) {
+			GameController.board.updateActivePokemon(GameController.getHomePlayer());
+		} else if(this == GameController.getAIPlayer().getActivePokemon()) {
+			GameController.board.updateActivePokemon(GameController.getAIPlayer());
+		} 
 	}
 
 	public void addEnergy(EnergyCard energy){
