@@ -43,8 +43,15 @@ public class AIPlayer extends Player {
             // Use trainer cards in hand
             
             // Attack if possible
-            //GameController.useActivePokemonForPlayer(1, 0);
+            GameController.useActivePokemonForPlayer(1, 0);
 
+        }
+        /**
+         * Make AI choose first option when choose a pokemon from options
+         */
+        @Override
+        public int choosePokemonInScreen(Object[] options, String title, String message) {
+        	return 0;
         }
         
         private boolean checkAndPlayEnergyOn(Pokemon pokemon){

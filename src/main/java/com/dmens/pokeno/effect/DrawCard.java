@@ -68,7 +68,7 @@ public class DrawCard implements Effect{
 	@Override
 	public String toString()
 	{
-		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", DrawCard.class, this.mTarget, this.mValue);
+		return String.format("DRAW: Target: %s, Value: %d", this.mTarget, this.mValue);
 	}
 	
 	@Override
