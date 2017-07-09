@@ -43,8 +43,13 @@ public class AIPlayer extends Player {
             // Use trainer cards in hand
             
             // Attack if possible
-            GameController.useActivePokemonForPlayer(1, 0);
-
+            if(!GameController.hasActivePokemonBlocked(1))
+            {
+            	GameController.useActivePokemonForPlayer(1, 0);
+            }
+            
+            // Resolve effects
+            resolveEffects(this.getActivePokemon());
         }
         /**
          * Make AI choose first option when choose a pokemon from options

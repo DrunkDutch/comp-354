@@ -18,6 +18,7 @@ import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.deck.Deck;
 import com.dmens.pokeno.deck.Hand;
+import com.dmens.pokeno.utils.Randomizer;
 
 /**
  * Created by Devin on 2017-05-26.
@@ -55,6 +56,17 @@ public class Player {
 
     public Pokemon getActivePokemon() {
         return mActivePokemon;
+    }
+    
+    public boolean isActivePokemonBlocked() {
+    	if(null != mActivePokemon)
+		{
+    		return mActivePokemon.isSleep() || mActivePokemon.isStuck();
+		}
+    	else
+    	{
+    		return true;	// null blocked...
+    	}
     }
 
     public ArrayList<Pokemon> getBenchedPokemon() {
@@ -100,15 +112,69 @@ public class Player {
     
     public void startTurn()
     {
+    	GameController.setIsHomePlayerPlaying(this.isHumanPlayer());
         drawCardsFromDeck(1);
+        
         if (this instanceof AIPlayer)
         {
             AIPlayer ai = (AIPlayer)this;
-            GameController.setIsHomePlayerPlaying(false);
             ai.startPhase();
-            GameController.setIsHomePlayerPlaying(true);
             opponent.startTurn();
         }
+    }
+    
+    public void resolveEffects(Pokemon poke)
+    {
+    	LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + "turn has ended - resolving effects.");
+    	if(null != poke)
+    	{
+    		String msgPrefix = !this.isHumanPlayer() ? "AI's " : "Your ";
+			//1 paralyzed .. clear it on end of turn
+			if(poke.isParalyzed())
+			{
+				poke.setParalyzed(false);
+			}
+			//2 asleep .. 50% chance of waking up
+			if(poke.isSleep())
+			{
+				if(Randomizer.Instance().getFiftyPercentChance())
+				{
+					poke.setSleep(false);
+					LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " has been woken up.");
+					GameController.displayMessage(msgPrefix + poke.getName() + " has woken up!");
+					GameController.board.clearStatus(1, GameController.getIsHomePlayerPlaying());		
+				}
+			}
+			//3 stuck .. clear it on end of turn
+			if(poke.isStuck())
+			{
+				poke.setStuck(false);
+				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " is no longer stuck.");
+				GameController.displayMessage(msgPrefix + poke.getName() + " no longer stuck!");
+				GameController.board.clearStatus(2, GameController.getIsHomePlayerPlaying());	
+			}
+			//4 poisoned .. hurt 'em
+			if(poke.isPoisoned())
+			{
+				poke.addDamage(GameController.POISON_DAMAGE_AMOUNT);
+				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " had been damaged " + GameController.POISON_DAMAGE_AMOUNT + "by Poison." );
+				GameController.displayMessage(msgPrefix + poke.getName() + " damaged " + GameController.POISON_DAMAGE_AMOUNT + "by poison." );
+			}
+    	}
+    }
+    
+    /*
+     * Rules: "Status effects are always removed when retreating or evolving" 
+     */
+    public void clearEffects(Pokemon poke)
+    {
+    	if(null != poke)
+    	{
+    		poke.setParalyzed(false);
+        	poke.setPoisoned(false);
+        	poke.setSleep(false);
+        	poke.setStuck(false);
+    	}
     }
     
     // allows player to pick a specific card from hand and put it back to the deck

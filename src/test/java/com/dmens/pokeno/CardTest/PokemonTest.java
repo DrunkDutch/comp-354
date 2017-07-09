@@ -42,8 +42,8 @@ public class PokemonTest {
         Assert.assertEquals(froakie.getHP(), mPokemonFroakieHP);
         Assert.assertEquals(froakie.getRetreatCost(), mPokemonFroakieRetreatCost);
 
-        froakie.setConfused(true);
-        Assert.assertEquals(true, froakie.isConfused());
+        froakie.setStuck(true);
+        Assert.assertEquals(true, froakie.isStuck());
         froakie.setParalyzed(true);
         Assert.assertEquals(true, froakie.isParalyzed());
         froakie.setPoisoned(true);
