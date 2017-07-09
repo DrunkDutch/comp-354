@@ -104,7 +104,7 @@ public class Heal implements Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", Heal.class, this.mTarget, this.mValue);
+		return String.format("HEAL: Target: %s, Value: %d", this.mTarget, this.mValue);
 	}
 	
 	@Override
