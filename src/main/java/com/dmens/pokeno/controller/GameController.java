@@ -39,10 +39,12 @@ public class GameController {
 	private static final String LOCATION_CARDS = "cards.txt";
 	private static final String LOCATION_ABILITIES = "abilities.txt";
 	
+	public static final int POISON_DAMAGE_AMOUNT = 1;
+	
 	private static ArrayList<Player> mPlayers = null;
 	
 	private static boolean mGameOver = false;
-	private static boolean mIsHomePlayerPlaying = false;
+	private static boolean mIsHomePlayerPlaying = true;
 	
     public static GameBoard board;
         
@@ -117,6 +119,10 @@ public class GameController {
 	
 	public static void setActivePokemonOnBoard(Pokemon pokemon, boolean player){
 		board.setActivePokemon(pokemon, player);
+	}
+	
+	public static boolean hasActivePokemonBlocked(int player) {
+		return mPlayers.get(player).isActivePokemonBlocked();
 	}
 	
 	public static void startAITurn(){
