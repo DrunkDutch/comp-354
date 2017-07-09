@@ -51,6 +51,13 @@ public class AIPlayer extends Player {
             // Resolve effects
             resolveEffects(this.getActivePokemon());
         }
+        /**
+         * Make AI choose first option when choose a pokemon from options
+         */
+        @Override
+        public int choosePokemonInScreen(Object[] options, String title, String message) {
+        	return 0;
+        }
         
         private boolean checkAndPlayEnergyOn(Pokemon pokemon){
         	AtomicBoolean energyPlayed = new AtomicBoolean(false);
@@ -86,6 +93,23 @@ public class AIPlayer extends Player {
             }
             setActivePokemon(mBench.get(0));
             mBench.remove(mBench.get(0));
+        }
+        
+        public Pokemon getDamangedPokemon() {
+        	Pokemon damagedPokemon = null;
+        	if(getActivePokemon() != null) {
+        		if(getActivePokemon().getDamage() > 0) {
+        			damagedPokemon = getActivePokemon();       		}
+        	} else {
+        		for(Pokemon p : getBenchedPokemon()) {
+        			if(p.getDamage() > 0) {
+        				damagedPokemon = p;
+        				break;
+        			}
+        		}
+        	}
+        	
+        	return damagedPokemon;
         }
         
 	//TODO: implement AI specific functions

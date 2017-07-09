@@ -163,10 +163,10 @@ public class Ability {
     	
     	for (Effect effect: mEffects)
     	{
-    		effectsAsList.append("---" + effect.toString() + "\n");
+    		effectsAsList.append(effect.toString() + "\n");
     	}
     	
-		return String.format("%s:->%s\n%s", Ability.class, this.mName, effectsAsList.toString());
+		return effectsAsList.toString();
 	}
     
     public void performAbility() {

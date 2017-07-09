@@ -1,6 +1,9 @@
 package com.dmens.pokeno.effect;
 
 import com.dmens.pokeno.controller.GameController;
+import com.dmens.pokeno.player.*;
+import com.dmens.pokeno.card.Pokemon;
+
 /*
  * A Heal effect.
  *
@@ -13,7 +16,7 @@ public class Heal implements Effect {
 	
 	// we have three possible targets to heal
 	private final String YOUR_ACTIVE = "your-active";
-	private final String CHOICE = "choice";
+	private final String YOUR = "your";
 	private final String SELF = "self";
 
 	/*
@@ -69,8 +72,29 @@ public class Heal implements Effect {
 			} else {
 				GameController.getAIPlayer().getActivePokemon().removeDamage(this.mValue);
 			}
-		} else if (mTarget.equals(CHOICE)) {
-			// TODO: heal a pokemon of choice, need to get input from UI
+		} else if (mTarget.equals(YOUR)) {
+			if(GameController.getIsHomePlayerPlaying()) {
+				Player homePlayer= GameController.getHomePlayer();
+				int pokemonIndex = homePlayer.createPokemonOptionPane("Heal", "Which Pokemon would you like to heal?", false);
+;				Pokemon pokemonToHeal = null;
+				if(homePlayer.getActivePokemon() != null) {
+					if(pokemonIndex == 0) {
+						pokemonToHeal = homePlayer.getActivePokemon();
+					} else {
+						pokemonToHeal = homePlayer.getBenchedPokemon().get(pokemonIndex - 1);
+					}
+				} else {
+					pokemonToHeal = homePlayer.getBenchedPokemon().get(pokemonIndex);
+				}
+				pokemonToHeal.removeDamage(this.mValue);
+			} else {
+				// AI heals a damaged pokemon
+				AIPlayer ai = (AIPlayer)(GameController.getAIPlayer());
+				Pokemon pokemonToHeal = ai.getDamangedPokemon();
+				if(pokemonToHeal != null) {
+					pokemonToHeal.removeDamage(this.mValue);
+				}
+			}
 		} else if(mTarget.equals(SELF)) {
 			// TODO: heal the pokemon this card is attached to, specific to Floral Crown
 		}
@@ -80,7 +104,7 @@ public class Heal implements Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("%s:\t\tTAR: %s\t\tVAL:%d", Heal.class, this.mTarget, this.mValue);
+		return String.format("HEAL: Target: %s, Value: %d", this.mTarget, this.mValue);
 	}
 	
 	@Override

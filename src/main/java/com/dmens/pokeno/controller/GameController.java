@@ -100,6 +100,7 @@ public class GameController {
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
+
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
 	}
