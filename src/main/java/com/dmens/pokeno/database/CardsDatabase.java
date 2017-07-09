@@ -19,7 +19,7 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 	private static String[] supportedPokemon = {"Electrike", "Froakie", "Electabuzz", "Machop", "Zubat", "Shellder", "Frogadier", "Machoke", "Electivire"};
-	private static String[] supportedTrainer = {"Tierno"};
+	private static String[] supportedTrainer = {"Tierno", "Potion"};
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
