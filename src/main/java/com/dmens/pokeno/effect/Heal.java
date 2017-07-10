@@ -3,6 +3,7 @@ package com.dmens.pokeno.effect;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.*;
 import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.condition.*;
 
 /*
  * A Heal effect.
@@ -13,6 +14,7 @@ public class Heal implements Effect {
 
 	private int mValue;
 	private String mTarget;
+	private Condition mCondition = null;
 	
 	// we have three possible targets to heal
 	private final String YOUR_ACTIVE = "your-active";
@@ -115,5 +117,17 @@ public class Heal implements Effect {
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public boolean hasCondition()
+	{
+		return (mCondition != null);
+	}
+	
+	@Override
+	public Condition getCondition()
+	{
+		return mCondition;
 	}
 }

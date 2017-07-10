@@ -1,5 +1,7 @@
 package com.dmens.pokeno.effect;
 
+import com.dmens.pokeno.condition.*;
+
 /*
  * An ApplyStatus effect.
  *
@@ -9,6 +11,7 @@ public class ApplyStatus implements Effect {
 
 	private String mTarget;
 	private String mStatus;
+	private Condition mCondition = null;
 	
 	/*
 	 * Constructor
@@ -75,5 +78,17 @@ public class ApplyStatus implements Effect {
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public boolean hasCondition()
+	{
+		return (mCondition != null);
+	}
+	
+	@Override
+	public Condition getCondition()
+	{
+		return mCondition;
 	}
 }
