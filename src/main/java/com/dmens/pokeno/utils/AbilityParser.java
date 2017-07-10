@@ -1,37 +1,48 @@
 package com.dmens.pokeno.utils;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.effect.*;
-import com.dmens.pokeno.condition.*;
+import com.dmens.pokeno.condition.Condition;
+import com.dmens.pokeno.condition.ConditionTypes;
+import com.dmens.pokeno.condition.Flip;
+import com.dmens.pokeno.effect.ApplyStatus;
+import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.DrawCard;
+import com.dmens.pokeno.effect.Effect;
+import com.dmens.pokeno.effect.EffectTypes;
+import com.dmens.pokeno.effect.Heal;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
 	
-	private static String[] unsupportedAbilities = {"Nyan Press", "Exhausted Tackle", "Poison Ring", "Sleep Poison"};
+	//private static String[] unsupportedAbilities = {"Nyan Press", "Exhausted Tackle", "Poison Ring", "Sleep Poison"};
 	
 	public static Ability getAbilityFromString(String abilityInformation){
+		LOG.debug(abilityInformation);
     	int indexName = abilityInformation.indexOf(":");
     	Ability ability = new Ability(abilityInformation.substring(0,indexName));
     	
-    	// the parsing of () that contain , is not yet done
-    	if(Arrays.asList(unsupportedAbilities).contains(ability.getName()))
-    	{
-    		LOG.debug("Does not support parsing of " + ability.getName() + ".");
-    		return ability;
-    	}
-    	
     	String restStr = abilityInformation.substring(indexName + 1, abilityInformation.length());
-    	List<String> effects = Arrays.asList(restStr.split(","));
-    	
+    	// Dive effects separated by comma
+    	Pattern p = Pattern.compile("(.+?(\\(.*?\\))*?)(?:,|$)");
+    	Matcher m = p.matcher(restStr);
+    	List<String> effects = new LinkedList<String>();
+    	while(m.find())
+    	{
+    	  String token = m.group( 1 );
+    	  effects.add(token);
+    	}
     	effects.forEach(effect ->{
-    		LOG.debug(effect);
+    		LOG.debug("-- "+effect);
     		ability.addEffect(ParseEfect(effect));
     	});
     	
@@ -53,7 +64,8 @@ public class AbilityParser {
 		{
 			effectCondition = getCondition(effectStack);
 		}
-		
+		if (effectStack.isEmpty())
+			return null;
 		switch(EffectTypes.valueOf(effectStack.pop().toUpperCase()))
 		{
 			case DAM:
@@ -138,6 +150,7 @@ public class AbilityParser {
 				if(effectStack.peek().contains("("))
 				{
 					while(!effectStack.pop().contains(")"));
+					break;
 				}
 				else
 				{
@@ -153,6 +166,7 @@ public class AbilityParser {
 			default:
 				return null;
 		}
+		return null;
 	}
 	
 	private static String getStatus(Stack<String> effectStack){
