@@ -61,7 +61,7 @@ public class Player {
     public boolean isActivePokemonBlocked() {
     	if(null != mActivePokemon)
 		{
-    		return mActivePokemon.isSleep() || mActivePokemon.isStuck();
+    		return mActivePokemon.isSleep() || mActivePokemon.isParalyzed();
 		}
     	else
     	{
