@@ -12,6 +12,8 @@ import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.CardsDatabase;
 import com.dmens.pokeno.effect.*;
+import com.dmens.pokeno.utils.Randomizer;
+import com.dmens.pokeno.condition.*;
 
 public class Pokemon extends Card {
 
@@ -178,50 +180,74 @@ public class Pokemon extends Card {
         
         if (hasEnoughEnergy)
         {
-        	//is it a simple ApplyStatus effect or a simple Damage effect
-        	if(a.getEffects().get(0) instanceof ApplyStatus)
+        	// iterate through all effect of an ability
+        	a.getEffects().forEach(effect ->
         	{
-        		String status = a.getApplyStatusEffect().getStatus();
-        		
-        		//TODO check target
-        		// target should be used instead of !GameController.getIsHomePlayerPlaying()
-        		if(status.compareTo("paralyzed") == 0)
-    			{
-        			target.setParalyzed(true);
-        			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
-        			GameController.displayMessage(target.getName() + " has been paralyzed!");
-        			GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
-    			}
-        		else if (status.compareTo("asleep") == 0)
+        		boolean proceedWithAttack = true;
+       
+        		if(effect.hasCondition())
         		{
-        			target.setSleep(true);
-    				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
-    				GameController.displayMessage(target.getName() + " has fallen asleep!");
-    				GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
-        		}
-        		else if (status.compareTo("stuck") == 0)
-        		{
-        			target.setStuck(true);
-        			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Stuck.");
-        			GameController.displayMessage(target.getName() + " is now stuck!");
-        			GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
-        		}
-        		else if (status.compareTo("poisoned") == 0)
-        		{
-        			target.setPoisoned(true);
-        			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Poisoned.");
-        			GameController.displayMessage(target.getName() + " is now poisoned!");
-        			GameController.board.addStatus(3, !GameController.getIsHomePlayerPlaying());
+        			if(effect.getCondition() instanceof Flip)
+        			{
+        				if(Randomizer.Instance().getFiftyPercentChance())
+        					proceedWithAttack = false;
+        			}
         		}
         		
-        		return true;
-        	}
-        	else if (a.getEffects().get(0) instanceof Damage)
-        	{
-        		LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been damaged by " + a.getDamageEffect().getValue() + ".");
-        		target.addDamage(a.getDamageEffect().getValue());
-                return true;
-        	}
+        		if(!proceedWithAttack)
+        		{
+        			GameController.displayMessage(target.getName() + " avoided the attack!");
+        		}
+        		else
+        		{
+        			if(effect instanceof ApplyStatus)
+            		{
+            			ApplyStatus as = (ApplyStatus) effect;
+            			String status = as.getStatus();
+            			
+            			//TODO check target
+                		// target should be used instead of !GameController.getIsHomePlayerPlaying()
+                		if(status.compareTo("paralyzed") == 0)
+            			{
+                			target.setParalyzed(true);
+                			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
+                			GameController.displayMessage(target.getName() + " has been paralyzed!");
+                			GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
+            			}
+                		else if (status.compareTo("asleep") == 0)
+                		{
+                			target.setSleep(true);
+            				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
+            				GameController.displayMessage(target.getName() + " has fallen asleep!");
+            				GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
+                		}
+                		else if (status.compareTo("stuck") == 0)
+                		{
+                			target.setStuck(true);
+                			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Stuck.");
+                			GameController.displayMessage(target.getName() + " is now stuck!");
+                			GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
+                		}
+                		else if (status.compareTo("poisoned") == 0)
+                		{
+                			target.setPoisoned(true);
+                			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Poisoned.");
+                			GameController.displayMessage(target.getName() + " is now poisoned!");
+                			GameController.board.addStatus(3, !GameController.getIsHomePlayerPlaying());
+                		}
+            		}
+            		else if (effect instanceof Damage)
+                	{
+            			Damage d = (Damage) effect;
+                			
+    					LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been damaged by " + d.getValue() + ".");
+    	        		target.addDamage(d.getValue());
+         
+                	}
+        		}
+        	});
+        	
+        return true;
         }
         return false;
     }
