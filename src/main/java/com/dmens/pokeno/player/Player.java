@@ -38,6 +38,7 @@ public class Player {
     private Player opponent;
     private boolean mIsReadyToStart = false;
     private boolean mIsInMulliganState = false;
+    private boolean mHasPlayedEnergy = false;
     
     protected boolean humanPlayer;
 
@@ -112,6 +113,8 @@ public class Player {
     
     public void startTurn()
     {
+    	// Reset has picked energy flag every turn
+    	mHasPlayedEnergy = false;
     	GameController.setIsHomePlayerPlaying(this.isHumanPlayer());
         drawCardsFromDeck(1);
         
@@ -471,15 +474,18 @@ public class Player {
                     benchPokemon(pokemon);
                 break;
             case ENERGY:
-                int cardNum = createPokemonOptionPane("Select a Pokemon", "Which Pokemon would you like to attach the energy to?", true);
-                System.out.println("Selection: " + cardNum); //Removeme
-                if (cardNum == 0)
-                    setEnergy(card, mActivePokemon);
-                else if (cardNum == -1)
-                    return false;
-                else
-                    setEnergy(card, mBenchedPokemon.get(cardNum-1));
-                
+            	if(!mHasPlayedEnergy){
+	                int cardNum = createPokemonOptionPane("Select a Pokemon", "Which Pokemon would you like to attach the energy to?", true);
+	                System.out.println("Selection: " + cardNum); //Removeme
+	                if (cardNum == 0)
+	                    setEnergy(card, mActivePokemon);
+	                else if (cardNum == -1)
+	                    return false;
+	                else
+	                    setEnergy(card, mBenchedPokemon.get(cardNum-1));
+            	}else{
+            		return false;
+            	}
                 break;
             case TRAINER:
                 ((TrainerCard) card).use();
@@ -496,6 +502,11 @@ public class Player {
         if(pokemon.equals(mActivePokemon)){
             updateEnergyCounters(mActivePokemon, false);
         }
+        mHasPlayedEnergy = true;
+    }
+    
+    public boolean hasPlayedEnergyInTurn(){
+    	return mHasPlayedEnergy;
     }
     
     public void updateEnergyCounters(Pokemon pokemon, boolean preview){
@@ -503,6 +514,10 @@ public class Player {
             GameController.updateEnergyCounters(pokemon.getMapOfAttachedEnergies(), humanPlayer);
         else
             GameController.updateEnergyCountersPreview(pokemon.getMapOfAttachedEnergies(), humanPlayer);
+    }
+    
+    public void endTurn(){
+    	mHasPlayedEnergy = false;
     }
 
     /**
