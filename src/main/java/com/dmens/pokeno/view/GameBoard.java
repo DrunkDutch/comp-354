@@ -686,22 +686,34 @@ public class GameBoard extends javax.swing.JFrame {
 
         PlayerAttack1Btn.setText("Attack1");
         PlayerAttack1Btn.addActionListener(new java.awt.event.ActionListener() {
+        	// Attack1 button can only be pressed once there is an active Pokemon set.
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerAttack1BtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PlayerAttack1BtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon for Attack!");
             }
         });
 
         PlayerAttack2Btn.setText("Attack2");
         PlayerAttack2Btn.addActionListener(new java.awt.event.ActionListener() {
+        	// Attack2 button can only be pressed once there is an active Pokemon set.
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerAttack2BtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+                	PlayerAttack2BtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon for Attack!");
             }
         });
 
         PlayerRetreatBtn.setText("Retreat");
         PlayerRetreatBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerRetreatBtnActionPerformed(evt);
+            	// Retreat button can only be pressed once there is an active Pokemon set.
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PlayerRetreatBtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon to Retreat!");
             }
         });
 
@@ -733,7 +745,10 @@ public class GameBoard extends javax.swing.JFrame {
         PassBtn.setText("End Turn");
         PassBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PassBtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PassBtnActionPerformed(evt);	
+            	else
+            		GameController.displayMessage("Please set an active Pokemon");
             }
         });
 
