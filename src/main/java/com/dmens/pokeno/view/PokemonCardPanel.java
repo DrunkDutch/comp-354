@@ -6,6 +6,8 @@
 package com.dmens.pokeno.view;
 
 import com.dmens.pokeno.ability.AbilityCost;
+import java.awt.Image;
+import javax.swing.ImageIcon;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
