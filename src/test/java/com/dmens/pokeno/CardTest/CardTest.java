@@ -4,7 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 
-import com.dmens.pokeno.Ability.Ability;
+import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.TrainerCard;
