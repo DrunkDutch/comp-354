@@ -1,4 +1,4 @@
-package com.dmens.pokeno.Ability;
+package com.dmens.pokeno.ability;
 
 import java.util.HashMap;
 
