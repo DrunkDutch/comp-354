@@ -5,8 +5,8 @@ import java.util.Stack;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.dmens.pokeno.Ability.Ability;
-import com.dmens.pokeno.Ability.AbilityCost;
+import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
