@@ -185,20 +185,20 @@ public class Pokemon extends Card {
         	{
         		boolean proceedWithAttack = true;
        
+        		// Does the condition allow you to use the attack (flipped in your favor)
         		if(effect.hasCondition())
         		{
         			if(effect.getCondition() instanceof Flip)
         			{
         				if(Randomizer.Instance().getFiftyPercentChance())
-        					proceedWithAttack = false;
+    					{
+    						proceedWithAttack = false;
+    						GameController.displayMessage(target.getName() + " avoided the attack!");
+    					}
         			}
         		}
-        		
-        		if(!proceedWithAttack)
-        		{
-        			GameController.displayMessage(target.getName() + " avoided the attack!");
-        		}
-        		else
+  
+        		if(proceedWithAttack)
         		{
         			if(effect instanceof ApplyStatus)
             		{
@@ -239,11 +239,35 @@ public class Pokemon extends Card {
             		else if (effect instanceof Damage)
                 	{
             			Damage d = (Damage) effect;
-                			
-    					LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been damaged by " + d.getValue() + ".");
-    	        		target.addDamage(d.getValue());
+            			
+            			String targetCheck = d.getTarget();
+            			
+            			if(targetCheck.contentEquals("your-active"))
+            			{
+            				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
+            				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been damaged by " + d.getValue() + ".");
+            				youAsTarget.addDamage(d.getValue());
+            			}
+            			else
+            			{
+            				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been damaged by " + d.getValue() + ".");
+        	        		target.addDamage(d.getValue());
+            			}
          
                 	}
+            		else if (effect instanceof Heal)
+            		{
+            			Heal h = (Heal) effect;
+            			
+            			String targetCheck = h.getTarget();
+            			
+            			if(targetCheck.contentEquals("your-active"))
+            			{
+            				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
+            				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been healed by " + h.getValue() + ".");
+            				youAsTarget.removeDamage(h.getValue());
+            			}
+            		}
         		}
         	});
         	
