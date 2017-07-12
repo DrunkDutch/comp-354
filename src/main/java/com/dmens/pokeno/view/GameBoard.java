@@ -243,6 +243,21 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
+    public void clearRetreatedPokemon(boolean player){
+    	if(player)
+    	{	
+    		// Clear Energy fields
+    		 PlayerFightingEnergyField.setText("0");
+             PlayerLightningEnergyField.setText("0");
+             PlayerPsychicEnergyField.setText("0");
+             PlayerWaterEnergyField.setText("0");
+             PlayerColorlessEnergyField.setText("0");
+             
+             // Clear Damage field
+             PlayerDamageField.setText("0");
+    	}
+    }
+    
     public void setEnergy(List<Integer> energies, boolean player)
     {
         if (player)
@@ -318,8 +333,8 @@ public class GameBoard extends javax.swing.JFrame {
                 if(card.isType(CardTypes.POKEMON))
                 {
                     cardPreview(card);
-                    //TODO - get card.damageTaken
-                    ViewDamageField.setText("0");
+                    Pokemon pokeCard = (Pokemon)card;
+                    ViewDamageField.setText(pokeCard.getDamage() + "");
                     //TODO - get card.attachedEnergies
                     GameController.updateEnergyCountersForCard(card, player ? 0 : 1);
                     update();
@@ -1151,7 +1166,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
-        
+    		GameController.retreatActivePokemon(true);
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
