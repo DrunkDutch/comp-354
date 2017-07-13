@@ -9,6 +9,7 @@ import java.awt.FlowLayout;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.ImageIcon;
@@ -64,6 +65,48 @@ public class GameBoard extends javax.swing.JFrame {
         OpponentStuckLabel.setText("");
         OpponentPoisonedLabel.setText("");
         setBounds(0, 0, 1300, 900);
+        
+        setupGraveyardViewer();
+    }
+    
+    private void setupGraveyardViewer()
+    {
+    	MouseListener viewGraveyard = new java.awt.event.MouseListener()
+        {
+            @Override
+            public void mouseClicked(MouseEvent me)
+            {
+            	
+            }
+
+            @Override
+            public void mousePressed(MouseEvent me) {
+                //play card
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent me) {
+            	MultiCardViewerFrame graveyardView = new MultiCardViewerFrame(GameController.getHomePlayer().getDiscards().getCards());
+                graveyardView.setSize(150, 250);
+                graveyardView.setVisible(true);
+                GameController.board.update();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent me)
+            {
+                
+            }
+
+            @Override
+            public void mouseExited(MouseEvent me)
+            {
+            	GameController.board.cleanCardPreview();
+            }
+        };
+        
+        PlayerGraveryard.addMouseListener(viewGraveyard);
     }
     
     public void update()
@@ -147,11 +190,11 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
-    private void cardPreview(Card card){
+    protected void cardPreview(Card card){
         ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).updatePanel(card);
     }
     
-    private void cleanCardPreview(){
+    protected void cleanCardPreview(){
         ((PokemonCardPanel)CardPreviewPanel.getComponent(0)).clean();
         ViewFightingEnergyField.setText("");
         ViewLightningEnergyField.setText("");

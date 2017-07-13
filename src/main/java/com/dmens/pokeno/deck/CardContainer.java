@@ -53,6 +53,12 @@ public class CardContainer {
 		return dump;
 	}
 	
+	//This is a bit of a memory leak, but it isn't used anywhere where it could be changed (yet)
+	public ArrayList<Card> getCards()
+	{
+		return cards;
+	}
+	
 	public Card viewCardInPosition(int pos){
 		return cards.get(pos);
 	}
