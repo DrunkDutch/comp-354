@@ -43,7 +43,7 @@ public class AIPlayer extends Player {
             // Use trainer cards in hand
             
             // Attack if possible
-            if(!GameController.hasActivePokemonBlocked(1))
+            if(!GameController.hasActivePokemonBlocked(1) && getOpponent().getActivePokemon() != null)
             {
             	GameController.useActivePokemonForPlayer(1, 0);
             }
