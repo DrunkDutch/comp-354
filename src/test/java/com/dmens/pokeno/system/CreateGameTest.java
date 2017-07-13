@@ -56,7 +56,7 @@ public class CreateGameTest {
 		board = new GameBoard();
 		GameController.setBoard(board);
         
-		Deck[] chosenDecks = {DeckCreator.Instance().DeckCreation("decks/deck1.txt"), DeckCreator.Instance().DeckCreation("decks/deck2.txt")};
+		Deck[] chosenDecks = {DeckCreator.Instance().DeckCreation("decks/deck2.txt"), DeckCreator.Instance().DeckCreation("decks/deck1.txt")};
 		LOG.trace("Creating players and assigning decks...");
 		Player homePlayer = Mockito.spy(new Player(chosenDecks[0]));
 		Player adversaryPlayer = Mockito.spy(new AIPlayer(chosenDecks[1]));
@@ -77,7 +77,7 @@ public class CreateGameTest {
         		board.updateHand(player.drawCardsFromDeck(6), player.isHumanPlayer());
         		player.checkIfPlayerReady();
         	});
-        	Assert.assertTrue("Expected home player tobe in mulligans state", homePlayer.isInMulliganState());
+        	Assert.assertTrue("Expected home player tobe in mulligans state", adversaryPlayer.isInMulliganState());
             // Execute mulligans, deny drawing card to avoi JOptionPane popup
         	Mockito.doNothing().when(homePlayer).notifyMulligan();
         	Mockito.doNothing().when(adversaryPlayer).notifyMulligan();
@@ -86,7 +86,6 @@ public class CreateGameTest {
             .filter(player->player.isInMulliganState())
             .forEach(player->{
             		player.mulligan();
-            		robot.keyPress(32);
             	});
 		} while(!homePlayer.getIsReadyToStart() || !adversaryPlayer.getIsReadyToStart());
         
@@ -102,6 +101,9 @@ public class CreateGameTest {
     	// wait before closing
     	try {
 			Thread.sleep(500);
+			// Close any remaining popups if any
+			robot.keyPress(32);
+	    	robot.keyRelease(32);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -110,17 +112,23 @@ public class CreateGameTest {
     
 	@Test
 	public void testSetActivePokemonPlayEnergyAndAttack() {
-		Component c =  board.getPlayerHandPanel().getComponent(0);
+		Component c =  board.getPlayerHandPanel().getComponent(2);
 		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
 
 		// assert pokemon was played
 		Assert.assertNotNull(mPlayers.get(0).getActivePokemon());
 		
-		// Click on fight energy for machop
+		// Bench pokemon
+		c =  board.getPlayerHandPanel().getComponent(1);
+		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
+		
+		Assert.assertNotNull("Pokemon must have benn benched", mPlayers.get(0).getBenchedPokemon().get(0));
+		
+		// Click energy
 		// Return pokemon 0 (Active) to receive energy card
 		Mockito.doReturn(0).when(mPlayers.get(0)).createPokemonOptionPane(Mockito.anyString(), Mockito.anyString(), Mockito.anyBoolean());
 		
-		c =  board.getPlayerHandPanel().getComponent(1);
+		c =  board.getPlayerHandPanel().getComponent(0);
 		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
     	
 		Assert.assertEquals(1, mPlayers.get(0).getActivePokemon().getAttachedEnergy().size());

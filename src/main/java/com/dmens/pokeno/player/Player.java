@@ -144,7 +144,7 @@ public class Player {
 				{
 					poke.setSleep(false);
 					LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " has been woken up.");
-					GameController.displayMessage(msgPrefix + poke.getName() + " has woken up!");
+					displayMessage(msgPrefix + poke.getName() + " has woken up!");
 					GameController.board.clearStatus(1, GameController.getIsHomePlayerPlaying());		
 				}
 			}
@@ -153,7 +153,7 @@ public class Player {
 			{
 				poke.setStuck(false);
 				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " is no longer stuck.");
-				GameController.displayMessage(msgPrefix + poke.getName() + " no longer stuck!");
+				displayMessage(msgPrefix + poke.getName() + " no longer stuck!");
 				GameController.board.clearStatus(2, GameController.getIsHomePlayerPlaying());	
 			}
 			//4 poisoned .. hurt 'em
@@ -161,7 +161,7 @@ public class Player {
 			{
 				poke.addDamage(GameController.POISON_DAMAGE_AMOUNT);
 				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " had been damaged " + GameController.POISON_DAMAGE_AMOUNT + "by Poison." );
-				GameController.displayMessage(msgPrefix + poke.getName() + " damaged " + GameController.POISON_DAMAGE_AMOUNT + "by poison." );
+				displayMessage(msgPrefix + poke.getName() + " damaged " + GameController.POISON_DAMAGE_AMOUNT + "by poison." );
 			}
     	}
     }
@@ -313,7 +313,7 @@ public class Player {
     private void checkGameWon(){
     	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
             String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
-            GameController.displayMessage(message);
+            displayMessage(message);
             System.exit(0);
         }
     }
@@ -349,7 +349,7 @@ public class Player {
             int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
             if (reply == JOptionPane.YES_OPTION) {
                 this.drawCardsFromDeck(1);
-                GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
+                displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
             }
         }
     }
