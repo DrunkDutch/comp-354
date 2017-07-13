@@ -204,6 +204,7 @@ public class GameController {
 	    		
 	    		//3. Send Active Pokemon to bench
 	    		board.addCardToBench(activePoke, player);
+	    		getHomePlayer().benchPokemon(activePoke);
 	    		
 	    		//4. Remove Active Pokemon from ActivePokemonPanel. 
 	    		cleanActivePokemon(player);

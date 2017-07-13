@@ -309,10 +309,7 @@ public class GameBoard extends javax.swing.JFrame {
             public void mouseClicked(MouseEvent me) {
                 if (player)
                 {
-                    //PlayerBenchPanel.remove(newCard); //not necessarily
-                    //CardViewArea.setText("");
-                    //ViewDamageField.setText("");
-                    //update();
+                    update();
                 }
             }
 
@@ -350,6 +347,7 @@ public class GameBoard extends javax.swing.JFrame {
         
         if (player)
             PlayerBenchPanel.add(newCard);
+        
         else
             OpponentBenchPanel.add(newCard);
         
