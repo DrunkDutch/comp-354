@@ -118,6 +118,18 @@ public class GameController {
 		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	
+	public static boolean useActivePokemonForPlayerToBench(int player){
+		
+		if(mPlayers.get(player).getBenchedPokemon() == null || mPlayers.get(player).getBenchedPokemon().isEmpty()) {
+		displayMessage("Cannot retreat, no pokemon on the bench !");
+		}
+		if (mPlayers.get(player).getBenchedPokemon() != null){
+		return mPlayers.get(player).swapPokemonToBench(mPlayers.get(player).getBenchedPokemon().get(0));
+		}
+		
+		return false;
+	}
+	
 	public static void startAITurn(){
 		mPlayers.get(1).startTurn();
 	}

@@ -180,7 +180,7 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         GameController.board.updateActivePokemon(opponent);
         
-        if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
+        if (opponent.getActivePokemon().getDamage() >= /*opponent.getActivePokemon().getHP()) */ 250)
         {
             checkGameWon();
             opponent.cleanActivePokemon();
@@ -394,10 +394,35 @@ public class Player {
     		}
     	}
     	
+    	
     	//TODO: Handle event where number of energy cards isn't sufficient. 
     	// e.g. Pop-up on GUI. 
+    
     		
     }
+    private void setActiveFromBenchRetreat(int pos)
+    {
+        if (pos == -1)
+            return;
+        ArrayList<Pokemon> mBench = getBenchedPokemon();
+        setActivePokemon(mBench.get(pos));
+        mBench.remove(mBench.get(pos));
+        GameController.board.PlayerBenchPanel.remove(GameController.board.PlayerBenchPanel.getComponent(pos));
+        updateEnergyCounters(mActivePokemon, false);
+    }
+    public boolean swapPokemonToBench(Pokemon benchedPokemon){
+    	//int numEnergyCards = mActivePokemon.getAttachedEnergy().size();
+    	//if(numEnergyCards >= mActivePokemon.getRetreatCost()){		
+    	//if(!mActivePokemon.isSleep() || !mActivePokemon.isParalyzed()){
+    	
+    	mBenchedPokemon.add(mActivePokemon);
+    	mActivePokemon = null;
+		setActiveFromBenchRetreat(createPokemonOptionPane("PokemonSwap", "Which Pokemon would you like to set as your new active?", false));
+		
+    		//}
+    	//}
+		return true;
+	}
     
     public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){
     	
