@@ -1259,4 +1259,87 @@ public class GameBoard extends javax.swing.JFrame {
     private javax.swing.JTextField jTextField3;
     private javax.swing.JPanel playerActivePokemonPanel;
     // End of variables declaration//GEN-END:variables
+
+	public javax.swing.JPanel getOpponentActivePanel() {
+		return OpponentActivePanel;
+	}
+
+	public void setOpponentActivePanel(javax.swing.JPanel opponentActivePanel) {
+		OpponentActivePanel = opponentActivePanel;
+	}
+
+	public javax.swing.JPanel getOpponentBenchPanel() {
+		return OpponentBenchPanel;
+	}
+
+	public void setOpponentBenchPanel(javax.swing.JPanel opponentBenchPanel) {
+		OpponentBenchPanel = opponentBenchPanel;
+	}
+
+	public javax.swing.JLabel getOpponentGraveyard() {
+		return OpponentGraveyard;
+	}
+
+	public void setOpponentGraveyard(javax.swing.JLabel opponentGraveyard) {
+		OpponentGraveyard = opponentGraveyard;
+	}
+
+	public javax.swing.JPanel getOpponentHandPanel() {
+		return OpponentHandPanel;
+	}
+
+	public void setOpponentHandPanel(javax.swing.JPanel opponentHandPanel) {
+		OpponentHandPanel = opponentHandPanel;
+	}
+
+	public javax.swing.JButton getPlayerAttack1Btn() {
+		return PlayerAttack1Btn;
+	}
+
+	public void setPlayerAttack1Btn(javax.swing.JButton playerAttack1Btn) {
+		PlayerAttack1Btn = playerAttack1Btn;
+	}
+
+	public javax.swing.JButton getPlayerAttack2Btn() {
+		return PlayerAttack2Btn;
+	}
+
+	public void setPlayerAttack2Btn(javax.swing.JButton playerAttack2Btn) {
+		PlayerAttack2Btn = playerAttack2Btn;
+	}
+
+	public javax.swing.JLabel getPlayerGraveryard() {
+		return PlayerGraveryard;
+	}
+
+	public void setPlayerGraveryard(javax.swing.JLabel playerGraveryard) {
+		PlayerGraveryard = playerGraveryard;
+	}
+
+	public javax.swing.JPanel getPlayerHandPanel() {
+		return PlayerHandPanel;
+	}
+
+	public void setPlayerHandPanel(javax.swing.JPanel playerHandPanel) {
+		PlayerHandPanel = playerHandPanel;
+	}
+
+	public javax.swing.JButton getPlayerRetreatBtn() {
+		return PlayerRetreatBtn;
+	}
+
+	public void setPlayerRetreatBtn(javax.swing.JButton playerRetreatBtn) {
+		PlayerRetreatBtn = playerRetreatBtn;
+	}
+
+	public javax.swing.JPanel getPlayerActivePokemonPanel() {
+		return playerActivePokemonPanel;
+	}
+
+	public void setPlayerActivePokemonPanel(javax.swing.JPanel playerActivePokemonPanel) {
+		this.playerActivePokemonPanel = playerActivePokemonPanel;
+	}
+    
+    
+    
 }

@@ -320,7 +320,11 @@ public class Player {
     
     private void declareMulligan(){
     	mIsInMulliganState = true;
-    	GameController.displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player has declared a Mulligan");
+    	displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player has declared a Mulligan");
+    }
+    
+    public void displayMessage(String message){
+    	GameController.displayMessage(message);
     }
     
     public boolean isInMulliganState(){
@@ -340,7 +344,7 @@ public class Player {
     	}
     }
     
-    private void notifyMulligan(){
+    public void notifyMulligan(){
         if (!this.isInMulliganState()) {
             int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
             if (reply == JOptionPane.YES_OPTION) {
