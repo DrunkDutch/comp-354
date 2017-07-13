@@ -126,7 +126,7 @@ public class Deck extends CardContainer {
                         
                         // verify each energy cost for this ability can be satisfied by cards in the deck
                         for(EnergyTypes energyType : abilityCost.getCosts().keySet()) {
-                            if(abilityCost.getCosts().get(energyType) > energyCards.get(energyType)) {
+                            if(!energyCards.containsKey(energyType) || abilityCost.getCosts().get(energyType) > energyCards.get(energyType)) {
                                 // cost is greater than the number of this energy type's cards included in the deck
                                 abilityIsAffordable = false;
                                 break;
