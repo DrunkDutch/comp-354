@@ -1,5 +1,7 @@
 package com.dmens.pokeno.effect;
 
+import com.dmens.pokeno.condition.*;
+
 /*
  * A Damage effect.
  *
@@ -9,17 +11,20 @@ public class Damage implements Effect {
 
 	private int mValue;
 	private String mTarget;
+	private Condition mCondition = null;
 	
 	/*
 	 * Constructor
 	 * 
 	 * @param		tar		Target.
 	 * @param		val		Integer value (amount).
+	 * @param		con		Condition.
 	 */
-	public Damage(String tar, int val)
+	public Damage(String tar, int val, Condition con)
 	{
 		this.mTarget = tar;
-		this.mValue = val;		
+		this.mValue = val;	
+		this.mCondition = con;
 	}
 	
 	/*
@@ -30,7 +35,10 @@ public class Damage implements Effect {
 	public Damage(Damage d)
 	{
 		this.mTarget = d.mTarget;
-		this.mValue = d.mValue;		
+		this.mValue = d.mValue;
+		
+		if(d.mCondition instanceof Flip)
+			this.mCondition = new Flip();
 	}
 	
 	/*
@@ -66,6 +74,7 @@ public class Damage implements Effect {
 		return String.format("Damage: Target: %s, Value: %d", this.mTarget, this.mValue);
 	}
 	
+	//TODO: condition check
 	@Override
 	public boolean equals(Object obj)
 	{
@@ -74,5 +83,17 @@ public class Damage implements Effect {
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public boolean hasCondition()
+	{
+		return (mCondition != null);
+	}
+	
+	@Override
+	public Condition getCondition()
+	{
+		return mCondition;
 	}
 }

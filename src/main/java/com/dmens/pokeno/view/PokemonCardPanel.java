@@ -89,11 +89,11 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         this.description1.setText(ability.showCosts());
         
         //is it a simple ApplyStatus effect or a simple Damage effect
-        if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof ApplyStatus)
+        if(ability.getAbility().getEffects().get(0) instanceof ApplyStatus)
        	{
         	this.damage1.setText(ability.getAbility().getApplyStatusEffect().getStatus());
         }
-        else if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof Damage)
+        else if(ability.getAbility().getEffects().get(0) instanceof Damage)
         {
         	this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
         }
@@ -105,11 +105,11 @@ public class PokemonCardPanel extends javax.swing.JPanel {
             this.ability2.setText(ability.getAbility().getName());
             this.description2.setText(ability.showCosts());
             //is it a simple ApplyStatus effect or a simple Damage effect
-            if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof ApplyStatus)
+            if(ability.getAbility().getEffects().get(0) instanceof ApplyStatus)
            	{
             	this.damage2.setText(ability.getAbility().getApplyStatusEffect().getStatus());
             }
-            else if(poke.getAbilitiesAndCost().get(0).getAbility().getEffects().get(0) instanceof Damage)
+            else if(ability.getAbility().getEffects().get(0) instanceof Damage)
             {
             	this.damage2.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
             }

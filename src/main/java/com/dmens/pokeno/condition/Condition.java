@@ -7,5 +7,5 @@ package com.dmens.pokeno.condition;
  */
 public interface Condition
 {
-	// TODO:V2
+	public abstract String toString();
 }

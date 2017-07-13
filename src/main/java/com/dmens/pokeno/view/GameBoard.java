@@ -1148,19 +1148,35 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_ViewLightningEnergyFieldActionPerformed
 
     private void PlayerAttack1BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack1BtnActionPerformed
-        if(GameController.useActivePokemonForPlayer(0,0))
-        {
-        	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
-    		GameController.startAITurn();
-        }
+    	if(!GameController.getHomePlayer().isActivePokemonBlocked())
+    	{
+	    	if(GameController.useActivePokemonForPlayer(0,0))
+	        {
+	        	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
+	    		
+	        }
+    	}
+    	else
+		{
+    		GameController.displayMessage(GameController.getHomePlayer().getActivePokemon().getName() + " cannot attack!");
+		}
+    	GameController.startAITurn();
     }//GEN-LAST:event_PlayerAttack1BtnActionPerformed
 
     private void PlayerAttack2BtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerAttack2BtnActionPerformed
-        if(GameController.useActivePokemonForPlayer(0,1))
-        {
-    		GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
-    		GameController.startAITurn();
-        }
+    	if(!GameController.getHomePlayer().isActivePokemonBlocked())
+    	{
+	    	if(GameController.useActivePokemonForPlayer(0,1))
+	        {
+	        	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
+	    		
+	        }
+    	}
+    	else
+		{
+    		GameController.displayMessage(GameController.getHomePlayer().getActivePokemon().getName() + " cannot attack!");
+		}
+    	GameController.startAITurn();
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed

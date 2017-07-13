@@ -2,6 +2,7 @@ package com.dmens.pokeno.effect;
 
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.condition.*;
 
 /*
  * A Draw card effect.
@@ -12,8 +13,8 @@ public class DrawCard implements Effect{
 
 	private int mValue;
 	private String mTarget;
+	private Condition mCondition = null;
 	
-
 	/*
 	 * Constructor
 	 * 
@@ -79,5 +80,17 @@ public class DrawCard implements Effect{
 			return true;
 		
 		return false;
+	}
+	
+	@Override
+	public boolean hasCondition()
+	{
+		return (mCondition != null);
+	}
+	
+	@Override
+	public Condition getCondition()
+	{
+		return mCondition;
 	}
 }
