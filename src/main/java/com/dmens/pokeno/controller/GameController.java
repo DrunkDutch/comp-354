@@ -189,6 +189,8 @@ public class GameController {
     		
     		Pokemon activePoke = mPlayers.get(0).getActivePokemon();
     		
+    		LOG.debug(activePoke.getName() + " has been sent to Home's bench");
+    		
     		if(!activePoke.isParalyzed() && !activePoke.isSleep()){
     			//1. Remove any special conditions affecting Pokemon. 
 	    		mPlayers.get(0).resolveEffects(activePoke);

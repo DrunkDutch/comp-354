@@ -64,7 +64,7 @@ public class AbilityTest {
 	@Test
 	public void testDamageEffect() {
 
-		Damage damage = new Damage(mEffectTarget, mEffectValue);
+		Damage damage = new Damage(mEffectTarget, mEffectValue, null);
 		Assert.assertEquals(damage.getTarget(), mEffectTarget);
 		Assert.assertEquals(damage.getValue(), mEffectValue);
 	}
@@ -135,7 +135,7 @@ public class AbilityTest {
     	Assert.assertEquals(ability.getHealEffect().getValue(), mEffectValue);
 
     	// Add damage effect to the ability.
-		Damage damage = new Damage(mEffectTarget, mEffectValue);
+		Damage damage = new Damage(mEffectTarget, mEffectValue, null);
     	ability.addEffect(damage);
     	Assert.assertEquals(ability.getDamageEffect(), damage);
     	Assert.assertEquals(ability.getDamageEffect().getTarget(), mEffectTarget);
@@ -154,24 +154,7 @@ public class AbilityTest {
     	Assert.assertEquals(ability.getDrawCardEffect(), drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
-<<<<<<< HEAD
 
-		/* Test if effects in ability object are not modified by changes
-			to the effects.
-		 */
-
-		drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
-		Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
-
-		applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);
-		Assert.assertNotEquals(ability.getApplyStatusEffect(), applyStatus);
-
-		damage = new Damage(mEffectTarget, mEffectValueDifferent);
-		Assert.assertNotEquals(ability.getDamageEffect(), damage);
-
-		heal = new Heal(mEffectTarget, mEffectValueDifferent);
-		Assert.assertNotEquals(ability.getHealEffect(), heal);
-=======
     	
     	// change effects... check that effects in abilities are unaffected
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
@@ -185,7 +168,6 @@ public class AbilityTest {
     	
     	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
     	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
->>>>>>> dd7ae36bb525d23f9b1b4fdf858cb53a0461ac4f
     }
     
     @Test

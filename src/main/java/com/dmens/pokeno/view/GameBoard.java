@@ -308,7 +308,12 @@ public class GameBoard extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (player)
-                {
+                {	
+                	int cardPos = GameController.getHomePlayer().getBenchedPokemonPos(newCard.getText());
+                	Pokemon poke = GameController.getHomePlayer().getBenchedPokemon().get(cardPos);
+                	GameController.getHomePlayer().setActivePokemon(poke);
+                	GameController.getHomePlayer().getBenchedPokemon().remove(cardPos);
+                	PlayerBenchPanel.remove(newCard);
                     update();
                 }
             }

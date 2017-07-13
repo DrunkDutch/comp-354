@@ -82,5 +82,4 @@ public class PokemonTest {
 		// Should keep a pointer to the base's card
 		assertEquals(froakie, frogadier.getBaseCardReference());
 	}
-
 }
