@@ -148,6 +148,13 @@ public class Pokemon extends Card {
             return false;
         Ability a = mAbilitiesAndCost.get(ability).getAbility();//mAbilities.get(ability);
         HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ability).getCosts();
+        
+        //REMOVEME
+        for (EnergyTypes e : cost.keySet())
+        {
+        	System.out.println(e.name() + ": " + cost.get(e));
+        }
+        
         ArrayList<Integer> energyCounts = GameController.getAttachedEnergyList(getMapOfAttachedEnergies());
         int remainingEnergyCount = 0;
         for (int count : energyCounts)

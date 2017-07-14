@@ -33,7 +33,7 @@ public class DeckCreatorTest {
 										   "26\n33\n26\n26\n33\n26\n26\n33\n26\n26\n" +
 										   "33\n26\n26\n33\n26\n26\n33\n26\n26\n33\n" +
 										   "26\n26\n33\n26\n26\n33\n26\n26\n33\n26\n" +
-										   "26\n33\n26\n26\n33\n26\n26\n33\n26\n26";
+										   "26\n33\n26\n26\n33\n26\n26\n33\n26\n57";
 	
 	private final String invalidDeckString = "26\n26\n26";
 

@@ -105,6 +105,10 @@ public class GameController {
         opp.selectStarterPokemon();
 	}
 	
+	public static void setPlayers(ArrayList<Player> players){
+		mPlayers = players;
+	}
+	
 	public static void setBoard(GameBoard newBoard){
 		board = newBoard;
         board.setVisible(true);
