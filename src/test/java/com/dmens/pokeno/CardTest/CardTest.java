@@ -3,6 +3,7 @@ package com.dmens.pokeno.CardTest;
 import org.junit.Assert;
 import org.junit.Test;
 
+
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;

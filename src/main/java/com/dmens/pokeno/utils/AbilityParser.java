@@ -9,7 +9,6 @@ import java.util.regex.Pattern;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.condition.ConditionTypes;

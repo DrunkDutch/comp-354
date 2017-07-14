@@ -188,6 +188,46 @@ public class GameController {
     	board.clearActivePokemon(player);
     }
     
+    public static void retreatActivePokemon(boolean player){
+    	if(player){
+    		
+    		Pokemon activePoke = mPlayers.get(0).getActivePokemon();
+    		
+    		LOG.debug(activePoke.getName() + " has been sent to Home's bench");
+    		
+    		if(!activePoke.isParalyzed() && !activePoke.isSleep()){
+    			//1. Remove any special conditions affecting Pokemon. 
+	    		mPlayers.get(0).resolveEffects(activePoke);
+	    		
+	    		//2. Remove appropriate number of Energy from Pokemon (Retreat Cost)
+	    		int activeRetreatCost = activePoke.getRetreatCost();
+	    		
+	    		if(!activePoke.removeEnergy(activePoke.getAttachedEnergy(), activeRetreatCost))
+	    		{
+	    			displayMessage("Not enough energy cards attached to satisfy retreat cost");
+	    			return;
+	    		}
+	    		
+	    		//3. Send Active Pokemon to bench
+	    		board.addCardToBench(activePoke, player);
+	    		getHomePlayer().benchPokemon(activePoke);
+	    		
+	    		//4. Remove Active Pokemon from ActivePokemonPanel. 
+	    		cleanActivePokemon(player);
+	    		
+	    		//5. Reset text fields. 
+	    		board.clearRetreatedPokemon(player);
+    		}
+    		else
+    			displayMessage("Your Active Pokemon is asleep or paralyzed. Cannot retreat!");
+    	}
+    	
+    	// TODO Retreat for AI. 
+    	// else
+    	//{
+    	//}
+    }
+    
     public static void updateEnergyCountersForCard(Card card, int player){
         mPlayers.get(player).updateEnergyCounters((Pokemon) card, true);
     }

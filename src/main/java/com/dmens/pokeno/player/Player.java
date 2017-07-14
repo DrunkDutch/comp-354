@@ -73,6 +73,15 @@ public class Player {
     public ArrayList<Pokemon> getBenchedPokemon() {
         return mBenchedPokemon;
     }
+    
+    public int getBenchedPokemonPos(String name){
+    	for(int i = 0; i < mBenchedPokemon.size(); i++){
+    		if(mBenchedPokemon.get(i).getName().equals(name))
+    			return i;
+    	}
+    	// else
+    	return 0;
+    }
 
     public Hand getHand() {
         return mHand;

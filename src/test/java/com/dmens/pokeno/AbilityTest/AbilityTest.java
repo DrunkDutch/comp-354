@@ -14,7 +14,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
 import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
@@ -55,48 +54,107 @@ public class AbilityTest {
 	 }
 
     @Test
-    public void abilityTest(){
-        
-    	Ability ability = new Ability(mAbilityName);
-    	Assert.assertEquals(ability.getName(), mAbilityName);
+    public void testAbilityName() {
+
+		Ability ability = new Ability(mAbilityName);
+		Assert.assertEquals(ability.getName(), mAbilityName);
+	}
+
+
+	@Test
+	public void testDamageEffect() {
+
+		Damage damage = new Damage(mEffectTarget, mEffectValue, null);
+		Assert.assertEquals(damage.getTarget(), mEffectTarget);
+		Assert.assertEquals(damage.getValue(), mEffectValue);
+	}
+	
+	@Test
+    public void testHealEffect(){
+    	Deck deck = new Deck();
+    	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Potion")));
+    	Player player = new Player(deck);
     	
-    	// Stand alone Effects
-    	Heal heal = new Heal(mEffectTarget, mEffectValue);
-    	Assert.assertEquals(heal.getTarget(), mEffectTarget);
-    	Assert.assertEquals(heal.getValue(), mEffectValue);
-    	
+    	stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
+    	stub(method(GameController.class, "getHomePlayer")).toReturn(player);
+    	stub(method(Player.class, "createPokemonOptionPane")).toReturn(0);
+
+    	// Set Froakie as the active pokemon
+    	player.setActivePokemon(new Pokemon("Froakie"));
+    	assertEquals("Froakie", player.getActivePokemon().getName());
     	Damage damage = new Damage(mEffectTarget, mEffectValue, null);
     	Assert.assertEquals(damage.getTarget(), mEffectTarget);
     	Assert.assertEquals(damage.getValue(), mEffectValue);
     	
-    	ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
-    	Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
-    	Assert.assertEquals(applyStatus.getStatus(), mEffectStatus);
+    	//Add 40 damage to Froakie
+    	player.getActivePokemon().addDamage(40);
+    	assertEquals(40, player.getActivePokemon().getDamage());
     	
-    	DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
-    	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
-    	Assert.assertEquals(drawCard.getValue(), mEffectValue);
+    	// Draw Potion
+    	player.drawCardsFromDeck(1);
+    	assertEquals(1, player.getHand().size());
+    	assertEquals("Potion", player.getHand().getCards().get(0).getName());
+
+       	// Use Potion
+    	player.useCard(player.getHand().getCards().get(0));
+    	assertEquals(0, player.getHand().size());
     	
-    	// Add each Effect to the Ability
+    	// Expect the damage taken by Froakie to be 10 (Potion heals 30 damage)
+    	assertEquals(10, player.getActivePokemon().getDamage());
+    }
+
+
+	@Test
+	public void testApplyingStatus() {
+
+		ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
+		Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
+		Assert.assertEquals(applyStatus.getStatus(), mEffectStatus);
+	}
+
+	@Test
+	public void testDrawCard() {
+
+		DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
+		Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
+		Assert.assertEquals(drawCard.getValue(), mEffectValue);
+	}
+
+	//! Test the addEffect() method for the Ability class.
+	@Test
+	public void testAddEffect(){
+
+		// Create a new ability
+		Ability ability = new Ability(mAbilityName);
+
+    	// Add heal effect to the ability
+		Heal heal = new Heal(mEffectTarget, mEffectValue);
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
     	Assert.assertEquals(ability.getHealEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getHealEffect().getValue(), mEffectValue);
-    	
+
+    	// Add damage effect to the ability.
+		Damage damage = new Damage(mEffectTarget, mEffectValue, null);
     	ability.addEffect(damage);
     	Assert.assertEquals(ability.getDamageEffect(), damage);
     	Assert.assertEquals(ability.getDamageEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDamageEffect().getValue(), mEffectValue);
-    	
+
+    	// Add apply-status effect to the ability.
+		ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
     	ability.addEffect(applyStatus);
     	Assert.assertEquals(ability.getApplyStatusEffect(), applyStatus);
     	Assert.assertEquals(ability.getApplyStatusEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getApplyStatusEffect().getStatus(), mEffectStatus);    
-    	
+
+    	// Add draw-card effect to the ability.
+		DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
     	ability.addEffect(drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect(), drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
+
     	
     	// change effects... check that effects in abilities are unaffected
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
@@ -130,36 +188,4 @@ public class AbilityTest {
     	// Expect hand size to be 3 now
     	assertEquals(3, player.getHand().size());
     }
-    
-    @Test
-    public void testHealEffect(){
-    	Deck deck = new Deck();
-    	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Potion")));
-    	Player player = new Player(deck);
-    	
-    	stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
-    	stub(method(GameController.class, "getHomePlayer")).toReturn(player);
-    	stub(method(Player.class, "createPokemonOptionPane")).toReturn(0);
-
-    	// Set Froakie as the active pokemon
-    	player.setActivePokemon(new Pokemon("Froakie"));
-    	assertEquals("Froakie", player.getActivePokemon().getName());
-    	
-    	//Add 40 damage to Froakie
-    	player.getActivePokemon().addDamage(40);
-    	assertEquals(40, player.getActivePokemon().getDamage());
-    	
-    	// Draw Potion
-    	player.drawCardsFromDeck(1);
-    	assertEquals(1, player.getHand().size());
-    	assertEquals("Potion", player.getHand().getCards().get(0).getName());
-
-       	// Use Potion
-    	player.useCard(player.getHand().getCards().get(0));
-    	assertEquals(0, player.getHand().size());
-    	
-    	// Expect the damage taken by Froakie to be 10 (Potion heals 30 damage)
-    	assertEquals(10, player.getActivePokemon().getDamage());
-    }
-
 }
