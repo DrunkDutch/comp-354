@@ -282,7 +282,21 @@ public class Pokemon extends Card {
         }
         return false;
     }
-        
+    
+    public boolean removeSingleEnergy(EnergyTypes type)
+	{
+		System.out.println(type);
+		for (int i = 0; i < mAttachedEnergy.size(); i++)
+		{
+			if (mAttachedEnergy.get(i).getCategory() == type)
+			{
+				mAttachedEnergy.remove(i);
+				return true;
+			}
+		}
+		return false;
+	}
+    
     public void setPoisoned(boolean poisoned) {
         this.mPoisoned = poisoned;
     }

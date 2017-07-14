@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.controller.GameController;
@@ -218,8 +219,11 @@ public class Player {
     public void setActivePokemon(Pokemon activePokemon){
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
-        GameController.setActivePokemonOnBoard(activePokemon, humanPlayer);
-        updateEnergyCounters(mActivePokemon, false);
+    	if (mActivePokemon != null)
+    	{
+	        GameController.setActivePokemonOnBoard(activePokemon, humanPlayer);
+	        updateEnergyCounters(mActivePokemon, false);
+    	}
     }
 
     /**
@@ -290,7 +294,7 @@ public class Player {
         }
     }
     
-    private void setActiveFromBench(int pos)
+    public void setActiveFromBench(int pos)
     {
         if (pos == -1)
             return;
@@ -413,6 +417,76 @@ public class Player {
         if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
             buttonNum = -1;
         return buttonNum;
+    }
+    
+    public EnergyTypes createEnergyOptionPane(Pokemon target, String title, String message, boolean cancelable)
+    {
+        ArrayList<String> buttons = new ArrayList<String>(); 
+        ArrayList<Integer> counts = GameController.getAttachedEnergyList(target.getMapOfAttachedEnergies());
+        boolean [] energyTypes = new boolean[5];
+        if (counts.get(0) != 0)
+        {
+        	buttons.add("FIGHT");
+        	energyTypes[0] = true;
+        }
+        if (counts.get(1) != 0)
+        {
+        	buttons.add("LIGHTNING");
+        	energyTypes[1] = true;
+        }
+        if (counts.get(2) != 0)
+        {
+        	buttons.add("PSYCHIC");
+        	energyTypes[2] = true;
+        }
+        if (counts.get(3) != 0)
+        {
+        	buttons.add("WATER");
+        	energyTypes[3] = true;
+        }
+        if (counts.get(4) != 0)
+        {
+        	buttons.add("COLOURLESS");
+        	energyTypes[4] = true;
+        }
+        
+        System.out.println("Types: ");
+        for (boolean c : energyTypes)
+        {
+        	System.out.println(c);
+        }
+        
+        if (cancelable)
+            buttons.add("Cancel");
+        String[] buttonsAsArray = new String[buttons.size()];
+        buttonsAsArray = buttons.toArray(buttonsAsArray);
+        int buttonNum = GameController.dispayCustomOptionPane(buttonsAsArray, title, message);
+        if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
+            buttonNum = -1;
+        
+        //If you select button 0 it isn't necessarily FIGHT, it's the first used
+        int typeCounter = 0;
+        for (int i = 0; i < energyTypes.length; i++)
+        {
+        	if (energyTypes[i])
+        	{
+        		if (typeCounter == buttonNum)
+        		{
+        			EnergyTypes t = EnergyTypes.GRASS;
+        			switch(i)
+        			{
+        				case 0: t = EnergyTypes.FIGHT; break;
+        				case 1: t = EnergyTypes.LIGHTNING; break;
+        				case 2: t = EnergyTypes.PSYCHIC; break;
+        				case 3: t = EnergyTypes.WATER; break;
+        				case 4: t = EnergyTypes.COLORLESS; break;
+        			}
+        			return t;
+        		}
+    			typeCounter++;
+        	}
+        }
+        return EnergyTypes.FIRE; //FIXME - this is a temp fix, should be a cancel of sorts
     }
     
     private Pokemon choosePokemonToEvolve(Pokemon evolution){
