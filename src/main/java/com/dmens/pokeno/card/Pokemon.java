@@ -214,28 +214,28 @@ public class Pokemon extends Card {
             			
             			//TODO check target
                 		// target should be used instead of !GameController.getIsHomePlayerPlaying()
-                		if(status.compareTo("paralyzed") == 0)
+                		if(status.compareTo("paralyzed") == 0 && !target.isParalyzed())
             			{
                 			target.setParalyzed(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
                 			GameController.displayMessage(target.getName() + " has been paralyzed!");
                 			GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
             			}
-                		else if (status.compareTo("asleep") == 0)
+                		else if (status.compareTo("asleep") == 0 && !target.isSleep())
                 		{
                 			target.setSleep(true);
             				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
             				GameController.displayMessage(target.getName() + " has fallen asleep!");
             				GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
                 		}
-                		else if (status.compareTo("stuck") == 0)
+                		else if (status.compareTo("stuck") == 0 && !target.isStuck())
                 		{
                 			target.setStuck(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Stuck.");
                 			GameController.displayMessage(target.getName() + " is now stuck!");
                 			GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
                 		}
-                		else if (status.compareTo("poisoned") == 0)
+                		else if (status.compareTo("poisoned") == 0 && !target.isPoisoned())
                 		{
                 			target.setPoisoned(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Poisoned.");
