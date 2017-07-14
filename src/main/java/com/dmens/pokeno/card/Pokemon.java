@@ -134,7 +134,7 @@ public class Pokemon extends Card {
 	
     public boolean useAbility(int ability, Pokemon target)
     {
-        if (mAbilitiesAndCost.size() <= ability)
+        if (mAbilitiesAndCost.size() <= ability || target == null)
             return false;
         Ability a = mAbilitiesAndCost.get(ability).getAbility();//mAbilities.get(ability);
         HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ability).getCosts();
