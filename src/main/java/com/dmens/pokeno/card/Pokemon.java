@@ -124,8 +124,18 @@ public class Pokemon extends Card {
 		mAttachedEnergy.add(energy);
 	}
 
-	public void removeEnergy(ArrayList<EnergyCard> energy){
+	public boolean removeEnergy(ArrayList<EnergyCard> energy, int numCards){
 		
+		if((energy.size() - numCards) >= 0)
+		{
+			for(int i = energy.size()-1; i >= 0 ; i--)
+				energy.remove(i);
+			
+			return true;
+		}
+		
+		else
+			return false;
 	}
 
 	public void setBasePokemonName(String basePokemonName) {

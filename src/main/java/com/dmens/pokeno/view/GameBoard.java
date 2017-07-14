@@ -286,6 +286,21 @@ public class GameBoard extends javax.swing.JFrame {
         update();
     }
     
+    public void clearRetreatedPokemon(boolean player){
+    	if(player)
+    	{	
+    		// Clear Energy fields
+    		 PlayerFightingEnergyField.setText("0");
+             PlayerLightningEnergyField.setText("0");
+             PlayerPsychicEnergyField.setText("0");
+             PlayerWaterEnergyField.setText("0");
+             PlayerColorlessEnergyField.setText("0");
+             
+             // Clear Damage field
+             PlayerDamageField.setText("0");
+    	}
+    }
+    
     public void setEnergy(List<Integer> energies, boolean player)
     {
         if (player)
@@ -336,11 +351,13 @@ public class GameBoard extends javax.swing.JFrame {
             @Override
             public void mouseClicked(MouseEvent me) {
                 if (player)
-                {
-                    //PlayerBenchPanel.remove(newCard); //not necessarily
-                    //CardViewArea.setText("");
-                    //ViewDamageField.setText("");
-                    //update();
+                {	
+                	int cardPos = GameController.getHomePlayer().getBenchedPokemonPos(newCard.getText());
+                	Pokemon poke = GameController.getHomePlayer().getBenchedPokemon().get(cardPos);
+                	GameController.getHomePlayer().setActivePokemon(poke);
+                	GameController.getHomePlayer().getBenchedPokemon().remove(cardPos);
+                	PlayerBenchPanel.remove(newCard);
+                    update();
                 }
             }
 
@@ -361,8 +378,8 @@ public class GameBoard extends javax.swing.JFrame {
                 if(card.isType(CardTypes.POKEMON))
                 {
                     cardPreview(card);
-                    //TODO - get card.damageTaken
-                    ViewDamageField.setText("0");
+                    Pokemon pokeCard = (Pokemon)card;
+                    ViewDamageField.setText(pokeCard.getDamage() + "");
                     //TODO - get card.attachedEnergies
                     GameController.updateEnergyCountersForCard(card, player ? 0 : 1);
                     update();
@@ -378,6 +395,7 @@ public class GameBoard extends javax.swing.JFrame {
         
         if (player)
             PlayerBenchPanel.add(newCard);
+        
         else
             OpponentBenchPanel.add(newCard);
         
@@ -729,22 +747,34 @@ public class GameBoard extends javax.swing.JFrame {
 
         PlayerAttack1Btn.setText("Attack1");
         PlayerAttack1Btn.addActionListener(new java.awt.event.ActionListener() {
+        	// Attack1 button can only be pressed once there is an active Pokemon set.
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerAttack1BtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PlayerAttack1BtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon for Attack!");
             }
         });
 
         PlayerAttack2Btn.setText("Attack2");
         PlayerAttack2Btn.addActionListener(new java.awt.event.ActionListener() {
+        	// Attack2 button can only be pressed once there is an active Pokemon set.
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerAttack2BtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+                	PlayerAttack2BtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon for Attack!");
             }
         });
 
         PlayerRetreatBtn.setText("Retreat");
         PlayerRetreatBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PlayerRetreatBtnActionPerformed(evt);
+            	// Retreat button can only be pressed once there is an active Pokemon set.
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PlayerRetreatBtnActionPerformed(evt);
+            	else
+            		GameController.displayMessage("No Active Pokemon to Retreat!");
             }
         });
 
@@ -776,7 +806,10 @@ public class GameBoard extends javax.swing.JFrame {
         PassBtn.setText("End Turn");
         PassBtn.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                PassBtnActionPerformed(evt);
+            	if(GameController.getHomePlayer().getActivePokemon() != null)
+            		PassBtnActionPerformed(evt);	
+            	else
+            		GameController.displayMessage("Please set an active Pokemon");
             }
         });
 
@@ -1194,7 +1227,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerAttack2BtnActionPerformed
 
     private void PlayerRetreatBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PlayerRetreatBtnActionPerformed
-        
+    		GameController.retreatActivePokemon(true);
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
