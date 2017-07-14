@@ -11,7 +11,7 @@
     </Appenders>
 
     <Loggers>
-        <Logger name="com.dmens.pokeno" level="debug"/>
+        <Logger name="com.dmens.pokeno" level="info"/>
 
         <Root level="info">
             <AppenderRef ref="STDOUT"/>
