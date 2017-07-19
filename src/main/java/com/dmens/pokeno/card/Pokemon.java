@@ -200,7 +200,7 @@ public class Pokemon extends Card {
         				if(Randomizer.Instance().getFiftyPercentChance())
     					{
     						proceedWithAttack = false;
-    						GameController.displayMessage(target.getName() + " avoided the attack!");
+    						displayMessage(target.getName() + " avoided the attack!");
     					}
         			}
         		}
@@ -218,28 +218,28 @@ public class Pokemon extends Card {
             			{
                 			target.setParalyzed(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
-                			GameController.displayMessage(target.getName() + " has been paralyzed!");
+                			displayMessage(target.getName() + " has been paralyzed!");
                 			GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
             			}
                 		else if (status.compareTo("asleep") == 0 && !target.isSleep())
                 		{
                 			target.setSleep(true);
             				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
-            				GameController.displayMessage(target.getName() + " has fallen asleep!");
+            				displayMessage(target.getName() + " has fallen asleep!");
             				GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
                 		}
                 		else if (status.compareTo("stuck") == 0 && !target.isStuck())
                 		{
                 			target.setStuck(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Stuck.");
-                			GameController.displayMessage(target.getName() + " is now stuck!");
+                			displayMessage(target.getName() + " is now stuck!");
                 			GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
                 		}
                 		else if (status.compareTo("poisoned") == 0 && !target.isPoisoned())
                 		{
                 			target.setPoisoned(true);
                 			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Poisoned.");
-                			GameController.displayMessage(target.getName() + " is now poisoned!");
+                			displayMessage(target.getName() + " is now poisoned!");
                 			GameController.board.addStatus(3, !GameController.getIsHomePlayerPlaying());
                 		}
             		}
@@ -404,7 +404,9 @@ public class Pokemon extends Card {
     	});
         return energies;
     }
-    
+	public void displayMessage(String message){
+		GameController.displayMessage(message);
+	}
     @Override
 	public boolean isType(CardTypes c) {
 		return (c == CardTypes.POKEMON) ? true : false;
