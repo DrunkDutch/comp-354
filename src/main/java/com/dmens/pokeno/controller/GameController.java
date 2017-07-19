@@ -76,8 +76,8 @@ public class GameController {
 		Player adversaryPlayer = new AIPlayer(mSecondDeck);
 		homePlayer.setOpponent(adversaryPlayer);
 		adversaryPlayer.setOpponent(homePlayer);
-		homePlayer.getDeck().shuffle();
-		adversaryPlayer.getDeck().shuffle();
+//		homePlayer.getDeck().shuffle();
+//		adversaryPlayer.getDeck().shuffle();
 		
 		mPlayers = new ArrayList<Player>();
 		mPlayers.add(homePlayer);
@@ -104,6 +104,70 @@ public class GameController {
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
 	}
+	
+	public static void retreatActivePokemon(boolean player){
+    	if(player){
+    		
+    		Pokemon activePoke = mPlayers.get(0).getActivePokemon();
+    		
+    		LOG.debug(activePoke.getName() + " has been sent to Home's bench");
+    		
+    		if(!activePoke.isParalyzed() && !activePoke.isSleep()){
+    			//1. Remove any special conditions affecting Pokemon. 
+	    		mPlayers.get(0).resolveEffects(activePoke);
+	    		
+	    		//2. Remove appropriate number of Energy from Pokemon (Retreat Cost)
+	    		
+	    		if (mPlayers.get(0).getBenchedPokemon().size() <= 0)
+	    		{
+	    			displayMessage("At least 1 benched Pokemon required to retreat");
+	    			return;
+	    		}
+	    		
+	    		int activeRetreatCost = activePoke.getRetreatCost();
+	    		if (activeRetreatCost <= mPlayers.get(0).getActivePokemon().getAttachedEnergy().size())
+	    		{
+	    			for (int i = 0; i < activeRetreatCost; i++)
+	    			{
+		    			EnergyTypes type = mPlayers.get(0).createEnergyOptionPane(mPlayers.get(0).getActivePokemon(), "Remove an Energy", "Which energy would you like to remove?", false);
+		    			mPlayers.get(0).getActivePokemon().removeSingleEnergy(type);
+	    			}
+	    		}
+	    		else
+	    		{
+	    			displayMessage("Not enough energy cards attached to satisfy retreat cost");
+	    			return;
+	    		}
+	    		
+	    		/*if(!activePoke.removeEnergy(activePoke.getAttachedEnergy(), activeRetreatCost))
+	    		{
+	    			displayMessage("Not enough energy cards attached to satisfy retreat cost");
+	    			return;
+	    		}*/
+	    		
+	    		//4. Remove Active Pokemon from ActivePokemonPanel.
+	    		cleanActivePokemon(player);
+	    		mPlayers.get(0).setActivePokemon(null);
+	    		mPlayers.get(0).setActiveFromBench(mPlayers.get(0).createPokemonOptionPane("Select new Active", "Which Pokemon would you like to set as your new active?", false));
+	    		//mPlayers.get(0).updateEnergyCounters(mPlayers.get(0).getActivePokemon(), false);
+	    		//board.update();
+	    		
+	    		//3. Send Active Pokemon to bench
+	    		board.addCardToBench(activePoke, player);
+	    		getHomePlayer().benchPokemon(activePoke);
+	    		
+	    		//5. Reset text fields.
+	    		//board.clearRetreatedPokemon(player);
+    		}
+    		else
+    			displayMessage("Your Active Pokemon is asleep or paralyzed. Cannot retreat!");
+    	}
+    	
+    	// TODO Retreat for AI. 
+    	// else
+    	//{
+    	//}
+    }
 	
 	public static void setPlayers(ArrayList<Player> players){
 		mPlayers = players;
