@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -341,10 +342,28 @@ public class GameController {
         return button;
       }
     
-    public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
+    public static int deprecatedDispayCustomOptionPane(Object[] buttons, String title, String prompt)
     {
         return JOptionPane.showOptionDialog(null, prompt, title,
         0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+    }
+    
+    public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
+    {
+    	final JOptionPane jop = new JOptionPane(prompt, 0, JOptionPane.DEFAULT_OPTION, null, buttons, buttons[0]);
+    	JDialog dialog = jop.createDialog(null, title);
+    	dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    	dialog.setVisible(true);
+    	dialog.dispose();
+    	
+    	String selection = (String)jop.getValue();
+    	for (int i = 0; i < buttons.length; i++)
+    	{
+    		if (((String)buttons[i]).equals(selection))
+	    		return i;
+    	}
+    	
+    	return -1;//Integer.parseInt((String)jop.getValue());
     }
     
     public static int displayConfirmDialog(String message, String title){
