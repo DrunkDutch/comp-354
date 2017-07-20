@@ -33,27 +33,15 @@ import com.dmens.pokeno.view.GameBoard;
 import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.AbilityParser;
 
-//@RunWith(PowerMockRunner.class)
-//@PrepareForTest({GameController.class, Randomizer.class})
-//@PowerMockIgnore("javax.management.*")
 public class AttackTest {
 
 	private static final Logger LOG = LogManager.getLogger(Pokemon.class);
 	
-//	public Pokemon poke1;
-//	public Pokemon poke2;
-	
 	private static String HitmonchanStr = "Hitmonchan:pokemon:cat:basic:cat:fight:90:retreat:cat:colorless:1:attacks:cat:colorless:2:61,cat:colorless:2,cat:fight:1:62";
 	private static String PikachuStr = "Pikachu:pokemon:cat:basic:cat:lightning:60:retreat:cat:colorless:1:attacks:cat:colorless:1:5,cat:colorless:2:6";
-	
-	private static Ability abilityMultiFlip;
-	private static Ability abilityParalyzed;
-	private static Ability abilitySleep;
-	private static Ability abilityStuck;
-	private static Ability abilityPoisined;
-	
-	private static String abilityMultiFlipStr = "Bullet Punch:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:20";
-	private static String abilityParalyzedStr = "Nuzzle:cond:flip:applystat:status:paralyzed:opponent-active";
+	private static String EspurrStr = "Espurr:pokemon:cat:basic:cat:psychic:50:retreat:cat:colorless:1:attacks:cat:colorless:1:64";
+	private static String JynxStr = "Jynx:pokemon:cat:basic:cat:psychic:70:retreat:cat:colorless:1:attacks:cat:colorless:2,cat:psychic:1:38";
+
 	
 	public static GameBoard mockBoard;
 
@@ -77,22 +65,9 @@ public class AttackTest {
 		}
 	}
 	
-	@BeforeClass
-	public static void setupAbilities(){
-		abilityParalyzed = AbilityParser.getAbilityFromString(abilityParalyzedStr);
-	}
-	
-	@Before
-	public void newPokemon(){
-
-	}
-	
 	@Test 
 	public void paralyzedAttack()
 	{
-		AbilityCost abcP = new AbilityCost(abilityParalyzed);
-		abcP.addCost(EnergyTypes.COLORLESS, 1);
-
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(PikachuStr));
 		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
@@ -100,13 +75,45 @@ public class AttackTest {
 		Assert.assertEquals(poke1.getName(), "Hitmonchan");
 		Assert.assertEquals(poke2.getName(), "Pikachu");
 
-		poke1.AddAbilityAndCost(abcP);
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.useAbility(0, poke1);
 
-
-
-
 		Assert.assertEquals(true, poke1.isParalyzed());
 	}
+	
+	@Test 
+	public void asleepAttack()
+	{
+		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
+		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(EspurrStr));
+		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
+		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
+		Assert.assertEquals(poke1.getName(), "Hitmonchan");
+		Assert.assertEquals(poke2.getName(), "Espurr");
+
+		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
+		poke2.useAbility(0, poke1);
+
+		Assert.assertEquals(true, poke1.isSleep());
+	}
+	
+	@Test 
+	public void stuckAttack()
+	{
+		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
+		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(JynxStr));
+		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
+		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
+		Assert.assertEquals(poke1.getName(), "Hitmonchan");
+		Assert.assertEquals(poke2.getName(), "Jynx");
+
+		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
+		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
+		poke2.addEnergy(new EnergyCard("Psychic", "psychic"));
+		poke2.useAbility(0, poke1);
+
+		Assert.assertEquals(true, poke1.isStuck());
+	}
+	
+
 }
