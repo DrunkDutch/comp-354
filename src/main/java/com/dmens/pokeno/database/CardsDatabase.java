@@ -20,7 +20,7 @@ public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 
 	 //Doduo, Dodrio for deck 1
-	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Machop", "Machoke", "Zubat", 
+	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat", 
 	"Ducklett", "Electabuzz", "Electivire","Electrike", "Froakie", "Frogadier", "Goldeen", "Pikachu", "Pikachu Libre", "Shellder", "Suicune", "Swanna"};
 	
 	private static String[] supportedTrainer = {"Tierno", "Potion"};
