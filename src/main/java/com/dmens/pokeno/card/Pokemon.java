@@ -220,12 +220,12 @@ public class Pokemon extends Card {
 							{
 								target.setParalyzed(true);
 								LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
-								GameController.displayMessage(target.getName() + " has been paralyzed!");
+								displayMessage(target.getName() + " has been paralyzed!");
 								GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
 							}
 							else
 							{
-            					GameController.displayMessage("Target is already paralyzed");
+            					displayMessage("Target is already paralyzed");
 							}
             			}
                 		else if (status.compareTo("asleep") == 0)
@@ -234,12 +234,12 @@ public class Pokemon extends Card {
 							{
 								target.setSleep(true);
 								LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
-								GameController.displayMessage(target.getName() + " has fallen asleep!");
+								displayMessage(target.getName() + " has fallen asleep!");
 								GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
 							}
 							else
 							{
-                				GameController.displayMessage("Target is already asleep");
+                				displayMessage("Target is already asleep");
 							}
 						}
                 		else if (status.compareTo("stuck") == 0 && !target.isStuck())
