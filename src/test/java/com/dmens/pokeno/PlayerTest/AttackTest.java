@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.Assert;
@@ -33,6 +35,9 @@ import com.dmens.pokeno.view.GameBoard;
 import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.AbilityParser;
 
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 public class AttackTest {
 
 	private static final Logger LOG = LogManager.getLogger(Pokemon.class);
@@ -44,6 +49,8 @@ public class AttackTest {
 
 	
 	public static GameBoard mockBoard;
+
+
 
 	static Robot robot;
 	public Robot okRobot;
@@ -100,17 +107,25 @@ public class AttackTest {
 	@Test 
 	public void stuckAttack()
 	{
+		TargetService service = mock(TargetService.class);
+		TargetServiceHandler handler = TargetServiceHandler.getInstance(service);
+		try {
+			PowerMockito.whenNew(TargetServiceHandler.class).withNoArguments().thenReturn(handler);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(JynxStr));
 		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
 		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
 		Assert.assertEquals(poke1.getName(), "Hitmonchan");
 		Assert.assertEquals(poke2.getName(), "Jynx");
-
+		Mockito.doReturn(Arrays.asList(poke1)).when(service).getTarget(Mockito.anyString());
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.addEnergy(new EnergyCard("Psychic", "psychic"));
 		poke2.useAbility(0, poke1);
+
 
 		Assert.assertEquals(true, poke1.isStuck());
 	}

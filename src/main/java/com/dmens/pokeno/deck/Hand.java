@@ -19,11 +19,11 @@ public class Hand extends CardContainer {
 		return false;
 	}
 	
-	public List<Card> getPokemon(){
-		List<Card> pokemon = new ArrayList<Card>();
+	public List<Pokemon> getPokemon(){
+		List<Pokemon> pokemon = new ArrayList<Pokemon>();
 		cards.forEach(card->{
 			if(card.isType(CardTypes.POKEMON)){
-				pokemon.add(card);
+				pokemon.add((Pokemon)card);
 			}
 		});
 		return pokemon;

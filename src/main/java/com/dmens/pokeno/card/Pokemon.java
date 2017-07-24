@@ -263,17 +263,7 @@ public class Pokemon extends Card {
             			
             			String targetCheck = d.getTarget();
             			
-            			if(targetCheck.contentEquals("your-active"))
-            			{
-            				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
-            				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been damaged by " + d.getValue() + ".");
-            				youAsTarget.addDamage(d.getValue());
-            			}
-            			else
-            			{
-            				LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been damaged by " + d.getValue() + ".");
-        	        		target.addDamage(d.getValue());
-            			}
+            			d.execute();
          
                 	}
             		else if (effect instanceof Heal)

@@ -6,6 +6,8 @@ import java.awt.Robot;
 import java.awt.event.InputEvent;
 import java.util.ArrayList;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.After;
@@ -90,7 +92,8 @@ public class CreateGameTest {
 		} while(!homePlayer.getIsReadyToStart() || !adversaryPlayer.getIsReadyToStart());
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
-        
+		TargetServiceHandler.getInstance().setYouPlayer(mPlayers.get(1));
+		TargetServiceHandler.getInstance().setThemPlayer(mPlayers.get(0));
 
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();

@@ -22,7 +22,7 @@ public class Regression75 {
 
 	@Test
 	public void test() {
-		Mockito.doReturn(0).when(player).choosePokemonInScreen(Mockito.any(), Mockito.any(), Mockito.any());
+		Mockito.doReturn(0).when(player).chooseCards(Mockito.any(), Mockito.any(), Mockito.any());
 		AbilitiesDatabase.getInstance().initialize("abilities.txt");
 		CardsDatabase.getInstance().initialize("cards.txt");
 		

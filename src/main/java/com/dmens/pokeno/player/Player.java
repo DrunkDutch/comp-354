@@ -7,6 +7,8 @@ import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -117,6 +119,9 @@ public class Player {
     	// Reset has picked energy flag every turn
     	mHasPlayedEnergy = false;
     	GameController.setIsHomePlayerPlaying(this.isHumanPlayer());
+        TargetService service = TargetServiceHandler.getInstance().getService();
+        service.setYouPlayer(this);
+        service.setThemPlayer(opponent);
         drawCardsFromDeck(1);
         
         if (this instanceof AIPlayer)
@@ -392,7 +397,7 @@ public class Player {
             buttons[i] = mBenchedPokemon.get(i-offset).getName();
             i++;
         }
-        int cardNum = GameController.dispayCustomOptionPane(buttons, title, message);
+        int cardNum = chooseCards(buttons, title, message);
         if (cardNum == buttons.length-1) //If the user clicks cancel it will return -1
             cardNum = -1;
         return cardNum;
@@ -413,7 +418,7 @@ public class Player {
             buttons.add("Cancel");
         String[] buttonsAsArray = new String[buttons.size()];
         buttonsAsArray = buttons.toArray(buttonsAsArray);
-        int buttonNum = GameController.dispayCustomOptionPane(buttonsAsArray, title, message);
+        int buttonNum = chooseCards(buttonsAsArray, title, message);
         if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
             buttonNum = -1;
         return buttonNum;
@@ -510,14 +515,14 @@ public class Player {
 	    	if(choiceList.get(0).equals(mActivePokemon))
 	    		buttons[0] = "Active " + buttons[0];
     	}
-	    	int cardNum = choosePokemonInScreen(buttons, "Card Select", message);
+	    	int cardNum = chooseCards(buttons, "Card Select", message);
 	    	if(cardNum == buttons.length-1)
 	    		return null;
 	    	else
 	    		return choiceList.get(cardNum);
     }
     
-    public int choosePokemonInScreen(Object[] options, String title, String message){
+    public int chooseCards(Object[] options, String title, String message){
     	return GameController.dispayCustomOptionPane(options, "Card Select", message);
     }
     
@@ -660,6 +665,27 @@ public class Player {
     
     public boolean isHumanPlayer(){
     	return humanPlayer;
+    }
+
+    public Card chooseFromAll(){
+        StringBuilder sb = new StringBuilder();
+        sb.append(mActivePokemon.getName() + ";");
+        for(int i = 1; i <= mBenchedPokemon.size(); i++){
+            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        if(choice == 0)
+            return mActivePokemon;
+        return mBenchedPokemon.get(choice-1);
+    }
+
+    public Card chooseFromBench(){
+        StringBuilder sb = new StringBuilder();
+        for(int i = 1; i <= mBenchedPokemon.size(); i++){
+            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        return mBenchedPokemon.get(choice);
     }
 
     //TODO
