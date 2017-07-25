@@ -87,7 +87,9 @@ public class GameBoard extends javax.swing.JFrame {
 
             @Override
             public void mouseReleased(MouseEvent me) {
-            	MultiCardViewerFrame graveyardView = new MultiCardViewerFrame(GameController.getHomePlayer().getDiscards().getCards());
+            	//This array list can be ignored
+            	ArrayList<Card> resultsExample = new ArrayList<Card>();
+            	MultiCardViewerFrame graveyardView = new MultiCardViewerFrame(GameController.getHomePlayer().getDiscards().getCards(), resultsExample);
                 graveyardView.setSize(150, 250);
                 graveyardView.setVisible(true);
                 GameController.board.update();
