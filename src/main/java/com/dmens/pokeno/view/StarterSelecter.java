@@ -46,9 +46,11 @@ public class StarterSelecter extends JDialog {
 
                 @Override
                 public void mousePressed(MouseEvent me) {
-                    player.setActivePokemon(card);
+                    player.useCard(card);
                     GameController.setActivePokemonOnBoard(card, true);
+                    GameController.updateHand(GameController.getHomePlayer().getHand(), true);
                     GameController.board.update();
+
                     dispose();
                 }
 
