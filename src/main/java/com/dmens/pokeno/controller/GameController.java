@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
@@ -18,6 +19,9 @@ import javax.swing.WindowConstants;
 
 import com.dmens.pokeno.services.TargetService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+import com.dmens.pokeno.card.CardTypes;
+import com.dmens.pokeno.view.MultiCardViewerFrame;
+import com.dmens.pokeno.view.StarterSelecter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -102,6 +106,8 @@ public class GameController {
 		} while(!homePlayer.getIsReadyToStart() || !adversaryPlayer.getIsReadyToStart());
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
+        
+		setFirstTurnActivePokemon();
 
 		TargetService service = TargetServiceHandler.getInstance().getService();
 
@@ -111,7 +117,22 @@ public class GameController {
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
 	}
-	
+
+	public static void  setFirstTurnActivePokemon(){
+		GameController.displayMessage("Please choose a starting pokemon");
+		ArrayList<Pokemon> starterPokemon = new ArrayList<Pokemon>();
+		for (Card card :GameController.getHomePlayer().getHand().getCards()){
+			if (card.isType(CardTypes.POKEMON) && !((Pokemon)card).isEvolvedCategory()){
+				starterPokemon.add((Pokemon)card);
+			}
+		}
+		List<Card> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
+		StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
+		starterView.setSize(150, 250);
+		starterView.setVisible(true);
+		GameController.board.update();
+	}
+
 	public static void retreatActivePokemon(boolean player){
     	if(player){
     		
