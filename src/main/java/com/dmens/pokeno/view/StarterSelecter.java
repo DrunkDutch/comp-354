@@ -44,6 +44,8 @@ public class StarterSelecter extends MultiCardViewerFrame {
                 @Override
                 public void mousePressed(MouseEvent me) {
                     player.setActivePokemon(card);
+                    GameController.setActivePokemonOnBoard(card, true);
+                    GameController.board.update();
                     dispose();
                 }
 
