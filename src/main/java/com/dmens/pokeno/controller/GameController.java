@@ -118,21 +118,23 @@ public class GameController {
         opp.selectStarterPokemon();
 	}
 
-	public static void  setFirstTurnActivePokemon(){
-		GameController.displayMessage("Please choose a starting pokemon");
-		ArrayList<Pokemon> starterPokemon = new ArrayList<Pokemon>();
-		for (Card card :GameController.getHomePlayer().getHand().getCards()){
-			if (card.isType(CardTypes.POKEMON) && !((Pokemon)card).isEvolvedCategory()){
-				starterPokemon.add((Pokemon)card);
-			}
-		}
-		List<Card> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
-		StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
-		starterView.setSize(150, 250);
-		starterView.setVisible(true);
-		GameController.board.update();
-	}
+	public static void  setFirstTurnActivePokemon() {
+        if (!(GameController.getHomePlayer().getActivePokemon()  instanceof Pokemon)) {
+            GameController.displayMessage("Please choose a starting pokemon");
+            List<Card> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
+			ArrayList<Pokemon> starterPokemon = startPokemon.stream().filter(p -> p instanceof Pokemon).map(
+                    p -> (Pokemon) p).
+                    filter(
+                            p -> !(p.isEvolvedCategory()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
+            starterView.setSize(150, 250);
+            starterView.setVisible(true);
+            GameController.board.update();
+        }
 
+    }
+	
 	public static void retreatActivePokemon(boolean player){
     	if(player){
     		
