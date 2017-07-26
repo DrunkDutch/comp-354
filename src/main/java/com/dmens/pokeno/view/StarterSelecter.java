@@ -11,7 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 
-public class StarterSelecter extends MultiCardViewerFrame {
+public class StarterSelecter extends JDialog {
 
     public StarterSelecter()
     {
@@ -22,6 +22,9 @@ public class StarterSelecter extends MultiCardViewerFrame {
 
     public StarterSelecter(ArrayList<Pokemon> cards, Player player)
     {
+        setModal(true);
+        setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        setAlwaysOnTop(true);
         JPanel p = new JPanel();
         add(p);
         p.setLayout(new FlowLayout());
