@@ -130,7 +130,9 @@ public class GameController {
             StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
             starterView.setSize(150, 250);
             starterView.setVisible(true);
+			GameController.updateHand(getHomePlayer().getHand(),true);
             GameController.board.update();
+
         }
 
     }
