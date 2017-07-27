@@ -11,7 +11,7 @@ enum TargetTypes {
     OPPONENT_ACTIVE("opponent-active"),
     CHOICE_OPPONENT("choice:opponent"), // Means both bench and active
     CHOICE_YOUR("choice:your"), // Means both bench and active
-    CHOICE_OPPONENT_BENCH("choice:opponent- bench"),
+    CHOICE_OPPONENT_BENCH("choice:opponent-bench"),
     CHOICE_YOUR_BENCH("choice:your-bench"),
     CHOICE_YOUR_POKEMON("choice:your-pokemon"), // Means pokemon from a source see 'Wally'
     YOUR_BENCH("your-bench"),

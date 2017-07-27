@@ -47,6 +47,10 @@ public class Player {
 
     public Player() {
         humanPlayer = true;
+        mBenchedPokemon = new ArrayList<Pokemon>();
+    	mHand = new Hand();
+    	mRewards = new CardContainer();
+    	mDiscards = new CardContainer();
     }
     
     public Player(Deck deckList) {
@@ -225,10 +229,15 @@ public class Player {
     	mActivePokemon = activePokemon;
         //if (humanPlayer)
     	if (mActivePokemon != null)
-    	{
-	        GameController.setActivePokemonOnBoard(activePokemon, humanPlayer);
-	        updateEnergyCounters(mActivePokemon, false);
-    	}
+    		setActiveOnBoard();
+    }
+    
+    /**
+     * Call Controller to set active on board
+     */
+    public void setActiveOnBoard(){
+    	GameController.setActivePokemonOnBoard(mActivePokemon, humanPlayer);
+    	updateEnergyCounters(mActivePokemon, false);
     }
 
     /**
@@ -241,7 +250,13 @@ public class Player {
     public void benchPokemon(Pokemon benchPokemon){
     	assert(mBenchedPokemon.size() < 5);
     	mBenchedPokemon.add(benchPokemon);
-        //if (humanPlayer)
+    	benchPokemonOnBoard();
+    }
+    
+    /**
+     * Call Controller to bench pokemon on board
+     */
+    public void benchPokemonOnBoard(){
     	GameController.updateBenchedPokemon(mBenchedPokemon, humanPlayer);
     }
     
