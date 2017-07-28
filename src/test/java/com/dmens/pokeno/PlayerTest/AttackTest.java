@@ -1,42 +1,20 @@
 package com.dmens.pokeno.PlayerTest;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
-
 import com.dmens.pokeno.services.TargetService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
+import org.junit.*;
 import org.mockito.Mockito;
-import org.powermock.api.easymock.PowerMock;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.*;
-import com.dmens.pokeno.ability.*;
 import com.dmens.pokeno.card.EnergyCard;
-import com.dmens.pokeno.card.EnergyTypes;
-import com.dmens.pokeno.utils.Randomizer;
 import com.dmens.pokeno.view.GameBoard;
 import com.dmens.pokeno.utils.CardParser;
-import com.dmens.pokeno.utils.AbilityParser;
-
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class AttackTest {
 
@@ -49,8 +27,6 @@ public class AttackTest {
 
 	
 	public static GameBoard mockBoard;
-
-
 
 	static Robot robot;
 	public Robot okRobot;
@@ -67,7 +43,6 @@ public class AttackTest {
 		try {
 			robot = new Robot();
 		} catch (AWTException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -103,17 +78,11 @@ public class AttackTest {
 
 		Assert.assertEquals(true, poke1.isSleep());
 	}
-	
+
 	@Test 
-	public void stuckAttack()
-	{
-		TargetService service = mock(TargetService.class);
-		TargetServiceHandler handler = TargetServiceHandler.getInstance(service);
-		try {
-			PowerMockito.whenNew(TargetServiceHandler.class).withNoArguments().thenReturn(handler);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public void stuckAttack() {
+		TargetService service = Mockito.mock(TargetService.class);
+		TargetServiceHandler.getInstance(service);
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(JynxStr));
 		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
@@ -125,10 +94,8 @@ public class AttackTest {
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.addEnergy(new EnergyCard("Psychic", "psychic"));
 		poke2.useAbility(0, poke1);
-
-
+		TargetService.clearInstance();
+		TargetServiceHandler.clearInstance();
 		Assert.assertEquals(true, poke1.isStuck());
 	}
-	
-
 }

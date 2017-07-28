@@ -368,7 +368,7 @@ public class Pokemon extends Card {
      */
     public boolean evolvePokemon(Pokemon basePokemon){
     	if(basePokemon.getName().equalsIgnoreCase(this.getBasePokemonName())){
-		    this.mDamage = basePokemon.getDamage();
+ 		    this.mDamage = basePokemon.getDamage();
 		    // transfer energy
 		    transferEnergy(basePokemon);
 		    //  keep base reference for discard

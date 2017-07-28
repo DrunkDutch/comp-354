@@ -76,6 +76,10 @@ public class TargetService {
         return service;
     }
 
+    public static void clearInstance(){
+        service = new TargetService();
+    }
+
     public void setYouPlayer(Player you){
         this.you = you;
     }

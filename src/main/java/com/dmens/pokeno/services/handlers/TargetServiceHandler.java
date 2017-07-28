@@ -23,6 +23,10 @@ public class TargetServiceHandler {
         return handler;
     }
 
+    public static void clearInstance(){
+        handler = null;
+    }
+
     private TargetServiceHandler(){
         this(TargetService.getInstance());
     }

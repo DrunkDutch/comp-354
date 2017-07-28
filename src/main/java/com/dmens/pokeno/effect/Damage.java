@@ -70,8 +70,13 @@ public class Damage implements Effect {
 	@Override
 	public void execute() 
 	{
+		System.out.println(mTarget);
 		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
-		targetPokemon.forEach(pokemon -> ((Pokemon) pokemon).addDamage(mValue));
+		targetPokemon.forEach(pokemon -> {
+			System.out.println(pokemon.getName());
+			((Pokemon) pokemon).addDamage(mValue);
+		});
+		System.out.println(mValue);
 	}
 
 	@Override
