@@ -121,7 +121,7 @@ public class GameController {
 	public static void  setFirstTurnActivePokemon() {
         if (!(GameController.getHomePlayer().getActivePokemon()  instanceof Pokemon)) {
             GameController.displayMessage("Please choose a starting pokemon");
-            List<Card> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
+            List<Pokemon> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
 			ArrayList<Pokemon> starterPokemon = startPokemon.stream().filter(p -> p instanceof Pokemon).map(
                     p -> (Pokemon) p).
                     filter(
