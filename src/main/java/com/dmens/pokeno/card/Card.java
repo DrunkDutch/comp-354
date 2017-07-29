@@ -2,7 +2,7 @@ package com.dmens.pokeno.card;
 
 public abstract class Card {
 
-	private String mName;
+	protected String mName;
 
 	public Card(){}
 	protected Card(String name)
