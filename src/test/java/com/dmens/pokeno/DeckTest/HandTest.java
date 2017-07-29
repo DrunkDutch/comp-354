@@ -2,6 +2,7 @@ package com.dmens.pokeno.DeckTest;
 
 import java.util.List;
 
+import com.dmens.pokeno.card.Pokemon;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -40,7 +41,7 @@ public class HandTest {
 	@Test
 	public void testGetPokemon(){
 		hand.addCards(deck.draw(6));
-		List<Card> pokemon = hand.getPokemon();
+		List<Pokemon> pokemon = hand.getPokemon();
 		Assert.assertTrue(pokemon.isEmpty());
 		hand.addCard(deck.draw());
 		pokemon = hand.getPokemon();

@@ -16,6 +16,8 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -100,7 +102,11 @@ public class GameController {
 		} while(!homePlayer.getIsReadyToStart() || !adversaryPlayer.getIsReadyToStart());
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
-        
+
+		TargetService service = TargetServiceHandler.getInstance().getService();
+
+		service.setYouPlayer(mPlayers.get(1));
+		service.setThemPlayer(mPlayers.get(0));
 
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
