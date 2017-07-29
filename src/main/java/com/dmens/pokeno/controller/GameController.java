@@ -136,7 +136,7 @@ public class GameController {
         }
 
     }
-	
+
 	public static void retreatActivePokemon(boolean player){
     	if(player){
     		
