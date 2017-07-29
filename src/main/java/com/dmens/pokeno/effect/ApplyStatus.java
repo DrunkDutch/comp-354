@@ -7,12 +7,9 @@ import com.dmens.pokeno.condition.*;
  *
  * @author James
  */
-public class ApplyStatus implements Effect {
+public class ApplyStatus extends Effect {
 
-	private String mTarget;
-	private String mStatus;
-	private Condition mCondition = null;
-	
+	private String mStatus;	
 	/*
 	 * Constructor
 	 * 
@@ -21,7 +18,7 @@ public class ApplyStatus implements Effect {
 	 */
 	public ApplyStatus(String tar,String stat)
 	{
-		this.mTarget = tar;
+		super(tar, null);
 		this.mStatus = stat;
 	}
 	
@@ -34,16 +31,6 @@ public class ApplyStatus implements Effect {
 	{
 		this.mTarget = a.mTarget;
 		this.mStatus = a.mStatus;		
-	}
-	
-	/*
-     * Get the target of this Effect.
-     * 
-     * @return		The target as a string.
-     */
-	public String getTarget()
-	{
-		return this.mTarget;
 	}
 	
 	/*
@@ -78,17 +65,5 @@ public class ApplyStatus implements Effect {
 			return true;
 		
 		return false;
-	}
-	
-	@Override
-	public boolean hasCondition()
-	{
-		return (mCondition != null);
-	}
-	
-	@Override
-	public Condition getCondition()
-	{
-		return mCondition;
 	}
 }
