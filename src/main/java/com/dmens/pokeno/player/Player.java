@@ -275,6 +275,10 @@ public class Player {
     	return pickedCard;
     }
     
+    public void updateActivePokemonOnBoard(){
+    	GameController.board.updateActivePokemon(opponent);
+    }
+    
     public boolean useActivePokemon(int ability)
     {
         if (mActivePokemon == null)
@@ -283,8 +287,8 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         if (usedAbility == false)
         	return false;
-        GameController.board.updateActivePokemon(opponent);
-        
+        checkBenchedPokemonFainted();
+        opponent.checkBenchedPokemonFainted();
         if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
         {
             checkGameWon();
@@ -300,6 +304,12 @@ public class Player {
             collectPrize(mRewards.size()-1);
         }
         return usedAbility;
+    }
+    
+    private void checkBenchedPokemonFainted(){
+    	List<Pokemon> fainted = mBenchedPokemon.stream().filter(pokemon->pokemon.isFainted()).collect(Collectors.toList());
+    	fainted.forEach(pokemon-> mBenchedPokemon.remove(pokemon));
+    	updateBoard();
     }
     
     private void activeFainted()
@@ -639,10 +649,6 @@ public class Player {
     	//TODO: Handle event where number of energy cards isn't sufficient. 
     	// e.g. Pop-up on GUI. 
     		
-    }
-    
-    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){
-    	
     }
     
     /**

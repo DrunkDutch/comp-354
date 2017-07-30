@@ -88,15 +88,19 @@ public class Pokemon extends Card {
 	}
 	
 	public boolean addDamage(int damage)
+    {
+        mDamage += damage;
+        /*if (mDamage >= mHP)
         {
-            mDamage += damage;
-            /*if (mDamage >= mHP)
-            {
-                return true;
-            }*/
-            //if damage > hp -> "faint"
-            return false;
-        }
+            return true;
+        }*/
+        //if damage > hp -> "faint"
+        return false;
+    }
+	
+	public boolean isFainted(){
+		return (mDamage >= mHP);
+	}
 
 	public void removeDamage(int damageToRemove) {
 		if(damageToRemove < 0) {

@@ -4,10 +4,6 @@ import static org.junit.Assert.fail;
 
 import org.junit.Assert;
 
-/**
- * Regression test for bug #75(https://github.com/DrunkDutch/comp-354/issues/75)
- */
-
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -16,6 +12,9 @@ import com.dmens.pokeno.database.AbilitiesDatabase;
 import com.dmens.pokeno.database.CardsDatabase;
 import com.dmens.pokeno.player.Player;
 
+/**
+ * Regression test for bug #75(https://github.com/DrunkDutch/comp-354/issues/75)
+ */
 public class Regression75 {
 	
 	Player player = Mockito.spy(new Player());

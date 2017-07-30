@@ -58,8 +58,7 @@ public class CardsDatabase extends Database<Card>{
 	
 	public Card queryByName(String name){
 		LOG.debug("Query Cards DB By name: "+name);
-		
 		Optional<Card> hit = db.stream().filter(card->card.getName().equals(name)).findAny();
-		return hit.get();
+		return hit.get().copy();
 	}
 }
