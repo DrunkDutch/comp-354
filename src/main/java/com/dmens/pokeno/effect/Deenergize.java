@@ -4,6 +4,7 @@ import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.TargetService;
 import com.dmens.pokeno.utils.Randomizer;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
@@ -54,17 +55,9 @@ public class Deenergize extends Effect {
 	public void execute()
 	{
 		boolean proceedWithAttack = true;
-		Player player = null;
 		
-		// 1) Determine the target
-		if(mTarget.equals("opponent-active"))
-		{
-			player = GameController.getOpponentPlayer();
-		}
-		else if (mTarget.equals("your-active"))
-		{
-			player = GameController.getActivePlayer();
-		}
+		// 1) Get the target
+		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget);
 		
 		// 2) Determine if there is a condition, if so... handle it
 		if(mCondition != null)
@@ -74,7 +67,7 @@ public class Deenergize extends Effect {
 				if(Randomizer.Instance().getFiftyPercentChance())
 				{
 					proceedWithAttack = false;
-					GameController.displayMessage(player.getActivePokemon().getName() + " avoided the attack!");
+					GameController.displayMessage(poke.getName() + " avoided the attack!");
 				}
 			}
 		}
@@ -84,10 +77,12 @@ public class Deenergize extends Effect {
 		{
 			for (int i = 0; i < mAmount; i++)
 			{
-				if(player.getActivePokemon().getAttachedEnergy().size() == 0)
-					GameController.displayMessage(player.getActivePokemon().getName() + " has no (more) energy to remove!");
+				if(poke.getAttachedEnergy().size() == 0)
+					GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");
+				
+				Player player = TargetService.getInstance().getPlayer(mTarget);
     			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy", "Which energy would you like to remove?", false);
-    			player.getActivePokemon().removeSingleEnergy(type);
+    			poke.removeSingleEnergy(type);
 			}
 		}
 	}

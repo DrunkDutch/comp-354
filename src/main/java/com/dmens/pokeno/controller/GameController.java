@@ -259,14 +259,6 @@ public class GameController {
 		}
 	}
 	
-	public static Player getOpponentPlayer() {
-		if(mIsHomePlayerPlaying) {
-			return mPlayers.get(1);
-		} else {
-			return mPlayers.get(0);
-		}
-	}
-	
 	public static void checkGameStatus(){
 		
 	}
