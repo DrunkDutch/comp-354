@@ -362,7 +362,7 @@ public class GameBoard extends javax.swing.JFrame {
                 {
                     cardPreview(card);
                     //TODO - get card.damageTaken
-                    ViewDamageField.setText("0");
+                    ViewDamageField.setText(Integer.toString(((Pokemon)card).getDamage()));
                     //TODO - get card.attachedEnergies
                     GameController.updateEnergyCountersForCard(card, player ? 0 : 1);
                     update();

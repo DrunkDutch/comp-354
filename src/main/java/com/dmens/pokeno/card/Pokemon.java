@@ -259,12 +259,7 @@ public class Pokemon extends Card {
             		}
             		else if (effect instanceof Damage)
                 	{
-            			Damage d = (Damage) effect;
-            			
-            			String targetCheck = d.getTarget();
-            			
-            			d.execute();
-         
+            			effect.execute();
                 	}
             		else if (effect instanceof Heal)
             		{

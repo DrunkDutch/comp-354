@@ -702,6 +702,27 @@ public class Player {
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         return mBenchedPokemon.get(choice);
     }
+    
+    public Card chooseFromOpponentBench(){
+    	StringBuilder sb = new StringBuilder();
+        for(int i = 1; i <= opponent.getBenchedPokemon().size(); i++){
+            sb.append(i+" "+ opponent.getBenchedPokemon().get(i-1).getName()+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        return opponent.getBenchedPokemon().get(choice);
+    }
+    
+    public Card chooseFromOpponentAll(){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(opponent.getActivePokemon().getName() + ";");
+        for(int i = 1; i <= opponent.getBenchedPokemon().size(); i++){
+            sb.append(i+" "+ opponent.getBenchedPokemon().get(i-1).getName()+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        if(choice == 0)
+            return opponent.getActivePokemon();
+        return opponent.getBenchedPokemon().get(choice);
+    }
 
     //TODO
     public void lookatDeck(){}
