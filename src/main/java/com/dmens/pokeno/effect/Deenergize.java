@@ -57,7 +57,7 @@ public class Deenergize extends Effect {
 		boolean proceedWithAttack = true;
 		
 		// 1) Get the target
-		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget);
+		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget).get(0);
 		
 		// 2) Determine if there is a condition, if so... handle it
 		if(mCondition != null)
@@ -81,8 +81,9 @@ public class Deenergize extends Effect {
 					GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");
 				
 				Player player = TargetService.getInstance().getPlayer(mTarget);
-    			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy", "Which energy would you like to remove?", false);
-    			poke.removeSingleEnergy(type);
+    			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy from " + poke.getName(), "Which energy would you like to remove?", false);
+    			
+    			System.out.println("Removed: " + poke.removeSingleEnergy(type));
 			}
 		}
 	}
