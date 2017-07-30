@@ -10,11 +10,9 @@ import com.dmens.pokeno.condition.*;
  *
  * @author James
  */
-public class Heal implements Effect {
+public class Heal extends Effect {
 
 	private int mValue;
-	private String mTarget;
-	private Condition mCondition = null;
 	
 	// we have three possible targets to heal
 	private final String YOUR_ACTIVE = "your-active";
@@ -29,7 +27,7 @@ public class Heal implements Effect {
 	 */
 	public Heal(String tar, int val)
 	{
-		this.mTarget = tar;
+		super(tar, null);
 		this.mValue = val;		
 	}
 	
@@ -40,18 +38,8 @@ public class Heal implements Effect {
 	 */
 	public Heal(Heal h)
 	{
-		this.mTarget = h.mTarget;
+		this.mTarget = h.getTarget();
 		this.mValue = h.mValue;		
-	}
-	
-	/*
-     * Get the target of this Effect.
-     * 
-     * @return		The target as a string.
-     */
-	public String getTarget()
-	{
-		return this.mTarget;
 	}
 	
 	/*
@@ -117,17 +105,5 @@ public class Heal implements Effect {
 			return true;
 		
 		return false;
-	}
-	
-	@Override
-	public boolean hasCondition()
-	{
-		return (mCondition != null);
-	}
-	
-	@Override
-	public Condition getCondition()
-	{
-		return mCondition;
 	}
 }
