@@ -21,6 +21,9 @@ import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.deck.Deck;
 import com.dmens.pokeno.player.Player;
+/**
+ * Regression test for bug #63(https://github.com/DrunkDutch/comp-354/issues/63)
+ */
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({GameController.class})

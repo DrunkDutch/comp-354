@@ -114,13 +114,15 @@ public class TargetService {
                 targets.add(you.chooseFromAll());
                 break;
             case CHOICE_OPPONENT:
-                targets.add(them.chooseFromAll());
+                targets.add(you.chooseFromOpponentAll());
                 break;
             case CHOICE_YOUR_BENCH:
                 targets.add(you.chooseFromBench());
                 break;
             case CHOICE_OPPONENT_BENCH:
-                targets.add(them.chooseFromBench());
+            	Card opponentCard = you.chooseFromOpponentBench();
+            	if(opponentCard != null)
+            		targets.add(opponentCard);
                 break;
         }
 

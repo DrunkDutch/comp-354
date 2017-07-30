@@ -100,15 +100,19 @@ public class Pokemon extends Card {
 	}
 	
 	public boolean addDamage(int damage)
+    {
+        mDamage += damage;
+        /*if (mDamage >= mHP)
         {
-            mDamage += damage;
-            /*if (mDamage >= mHP)
-            {
-                return true;
-            }*/
-            //if damage > hp -> "faint"
-            return false;
-        }
+            return true;
+        }*/
+        //if damage > hp -> "faint"
+        return false;
+    }
+	
+	public boolean isFainted(){
+		return (mDamage >= mHP);
+	}
 
 	public void removeDamage(int damageToRemove) {
 		if(damageToRemove < 0) {
@@ -271,20 +275,15 @@ public class Pokemon extends Card {
             		}
             		else if (effect instanceof Damage)
                 	{
-            			Damage d = (Damage) effect;
-            			
-            			String targetCheck = d.getTarget();
-            			
-            			d.execute();
-            			
+            			Damage dam = (Damage) effect;
+            			dam.execute();
             			// update damage counter
             			int count = 1;
-            			if(d.getCountInfo() != "") {
-            				count = CountService.getInstance().getCount(d.getCountInfo());
+            			if(dam.getCountInfo() != "") {
+            				count = CountService.getInstance().getCount(dam.getCountInfo());
             			}
-            			mDamageCounter += ((count * d.getValue()) / 10);
+            			mDamageCounter += ((count * dam.getValue()) / 10);
             			LOG.debug("Pokemon: " + this.mName + " has damager counter of " + this.mDamageCounter);
-
                 	}
             		else if (effect instanceof Heal)
             		{

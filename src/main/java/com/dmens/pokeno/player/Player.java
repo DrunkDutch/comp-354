@@ -209,6 +209,7 @@ public class Player {
     }
     
     public void updateBoard(){
+    	benchPokemonOnBoard();
     	GameController.updateRewards(mRewards.size(), humanPlayer);
         GameController.updateDeck(mDeck.size(), humanPlayer);
     }
@@ -275,6 +276,11 @@ public class Player {
     	return pickedCard;
     }
     
+    public void updateActivePokemonOnBoard(){
+    	GameController.board.updateActivePokemon(opponent);
+    	GameController.board.updateActivePokemon(this);
+    }
+    
     public boolean useActivePokemon(int ability)
     {
         if (mActivePokemon == null)
@@ -283,8 +289,9 @@ public class Player {
         boolean usedAbility =  mActivePokemon.useAbility(ability, opponent.getActivePokemon());
         if (usedAbility == false)
         	return false;
-        GameController.board.updateActivePokemon(opponent);
-        
+        updateActivePokemonOnBoard();
+        checkBenchedPokemonFainted();
+        opponent.checkBenchedPokemonFainted();
         if (opponent.getActivePokemon().getDamage() >= opponent.getActivePokemon().getHP()) //250)//
         {
             checkGameWon();
@@ -300,6 +307,12 @@ public class Player {
             collectPrize(mRewards.size()-1);
         }
         return usedAbility;
+    }
+    
+    private void checkBenchedPokemonFainted(){
+    	List<Pokemon> fainted = mBenchedPokemon.stream().filter(pokemon->pokemon.isFainted()).collect(Collectors.toList());
+    	fainted.forEach(pokemon-> mBenchedPokemon.remove(pokemon));
+    	updateBoard();
     }
     
     private void activeFainted()
@@ -641,10 +654,6 @@ public class Player {
     		
     }
     
-    public void evolvePokemon(Pokemon basePokemon, Pokemon evolvedPokemon){
-    	
-    }
-    
     /**
      * Allows player to attach an Energy card onto
      * a Pokemon. (Can only be done once per turn, per 
@@ -701,6 +710,29 @@ public class Player {
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         return mBenchedPokemon.get(choice);
+    }
+    
+    public Card chooseFromOpponentBench(){
+    	if(opponent.getBenchedPokemon().isEmpty())
+    		return null;
+    	StringBuilder sb = new StringBuilder();
+        for(int i = 1; i <= opponent.getBenchedPokemon().size(); i++){
+            sb.append(i+" "+ opponent.getBenchedPokemon().get(i-1).getName()+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        return opponent.getBenchedPokemon().get(choice);
+    }
+    
+    public Card chooseFromOpponentAll(){
+    	StringBuilder sb = new StringBuilder();
+    	sb.append(opponent.getActivePokemon().getName() + ";");
+        for(int i = 1; i <= opponent.getBenchedPokemon().size(); i++){
+            sb.append(i+" "+ opponent.getBenchedPokemon().get(i-1).getName()+ ";");
+        }
+        int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
+        if(choice == 0)
+            return opponent.getActivePokemon();
+        return opponent.getBenchedPokemon().get(choice);
     }
 
     //TODO

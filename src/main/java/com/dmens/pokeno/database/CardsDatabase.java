@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,7 +11,6 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
-import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.FileUtils;
 
@@ -21,10 +19,10 @@ public class CardsDatabase extends Database<Card>{
 
 	 //Doduo, Dodrio for deck 1
 	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat", 
-	"Ducklett", "Electabuzz", "Electivire","Electrike", "Froakie", "Frogadier", "Goldeen", "Pikachu", "Pikachu Libre", 
-	"Shellder", "Suicune", "Swanna", "Geodude"};
+	"Ducklett", "Electabuzz", "Electivire","Electrike", "Froakie", "Frogadier", "Goldeen", "Pikachu", "Pikachu Libre",
+	"Shellder", "Suicune", "Swanna", "Geodude","Hitmonlee","Manectric"};
 	
-	private static String[] supportedTrainer = {"Tierno", "Potion"};
+	private static String[] supportedTrainer = {"Tierno", "Potion","Pokémon Center Lady"};
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
@@ -59,8 +57,7 @@ public class CardsDatabase extends Database<Card>{
 	
 	public Card queryByName(String name){
 		LOG.debug("Query Cards DB By name: "+name);
-		
 		Optional<Card> hit = db.stream().filter(card->card.getName().equals(name)).findAny();
-		return hit.get();
+		return hit.get().copy();
 	}
 }
