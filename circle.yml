@@ -1,4 +1,6 @@
 test:
+  override:
+    - mvn -o failsafe:verify
   post:
     - mkdir -p $CIRCLE_TEST_REPORTS/junit/
     - find . -type f -regex ".*/target/surefire-reports/.*" -exec cp {} $CIRCLE_TEST_REPORTS/junit/ \;
