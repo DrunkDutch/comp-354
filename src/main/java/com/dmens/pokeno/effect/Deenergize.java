@@ -9,11 +9,9 @@ import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
 
 
-public class Deenergize implements Effect {
+public class Deenergize extends Effect {
 
 	private int mAmount;
-	private String mTarget;
-	private Condition mCondition = null;
 	
 	/*
 	 * Constructor
@@ -24,9 +22,8 @@ public class Deenergize implements Effect {
 	 */
 	public Deenergize(int val, String tar, Condition con)
 	{
+		super(tar, con);
 		this.mAmount = val;
-		this.mTarget = tar;
-		this.mCondition = con;
 	}
 	
 	/*
@@ -41,16 +38,6 @@ public class Deenergize implements Effect {
 		
 		if(d.mCondition instanceof Flip)
 			this.mCondition = new Flip();
-	}
-	
-	/*
-     * Get the target of this Effect.
-     * 
-     * @return		The target as a string.
-     */
-	public String getTarget()
-	{
-		return this.mTarget;
 	}
 	
 	/*
@@ -110,17 +97,4 @@ public class Deenergize implements Effect {
 	{
 		return String.format("Deenergize: Target: %s, Amount: %d", this.mTarget, this.mAmount);
 	}
-
-	@Override
-	public boolean hasCondition()
-	{
-		return (mCondition != null);
-	}
-
-	@Override
-	public Condition getCondition()
-	{
-		return mCondition;
-	}
-
 }
