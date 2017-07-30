@@ -1,6 +1,12 @@
 package com.dmens.pokeno.effect;
 
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.condition.*;
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+
+import java.util.List;
 
 /*
  * A Damage effect.
@@ -64,8 +70,13 @@ public class Damage implements Effect {
 	@Override
 	public void execute() 
 	{
-		// TODO Auto-generated method stub
-		
+		System.out.println(mTarget);
+		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
+		targetPokemon.forEach(pokemon -> {
+			System.out.println(pokemon.getName());
+			((Pokemon) pokemon).addDamage(mValue);
+		});
+		System.out.println(mValue);
 	}
 
 	@Override

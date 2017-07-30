@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -55,7 +57,7 @@ public class AIPlayer extends Player {
          * Make AI choose first option when choose a pokemon from options
          */
         @Override
-        public int choosePokemonInScreen(Object[] options, String title, String message) {
+        public int chooseCards(Object[] options, String title, String message) {
         	return 0;
         }
         
@@ -81,6 +83,7 @@ public class AIPlayer extends Player {
         public void selectStarterPokemon(){
             Hand mHand = getHand();
             useCard(mHand.getPokemon().get(0));
+            TargetServiceHandler.getInstance().getService().passTurn();
         }
         
         public void activeFainted()

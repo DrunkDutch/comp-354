@@ -8,13 +8,20 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Collectors;
 
 import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.WindowConstants;
 
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+import com.dmens.pokeno.card.CardTypes;
+import com.dmens.pokeno.view.MultiCardViewerFrame;
+import com.dmens.pokeno.view.StarterSelecter;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -100,11 +107,36 @@ public class GameController {
         
         mPlayers.forEach(currentPlayer->{ currentPlayer.setUpRewards(); });
         
+		setFirstTurnActivePokemon();
+
+		TargetService service = TargetServiceHandler.getInstance().getService();
+
+		service.setYouPlayer(mPlayers.get(1));
+		service.setThemPlayer(mPlayers.get(0));
 
         AIPlayer opp = (AIPlayer)mPlayers.get(1);
         opp.selectStarterPokemon();
 	}
-	
+
+	public static void  setFirstTurnActivePokemon() {
+        if (!(GameController.getHomePlayer().getActivePokemon()  instanceof Pokemon)) {
+            GameController.displayMessage("Please choose a starting pokemon");
+            List<Pokemon> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
+			ArrayList<Pokemon> starterPokemon = startPokemon.stream().filter(p -> p instanceof Pokemon).map(
+                    p -> (Pokemon) p).
+                    filter(
+                            p -> !(p.isEvolvedCategory()))
+                    .collect(Collectors.toCollection(ArrayList::new));
+            StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
+            starterView.setSize(150, 250);
+            starterView.setVisible(true);
+			GameController.updateHand(getHomePlayer().getHand(),true);
+            GameController.board.update();
+
+        }
+
+    }
+
 	public static void retreatActivePokemon(boolean player){
     	if(player){
     		
@@ -349,10 +381,28 @@ public class GameController {
         return button;
       }
     
-    public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
+    public static int deprecatedDispayCustomOptionPane(Object[] buttons, String title, String prompt)
     {
         return JOptionPane.showOptionDialog(null, prompt, title,
         0, JOptionPane.QUESTION_MESSAGE, null, buttons, buttons[0]);
+    }
+    
+    public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
+    {
+    	final JOptionPane jop = new JOptionPane(prompt, 0, JOptionPane.DEFAULT_OPTION, null, buttons, buttons[0]);
+    	JDialog dialog = jop.createDialog(null, title);
+    	dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+    	dialog.setVisible(true);
+    	dialog.dispose();
+    	
+    	String selection = (String)jop.getValue();
+    	for (int i = 0; i < buttons.length; i++)
+    	{
+    		if (((String)buttons[i]).equals(selection))
+	    		return i;
+    	}
+    	
+    	return -1;//Integer.parseInt((String)jop.getValue());
     }
     
     public static int displayConfirmDialog(String message, String title){
