@@ -209,6 +209,7 @@ public class Player {
     }
     
     public void updateBoard(){
+    	benchPokemonOnBoard();
     	GameController.updateRewards(mRewards.size(), humanPlayer);
         GameController.updateDeck(mDeck.size(), humanPlayer);
     }
@@ -712,6 +713,8 @@ public class Player {
     }
     
     public Card chooseFromOpponentBench(){
+    	if(opponent.getBenchedPokemon().isEmpty())
+    		return null;
     	StringBuilder sb = new StringBuilder();
         for(int i = 1; i <= opponent.getBenchedPokemon().size(); i++){
             sb.append(i+" "+ opponent.getBenchedPokemon().get(i-1).getName()+ ";");
