@@ -142,6 +142,7 @@ public class CreateGameTest {
 		waitSleep(2000);
 		// Assert opponent damage
 		Assert.assertEquals(10, mPlayers.get(1).getActivePokemon().getDamage());
+		Assert.assertEquals(10, board.getOpponentDamageField());
 	}
 
 	private void waitSleep(long milis){

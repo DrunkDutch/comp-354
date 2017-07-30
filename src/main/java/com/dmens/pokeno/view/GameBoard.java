@@ -1397,6 +1397,10 @@ public class GameBoard extends javax.swing.JFrame {
 	public void setPlayerActivePokemonPanel(javax.swing.JPanel playerActivePokemonPanel) {
 		this.playerActivePokemonPanel = playerActivePokemonPanel;
 	}
+	
+	public int getOpponentDamageField(){
+		return Integer.parseInt(OpponentDamageField.getText());
+	}
     
     
     
