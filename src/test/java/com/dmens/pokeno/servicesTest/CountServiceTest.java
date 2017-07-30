@@ -33,7 +33,8 @@ public class CountServiceTest {
 	@BeforeClass
 	public static void setupPlayers(){	 
 		Deck firstDeck = new Deck();
-		firstDeck.addCards(Arrays.asList(new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
+		firstDeck.addCards(Arrays.asList(new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water"), 
+										new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
 		p1 = Mockito.spy(new Player(firstDeck));
 		
 		Deck secondDeck = new Deck();
@@ -85,7 +86,7 @@ public class CountServiceTest {
 
     	stub(method(GameController.class, "updateHand")).toReturn(0);
     	stub(method(GameController.class, "updateDeck")).toReturn(0);
-    	// p1 already has 3 energy cards in hand
+    	p1.drawCardsFromDeck(3);
 		p1.attachEnergy((EnergyCard)(p1.getHand().getCards().get(0)), p1.getActivePokemon());
 		p1.attachEnergy((EnergyCard)(p1.getHand().getCards().get(1)), p1.getActivePokemon());
 		p1.attachEnergy((EnergyCard)(p1.getHand().getCards().get(2)), p1.getActivePokemon());
