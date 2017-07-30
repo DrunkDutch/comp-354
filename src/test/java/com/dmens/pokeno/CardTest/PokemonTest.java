@@ -3,6 +3,7 @@ package com.dmens.pokeno.CardTest;
 import static org.junit.Assert.*;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.dmens.pokeno.ability.Ability;
@@ -25,6 +26,13 @@ public class PokemonTest {
 	static String mAbilityPoundName = "Pound";
 	static String mAbilityPoundTarget = "opponent-active";
 	static int mAbilityPoundValue = 10;
+
+	static Pokemon froakie;
+
+	@Before
+	public void setup(){
+		froakie = new Pokemon(mPokemonFroakieName, "basic", mPokemonFroakieHP, mPokemonFroakieRetreatCost);
+	}
 	
 	@Test
 	public void testPokemonCreation() {
@@ -34,7 +42,7 @@ public class PokemonTest {
         AbilityCost abilityCost = new AbilityCost(abilityPound);
 		abilityCost.addCost(mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);
 
-        Pokemon froakie = new Pokemon(mPokemonFroakieName, "basic", mPokemonFroakieHP, mPokemonFroakieRetreatCost);
+
         froakie.AddAbilityAndCost(abilityCost);
         
         Assert.assertEquals(froakie.getName(), mPokemonFroakieName);
@@ -55,7 +63,6 @@ public class PokemonTest {
 	@Test
 	public void testEvolvePokemon(){
 		//Create pokemon 1 (Basic)
-		Pokemon froakie = new Pokemon("froakie");
 		froakie.setCategory("basic");
 		// Create pokemon 2 (Stage-one)
 		Pokemon frogadier = new Pokemon("frogadier");
@@ -83,4 +90,15 @@ public class PokemonTest {
 		assertEquals(froakie, frogadier.getBaseCardReference());
 	}
 
+	@Test
+	public void testPokemonStatuses(){
+		froakie.setStuck(true);
+		Assert.assertEquals(true, froakie.isStuck());
+		froakie.setParalyzed(true);
+		Assert.assertEquals(true, froakie.isParalyzed());
+		froakie.setPoisoned(true);
+		Assert.assertEquals(true, froakie.isPoisoned());
+		froakie.setParalyzed(true);
+		Assert.assertEquals(true, froakie.isParalyzed());
+	}
 }
