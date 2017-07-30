@@ -42,9 +42,6 @@ public class HandTest {
 	public void testGetPokemon(){
 		hand.addCards(deck.draw(6));
 		List<Pokemon> pokemon = hand.getPokemon();
-		Assert.assertTrue(pokemon.isEmpty());
-		hand.addCard(deck.draw());
-		pokemon = hand.getPokemon();
 		Assert.assertTrue(pokemon.size()==1);
 	}
 

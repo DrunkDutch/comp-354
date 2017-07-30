@@ -24,6 +24,9 @@ public class TargetServiceTest {
 		p1.setActivePokemon(new Pokemon("Pikachu"));
 		p2.setActivePokemon(new Pokemon("Machop"));
 		
+		p1.setOpponent(p2);
+		p2.setOpponent(p1);
+		
 		// Set target service turn
 		service.setYouPlayer(p1);
 		service.setThemPlayer(p2);
@@ -68,7 +71,7 @@ public class TargetServiceTest {
 		Mockito.doReturn(1).when(p1).chooseCards(Mockito.any(), Mockito.any(), Mockito.any());
 		assertEquals(service.getTarget("choice:your-bench").get(0), p1.getBenchedPokemon().get(1));
 		// Choose from opponent bench
-		Mockito.doReturn(0).when(p2).chooseCards(Mockito.any(), Mockito.any(), Mockito.any());
+		Mockito.doReturn(0).when(p1).chooseCards(Mockito.any(), Mockito.any(), Mockito.any());
 		assertEquals(service.getTarget("choice:opponent-bench").get(0), p2.getBenchedPokemon().get(0));
 	}
 

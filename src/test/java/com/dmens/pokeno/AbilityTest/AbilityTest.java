@@ -65,7 +65,7 @@ public class AbilityTest {
     	Assert.assertEquals(heal.getTarget(), mEffectTarget);
     	Assert.assertEquals(heal.getValue(), mEffectValue);
     	
-    	Damage damage = new Damage(mEffectTarget, mEffectValue, null);
+    	Damage damage = new Damage(mEffectTarget, mEffectValue, null, "");
     	Assert.assertEquals(damage.getTarget(), mEffectTarget);
     	Assert.assertEquals(damage.getValue(), mEffectValue);
     	
@@ -102,7 +102,7 @@ public class AbilityTest {
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getHealEffect(), heal);
     	
-    	damage = new Damage(mEffectTarget, mEffectValueDifferent, null);
+    	damage = new Damage(mEffectTarget, mEffectValueDifferent, null, "");
     	Assert.assertNotEquals(ability.getDamageEffect(), damage);
     	
     	applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);

@@ -3,7 +3,7 @@ package com.dmens.pokeno.effect;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.condition.*;
-import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.*;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 import java.util.List;
@@ -13,11 +13,10 @@ import java.util.List;
  *
  * @author James
  */
-public class Damage implements Effect {
+public class Damage extends Effect {
 
 	private int mValue;
-	private String mTarget;
-	private Condition mCondition = null;
+	private String mCountInfo;
 	
 	/*
 	 * Constructor
@@ -26,11 +25,11 @@ public class Damage implements Effect {
 	 * @param		val		Integer value (amount).
 	 * @param		con		Condition.
 	 */
-	public Damage(String tar, int val, Condition con)
+	public Damage(String tar, int val, Condition con, String countInfo)
 	{
-		this.mTarget = tar;
-		this.mValue = val;	
-		this.mCondition = con;
+		super(tar, con);
+		this.mValue = val;
+		this.mCountInfo = countInfo;
 	}
 	
 	/*
@@ -48,16 +47,6 @@ public class Damage implements Effect {
 	}
 	
 	/*
-     * Get the target of this Effect.
-     * 
-     * @return		The target as a string.
-     */
-	public String getTarget()
-	{
-		return this.mTarget;
-	}
-	
-	/*
      * Get the value of this Effect.
      * 
      * @return		The value as an integer.
@@ -66,16 +55,32 @@ public class Damage implements Effect {
 	{
 		return this.mValue;
 	}
-
+	
+	
+	/*
+     * Get the value of this count info.
+     * 
+     * @return		The count info as an integer.
+     */
+	public String getCountInfo()
+	{
+		return this.mCountInfo;
+	}
+	
+	
 	@Override
 	public void execute() 
 	{
 		System.out.println(mTarget);
+		int count = 1;
+		if(this.mCountInfo != "") {
+			count = CountService.getInstance().getCount(this.mCountInfo);
+		}
 		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
-		targetPokemon.forEach(pokemon -> {
+		for(Card pokemon: targetPokemon) {
 			System.out.println(pokemon.getName());
-			((Pokemon) pokemon).addDamage(mValue);
-		});
+			((Pokemon) pokemon).addDamage(count * mValue);
+		}
 		System.out.println(mValue);
 	}
 
@@ -94,17 +99,5 @@ public class Damage implements Effect {
 			return true;
 		
 		return false;
-	}
-	
-	@Override
-	public boolean hasCondition()
-	{
-		return (mCondition != null);
-	}
-	
-	@Override
-	public Condition getCondition()
-	{
-		return mCondition;
 	}
 }
