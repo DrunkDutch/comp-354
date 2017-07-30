@@ -4,8 +4,8 @@ Quick Attack:dam:target:opponent-active:10,cond:flip:dam:target:opponent-active:
 Flying Elekick:dam:target:opponent-active:50
 Nuzzle:cond:flip:applystat:status:paralyzed:opponent-active
 Quick Attack:dam:target:opponent-active:20,cond:flip:dam:target:opponent-active:10
-Circle Circuit:dam:target:opponent-active:20,dam:target:opponent-active:20*count[target:your-bench]
-Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count[target:your-active:energy]
+Circle Circuit:dam:target:opponent-active:20,dam:target:opponent-active:20*count(target:your-bench)
+Thunderbolt:dam:target:opponent-active:100,deenergize:target:your-active:count(target:your-active:energy)
 Rain Splash:dam:target:opponent-active:20
 Soaking Horn:dam:target:opponent-active:10,cond:healed:target:your-active:dam:target:opponent-active:80
 Reckless Charge:dam:target:opponent-active:40,dam:target:your-active:10

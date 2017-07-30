@@ -22,7 +22,7 @@ public class AbilityCostTest {
 	@Before
 	public void createAbility(){
 		ability = new Ability(mAbilityName);
-		Damage damage = new Damage(mEffectTarget, mEffectValue, null);
+		Damage damage = new Damage(mEffectTarget, mEffectValue, null, "");
 		ability.addEffect(damage);
 	}
 
