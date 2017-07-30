@@ -239,6 +239,22 @@ public class Player {
     public void setActiveOnBoard(){
     	GameController.setActivePokemonOnBoard(mActivePokemon, humanPlayer);
     	updateEnergyCounters(mActivePokemon, false);
+    	
+    	// update active pokemon status 
+        int status = -1;
+    	if(mActivePokemon.isParalyzed()) {
+    		status = 0;
+    	} else if(mActivePokemon.isSleep()) {
+    		status = 1;
+    	} else if(mActivePokemon.isStuck()) {
+    		status = 2;
+    	} else if(mActivePokemon.isPoisoned()) {
+    		status = 3;
+    	}  
+    	
+    	if(status != -1) {
+    		GameController.board.addStatus(status, GameController.getActivePlayer() == this);
+    	}
     }
 
     /**
@@ -706,7 +722,7 @@ public class Player {
     public Card chooseFromBench(){
         StringBuilder sb = new StringBuilder();
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(" "+ mBenchedPokemon.get(i-1)+ ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         return mBenchedPokemon.get(choice);

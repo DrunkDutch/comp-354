@@ -26,7 +26,9 @@ import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Swap;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 /**
 *
@@ -40,11 +42,13 @@ public class AbilityTest {
 	
 	 static String mAbilityName = "Ability";
 	 static String mEffectTarget = "opponent-active";
+	 static String mEffectTargetDifferent = "your-active";
 	 static int mEffectValue = 20;
 	 static int mEffectValueDifferent = 10;
 	 static String mEffectStatus = "asleep";
 	 static String mEffectStatusDifferent = "poisoned";
-	 
+	 static String mEffectDestination = "choice:your-bench";
+
 	 @Before
 	 public void setup(){
 		 AbilitiesDatabase.getInstance().initialize("abilities.txt");
@@ -77,6 +81,10 @@ public class AbilityTest {
     	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
     	Assert.assertEquals(drawCard.getValue(), mEffectValue);
     	
+    	Swap swap = new Swap(mEffectTarget, mEffectDestination);
+    	Assert.assertEquals(swap.getTarget(), mEffectTarget);
+    	Assert.assertEquals(swap.getDestination(), mEffectDestination);
+    	
     	// Add each Effect to the Ability
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
@@ -98,6 +106,11 @@ public class AbilityTest {
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
     	
+    	ability.addEffect(swap);
+    	Assert.assertEquals(ability.getSwapEffect(), swap);
+    	Assert.assertEquals(ability.getSwapEffect().getTarget(), mEffectTarget);
+    	Assert.assertEquals(ability.getSwapEffect().getDestination(), mEffectDestination);
+    	
     	// change effects... check that effects in abilities are unaffected
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getHealEffect(), heal);
@@ -110,6 +123,9 @@ public class AbilityTest {
     	
     	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
     	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
+    	
+    	swap = new Swap(mEffectTargetDifferent, mEffectDestination);
+    	Assert.assertNotEquals(ability.getSwapEffect(), swap);
     }
     
     @Test
@@ -160,6 +176,39 @@ public class AbilityTest {
     	
     	// Expect the damage taken by Froakie to be 10 (Potion heals 30 damage)
     	assertEquals(10, player.getActivePokemon().getDamage());
+    }
+    
+    @Test
+    public void testSwapEffect(){
+    	Deck deck = new Deck();
+    	// Need to clear out the null pointers in the card database, otherwise 'queryByName' will raise an exception trying to access null pointer
+    	((CardsDatabase)CardsDatabase.getInstance()).removeNullPointersInDB();
+    	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Switch")));
+    	Player player = new Player(deck);
+    	
+    	stub(method(GameController.class, "updateHand")).toReturn(0);
+    	stub(method(GameController.class, "getActivePlayer")).toReturn(player);
+
+    	player.setActivePokemon(new Pokemon("Froakie"));
+    	assertEquals("Froakie", player.getActivePokemon().getName());
+    	
+    	player.benchPokemon(new Pokemon("Pikachu"));
+    	assertEquals("Pikachu", player.getBenchedPokemon().get(0).getName());
+    	
+    	// Draw Switch
+    	player.drawCardsFromDeck(1);
+    	assertEquals(1, player.getHand().size());
+    	assertEquals("Switch", player.getHand().getCards().get(0).getName());
+    	
+    	// Use Switch
+    	(TargetServiceHandler.getInstance()).setYouPlayer(player);
+    	stub(method(GameController.class, "dispayCustomOptionPane")).toReturn(0);
+    	player.useCard(player.getHand().getCards().get(0));
+    	assertEquals(0, player.getHand().size());
+    	
+    	// varify the active pokemon and the benched pokemon are swapped
+    	assertEquals("Pikachu", player.getActivePokemon().getName());
+    	assertEquals("Froakie", player.getBenchedPokemon().get(0).getName());
     }
 
 }

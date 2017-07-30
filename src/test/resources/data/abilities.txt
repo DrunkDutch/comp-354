@@ -68,7 +68,7 @@ Floral Crown:add:target:your:trigger:opponent:turn-end:(heal:target:self:20)
 Poké Ball:cond:flip:search:target:you:source:deck:filter:pokemon:1
 Shauna:deck:destination:deck:count(your:hand),shuffle:target:you,draw:5
 Pokémon Fan Club:search:target:you:source:deck:filter:pokemon:cat:basic:2,shuffle:target:you
-Switch:swap:your-active:your:choice:bench
+Switch:swap:source:your-active:destination:choice:your-bench
 Energy Switch:reenergize:target:your:choice:target:your:choice
 Red Card:deck:target:opponent:destination:deck:count(opponent:hand),shuffle:target:you,draw:opponent:4
 Wally:search:target:your:choice:filter:pokemon:cat:basic:source:deck:filter:evolves-from:target:last:1,shuffle:target:you

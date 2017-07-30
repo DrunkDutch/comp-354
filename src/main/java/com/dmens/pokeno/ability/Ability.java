@@ -154,6 +154,24 @@ public class Ability {
     }
     
     /*
+     * Get the single Swap effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as Swap.
+     */
+    public Swap getSwapEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == Swap.class)
+    	   {
+    		   return (Swap) effect;
+    	   }
+    	}
+    	 return null;
+    }
+    
+    /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
      */

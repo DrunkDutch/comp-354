@@ -2,6 +2,7 @@ package com.dmens.pokeno.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,7 +23,7 @@ public class CardsDatabase extends Database<Card>{
 	"Ducklett", "Electabuzz", "Electivire","Electrike", "Froakie", "Frogadier", "Goldeen", "Pikachu", "Pikachu Libre",
 	"Shellder", "Suicune", "Swanna", "Geodude","Hitmonlee","Manectric"};
 	
-	private static String[] supportedTrainer = {"Tierno", "Potion","Pokémon Center Lady"};
+	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Switch"};
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
@@ -32,6 +33,11 @@ public class CardsDatabase extends Database<Card>{
 		return database;
 	}
 	
+	public static void removeNullPointersInDB() {
+		if(database == null)
+			return;
+		((ArrayList<Card>) (database.db)).removeAll(Collections.singleton(null));  
+	}
 	private CardsDatabase(){
 		db = new ArrayList<Card>();
 	}
