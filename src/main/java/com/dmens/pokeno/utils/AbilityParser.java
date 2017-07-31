@@ -85,12 +85,7 @@ public class AbilityParser {
 		effectStack.pop();	// target
 		String target = effectStack.pop();
 		if(target.contains("choice")) {
-			target = effectStack.pop();
-			if(target.equals("your")) {
-				return target;
-			} else {
-				return null;
-			}
+			target += ":"+effectStack.pop();
 		}
 		return target;
 	}
@@ -99,11 +94,38 @@ public class AbilityParser {
 		String target = getTarget(effectStack);
 		if(target == null)
 			return null;
-		// TODO Count multiplier
-		if(effectStack.peek().contains("count"))
-			return null;
-		int damage = Integer.parseInt(effectStack.pop());
-		return new Damage(target, damage, effectCondition); 
+		// Count multiplier
+		String countInfo = "";
+		if(effectStack.peek().contains("count")) {
+			while(!effectStack.isEmpty()) {
+				String s = effectStack.pop();
+				if(s.contains(")")) {
+					// the end of count, append the last string and break out of the loop
+					countInfo += s;
+					break;
+				}
+				// reconstruct the count info
+				countInfo += (s + ":");
+			}
+		}
+		
+		int damage = 0;
+		if(countInfo != "") {
+			String[] parsedCountInfo = countInfo.split("\\*");
+			try {
+				damage = Integer.parseInt(parsedCountInfo[0]);
+				countInfo = parsedCountInfo[1];
+			} catch(NumberFormatException ex) {
+				damage = Integer.parseInt(parsedCountInfo[1]);
+				countInfo = parsedCountInfo[0];
+			}
+			
+			countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
+
+		} else {
+			damage = Integer.parseInt(effectStack.pop());
+		}
+		return new Damage(target, damage, effectCondition, countInfo); 
 	}
 	
 	private static Effect getHealEffect(Stack<String> effectStack){

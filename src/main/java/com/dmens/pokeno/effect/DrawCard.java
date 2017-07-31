@@ -9,11 +9,9 @@ import com.dmens.pokeno.condition.*;
  *
  * @author Jing
  */
-public class DrawCard implements Effect{
+public class DrawCard extends Effect{
 
 	private int mValue;
-	private String mTarget;
-	private Condition mCondition = null;
 	
 	/*
 	 * Constructor
@@ -22,8 +20,8 @@ public class DrawCard implements Effect{
 	 * @param		target		Target.
 	 */
 	public DrawCard(int value, String target) {
+		super(target, null);
 		this.mValue = value;
-		this.mTarget = target; 
 	}
 	
 	/*
@@ -44,15 +42,6 @@ public class DrawCard implements Effect{
      */
 	public int getValue() {
 		return this.mValue;
-	}
-	
-	/*
-     * Get the target of this Effect.
-     * 
-     * @return		The target as a string.
-     */
-	public String getTarget() {
-		return this.mTarget;
 	}
 	
 	@Override
@@ -80,17 +69,5 @@ public class DrawCard implements Effect{
 			return true;
 		
 		return false;
-	}
-	
-	@Override
-	public boolean hasCondition()
-	{
-		return (mCondition != null);
-	}
-	
-	@Override
-	public Condition getCondition()
-	{
-		return mCondition;
 	}
 }

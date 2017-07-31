@@ -79,7 +79,6 @@ public class CreateGameTest {
         		board.updateHand(player.drawCardsFromDeck(6), player.isHumanPlayer());
         		player.checkIfPlayerReady();
         	});
-        	Assert.assertTrue("Expected home player tobe in mulligans state", adversaryPlayer.isInMulliganState());
             // Execute mulligans, deny drawing card to avoi JOptionPane popup
         	Mockito.doNothing().when(homePlayer).notifyMulligan();
         	Mockito.doNothing().when(adversaryPlayer).notifyMulligan();
@@ -143,6 +142,7 @@ public class CreateGameTest {
 		waitSleep(2000);
 		// Assert opponent damage
 		Assert.assertEquals(10, mPlayers.get(1).getActivePokemon().getDamage());
+		Assert.assertEquals(10, board.getOpponentDamageField());
 	}
 
 	private void waitSleep(long milis){
