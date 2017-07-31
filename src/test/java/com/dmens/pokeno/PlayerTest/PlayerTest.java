@@ -6,10 +6,13 @@ import static org.junit.Assert.assertTrue;
 import static  org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -47,6 +50,8 @@ public class PlayerTest{
 	private static Deck testDeck1;
 	
 	static GameBoard mockBoard = Mockito.mock(GameBoard.class);
+
+	private static final Logger LOG = LogManager.getLogger(PlayerTest.class);
 	
 	@BeforeClass
 	public static void setup(){
@@ -170,5 +175,49 @@ public class PlayerTest{
 		// Assert both players are ready
 		assertTrue(player1.getIsReadyToStart());
 		assertTrue(player2.getIsReadyToStart());
+	}
+
+	@Test
+	public void testBenchLimit(){
+		// Mocks & stubs
+		stub(method(GameController.class, "displayMessage")).toReturn(0);
+		Player player = new Player();
+		ArrayList<Pokemon> pokecards = new ArrayList<>();
+		Pokemon pokemon1 = new Pokemon("pokemon1");
+		pokemon1.setCategory("basic");
+		pokecards.add(pokemon1);
+		Pokemon pokemon2 = new Pokemon("pokemon2");
+		pokemon2.setCategory("basic");
+		pokecards.add(pokemon2);
+		Pokemon pokemon3 = new Pokemon("pokemon3");
+		pokemon3.setCategory("basic");
+		pokecards.add(pokemon3);
+		Pokemon pokemon4 = new Pokemon("pokemon4");
+		pokemon4.setCategory("basic");
+		pokecards.add(pokemon4);
+		Pokemon pokemon5 = new Pokemon("pokemon5");
+		pokemon5.setCategory("basic");
+		pokecards.add(pokemon5);
+		Pokemon pokemon6 = new Pokemon("pokemon6");
+		pokemon6.setCategory("basic");
+		pokecards.add(pokemon6);
+		Pokemon pokemon7 = new Pokemon("pokemon7");
+		pokemon7.setCategory("basic");
+		pokecards.add(pokemon7);
+
+		LOG.info("Adding 7 pokemon cards to hand");
+		pokecards.stream().forEach(pokemon -> player.getHand().addCard(pokemon));
+		assertEquals(7, player.getHand().size());
+
+		LOG.info("Setting first active pokemon");
+		player.useCard(player.getHand().getPokemon().get(0));
+		assertEquals(pokemon1, player.getActivePokemon());
+
+		LOG.info("Benching rest of hand");
+		player.getHand().getPokemon().stream().forEach(pokemon -> player.useCard(pokemon));
+		assertEquals(5, player.getBenchedPokemon().size());
+
+		LOG.info("Ensuring that last pokemon wasn't benched");
+		assertEquals(1, player.getHand().size());
 	}
 }
