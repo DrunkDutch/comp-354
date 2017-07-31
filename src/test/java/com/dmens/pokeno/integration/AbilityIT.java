@@ -9,6 +9,8 @@ import com.dmens.pokeno.database.CardsDatabase;
 import com.dmens.pokeno.deck.Deck;
 import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -35,8 +37,11 @@ public class AbilityIT {
     static String mEffectStatus = "asleep";
     static String mEffectStatusDifferent = "poisoned";
 
+    private static final Logger LOG = LogManager.getLogger(AbilityIT.class);
+
     @Before
     public void setup(){
+        LOG.info("Setting up database instances");
         AbilitiesDatabase.getInstance().initialize("abilities.txt");
         CardsDatabase.getInstance().initialize("cards.txt");
 
@@ -66,9 +71,7 @@ public class AbilityIT {
 
     @Test
     public void testHealEffect(){
-        Deck deck = new Deck();
-        deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Potion")));
-        Player player = Mockito.spy(new Player(deck));
+        Player player = Mockito.spy(new Player());
         TargetServiceHandler.getInstance().setYouPlayer(player);
 
         stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
@@ -84,7 +87,8 @@ public class AbilityIT {
         assertEquals(40, player.getActivePokemon().getDamage());
 
         // Draw Potion
-        player.drawCardsFromDeck(1);
+        player.getHand().addCard(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Potion")).get(0));
+//        player.drawCardsFromDeck(1);
         assertEquals(1, player.getHand().size());
         assertEquals("Potion", player.getHand().getCards().get(0).getName());
 
