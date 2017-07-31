@@ -6,6 +6,7 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 import java.util.Arrays;
 
+import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,8 +31,8 @@ public class CountServiceTest {
 	private static CountService service = CountService.getInstance();
 	private static Player p1 , p2;
 	
-	@BeforeClass
-	public static void setupPlayers(){	 
+	@Before
+	public void setupPlayers(){
 		Deck firstDeck = new Deck();
 		firstDeck.addCards(Arrays.asList(new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water"), 
 										new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
@@ -80,7 +81,7 @@ public class CountServiceTest {
 	
 	@Test
 	public void testGetActiveCount(){	
-		p1.getActivePokemon().setDamageCounter(2);
+		p1.getActivePokemon().addDamage(20);
 		stub(method(GameController.class, "getActivePlayer")).toReturn(p1);
 		assertEquals(service.getCount("target:your-active:damage"), 2);
 

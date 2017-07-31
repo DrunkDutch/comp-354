@@ -277,10 +277,8 @@ public class Player {
     }
     
     public void updateActivePokemonOnBoard(){
+    	GameController.board.updateActivePokemon(opponent);
     	GameController.board.updateActivePokemon(this);
-    	updateEnergyCounters(mActivePokemon,false);
-        GameController.board.updateActivePokemon(opponent);
-        opponent.updateEnergyCounters(opponent.getActivePokemon(),false);
     }
     
     public boolean useActivePokemon(int ability)
@@ -585,8 +583,12 @@ public class Player {
             		}
             	}else if(mActivePokemon == null)
                     setActivePokemon(pokemon);
-                else
+                else if(mBenchedPokemon.size() < 5)
                     benchPokemon(pokemon);
+                else{
+                    displayMessage("Bench is full");
+                    return false;
+                }
                 break;
             case ENERGY:
             	if(!mHasPlayedEnergy){
@@ -697,7 +699,7 @@ public class Player {
         StringBuilder sb = new StringBuilder();
         sb.append(mActivePokemon.getName() + ";");
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(i+" "+ mBenchedPokemon.get(i-1).getName()+ ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         if(choice == 0)
@@ -708,7 +710,7 @@ public class Player {
     public Card chooseFromBench(){
         StringBuilder sb = new StringBuilder();
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(i+" "+ mBenchedPokemon.get(i-1).getName()+ ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         return mBenchedPokemon.get(choice);

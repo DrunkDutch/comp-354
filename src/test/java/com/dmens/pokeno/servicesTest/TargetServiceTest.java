@@ -30,14 +30,6 @@ public class TargetServiceTest {
 		// Set target service turn
 		service.setYouPlayer(p1);
 		service.setThemPlayer(p2);
-		
-		
-	}
-	
-	@Test
-	public void testGetPlayer(){
-		assertEquals(service.getPlayer("opponent-active"), p2);
-		assertEquals(service.getPlayer("your-active"), p1);
 	}
 	
 	@Test
