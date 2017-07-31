@@ -16,6 +16,7 @@ import com.dmens.pokeno.condition.ConditionTypes;
 import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.Deenergize;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
@@ -23,8 +24,6 @@ import com.dmens.pokeno.effect.Heal;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
-	
-	//private static String[] unsupportedAbilities = {"Nyan Press", "Exhausted Tackle", "Poison Ring", "Sleep Poison"};
 	
 	public static Ability getAbilityFromString(String abilityInformation){
 		LOG.debug(abilityInformation);
@@ -76,6 +75,8 @@ public class AbilityParser {
 				return getApplyStatusEffect(effectStack);
 			case DRAW:
 				return getDrawCardEffect(effectStack);
+			case DEENERGIZE:
+				return getDeenergizeEffect(effectStack);
 			default:
 				return null;
 		}
@@ -156,6 +157,20 @@ public class AbilityParser {
 		}
 
 		return new DrawCard(value, target); 
+	}
+	
+	private static Effect getDeenergizeEffect(Stack<String> effectStack){
+		int amount = 0;
+		String target = "";
+		effectStack.pop();	// target
+		
+		if(effectStack.size() == 2) {
+			target = effectStack.pop();
+			amount = Integer.parseInt(effectStack.pop());
+			LOG.debug("Simple Deenergize Effect parsed");
+		}
+		
+		return new Deenergize(amount, target, null);
 	}
 	
 	private static Condition getCondition(Stack<String> effectStack) {
