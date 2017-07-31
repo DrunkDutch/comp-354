@@ -61,7 +61,13 @@ public class Player {
     	mDiscards = new CardContainer();
         humanPlayer = true;
     }
-
+    
+    //A rarely used method for if the player's deck ever needs to be set outside of construction
+    public void setDeck(Deck deckList)
+    {
+    	mDeck = deckList;
+    }
+    
     public Pokemon getActivePokemon() {
         return mActivePokemon;
     }
@@ -107,14 +113,14 @@ public class Player {
     
     //NOTE: Size of mHand should be at most 7. 
     public Hand drawCardsFromDeck(int numOfCards) {
-    	assert numOfCards >= 0;
-    	assert mDeck.size() >= numOfCards;
+    	//assert numOfCards >= 0;
+    	//assert mDeck.size() >= numOfCards;
     	
-        if (numOfCards > mDeck.size())
-            numOfCards = mDeck.size();
-        mHand.addCards(mDeck.draw(numOfCards));
+        if (numOfCards > getDeck().size())
+            numOfCards = getDeck().size();
+        mHand.addCards(getDeck().draw(numOfCards));
         GameController.updateHand(mHand, humanPlayer);
-        GameController.updateDeck(mDeck.size(), humanPlayer);
+        GameController.updateDeck(getDeck().size(), humanPlayer);
         return mHand;
     }
     
@@ -126,6 +132,8 @@ public class Player {
         TargetService service = TargetServiceHandler.getInstance().getService();
         service.setYouPlayer(this);
         service.setThemPlayer(opponent);
+        if (getDeck().size() == 0)
+        	loseGame();
         drawCardsFromDeck(1);
         
         if (this instanceof AIPlayer)
@@ -355,6 +363,14 @@ public class Player {
             displayMessage(message);
             System.exit(0);
         }
+    }
+    
+    public void loseGame()
+    {
+    	String message = (humanPlayer) ? "You Lost! Game will now exit." : "You Won! Game will now exit.";
+        displayMessage(message);
+        //assert(true);
+        //System.exit(0);
     }
     
     private void declareMulligan(){
