@@ -31,7 +31,6 @@ public class Pokemon extends Card {
     private boolean mParalyzed;
     private boolean mSleep;
     private boolean mStuck;
-    private int mDamageCounter;
     
     // Stage-one attributes
     private Pokemon mBaseCardReference;
@@ -42,7 +41,6 @@ public class Pokemon extends Card {
     	mAttachedEnergy = new ArrayList<EnergyCard>();
         mAbilitiesAndCost = new ArrayList<AbilityCost>();
         mRetreatCost = -1;
-        mDamageCounter = 0;
     }
     
     public Pokemon(String name, String category, int initialHP, Integer retreatCost){
@@ -52,7 +50,6 @@ public class Pokemon extends Card {
         mRetreatCost = retreatCost;
         mAttachedEnergy = new ArrayList<EnergyCard>();
         mAbilitiesAndCost = new ArrayList<AbilityCost>();
-        mDamageCounter = 0;
     }
 
 	public void setHP(int mHP) {
@@ -86,11 +83,7 @@ public class Pokemon extends Card {
 	}
 
 	public int getDamageCounter() {
-		return this.mDamageCounter;
-	}
-	
-	public void setDamageCounter(int damageCounter) {
-		this.mDamageCounter = damageCounter;
+		return this.mDamage / 10;
 	}
 	
 	public String toString()
@@ -277,13 +270,6 @@ public class Pokemon extends Card {
                 	{
             			Damage dam = (Damage) effect;
             			dam.execute();
-            			// update damage counter
-            			int count = 1;
-            			if(dam.getCountInfo() != "") {
-            				count = CountService.getInstance().getCount(dam.getCountInfo());
-            			}
-            			mDamageCounter += ((count * dam.getValue()) / 10);
-            			LOG.debug("Pokemon: " + this.mName + " has damager counter of " + this.mDamageCounter);
                 	}
             		else if (effect instanceof Heal)
             		{
@@ -388,7 +374,6 @@ public class Pokemon extends Card {
     public boolean evolvePokemon(Pokemon basePokemon){
     	if(basePokemon.getName().equalsIgnoreCase(this.getBasePokemonName())){
  		    this.mDamage = basePokemon.getDamage();
- 		    this.mDamageCounter = basePokemon.getDamageCounter();
 		    // transfer energy
 		    transferEnergy(basePokemon);
 		    //  keep base reference for discard
