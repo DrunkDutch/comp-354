@@ -277,10 +277,8 @@ public class Player {
     }
     
     public void updateActivePokemonOnBoard(){
+    	GameController.board.updateActivePokemon(opponent);
     	GameController.board.updateActivePokemon(this);
-    	updateEnergyCounters(mActivePokemon,false);
-        GameController.board.updateActivePokemon(opponent);
-        opponent.updateEnergyCounters(opponent.getActivePokemon(),false);
     }
     
     public boolean useActivePokemon(int ability)

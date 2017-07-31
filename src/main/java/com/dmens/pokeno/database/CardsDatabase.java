@@ -19,10 +19,10 @@ public class CardsDatabase extends Database<Card>{
 
 	 //Doduo, Dodrio for deck 1
 	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat", 
-	"Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
-	"Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric"};
+	"Ducklett", "Electabuzz", "Electivire","Electrike", "Froakie", "Frogadier", "Goldeen", "Pikachu", "Pikachu Libre",
+	"Shellder", "Suicune", "Swanna", "Geodude","Hitmonlee","Manectric"};
 	
-	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady"};
+	private static String[] supportedTrainer = {"Tierno", "Potion","Pokémon Center Lady"};
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
