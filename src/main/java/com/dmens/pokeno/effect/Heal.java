@@ -1,9 +1,13 @@
 package com.dmens.pokeno.effect;
 
+import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.*;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.condition.*;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+
+import java.util.List;
 
 /*
  * A Heal effect.
@@ -55,40 +59,8 @@ public class Heal extends Effect {
 	@Override
 	public void execute()
 	{
-		if(mTarget.equals(YOUR_ACTIVE)) {
-			// heal the player's active pokement
-			if(GameController.getIsHomePlayerPlaying()) {
-				GameController.getHomePlayer().getActivePokemon().removeDamage(this.mValue);
-			} else {
-				GameController.getAIPlayer().getActivePokemon().removeDamage(this.mValue);
-			}
-		} else if (mTarget.equals(YOUR)) {
-			if(GameController.getIsHomePlayerPlaying()) {
-				Player homePlayer= GameController.getHomePlayer();
-				int pokemonIndex = homePlayer.createPokemonOptionPane("Heal", "Which Pokemon would you like to heal?", false);
-;				Pokemon pokemonToHeal = null;
-				if(homePlayer.getActivePokemon() != null) {
-					if(pokemonIndex == 0) {
-						pokemonToHeal = homePlayer.getActivePokemon();
-					} else {
-						pokemonToHeal = homePlayer.getBenchedPokemon().get(pokemonIndex - 1);
-					}
-				} else {
-					pokemonToHeal = homePlayer.getBenchedPokemon().get(pokemonIndex);
-				}
-				pokemonToHeal.removeDamage(this.mValue);
-			} else {
-				// AI heals a damaged pokemon
-				AIPlayer ai = (AIPlayer)(GameController.getAIPlayer());
-				Pokemon pokemonToHeal = ai.getDamangedPokemon();
-				if(pokemonToHeal != null) {
-					pokemonToHeal.removeDamage(this.mValue);
-				}
-			}
-		} else if(mTarget.equals(SELF)) {
-			// TODO: heal the pokemon this card is attached to, specific to Floral Crown
-		}
-
+		List<Card> pokemonToHeal = TargetServiceHandler.getInstance().getTarget(mTarget);
+		pokemonToHeal.forEach(poke -> ((Pokemon)poke).removeDamage(this.mValue));
 	}
 
 	@Override

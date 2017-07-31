@@ -6,10 +6,12 @@ import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 import java.util.Arrays;
 
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -117,7 +119,7 @@ public class AbilityTest {
     	Deck deck = new Deck();
     	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Tierno"),
     			new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
-    	Player player = new Player(deck);
+    	Player player = Mockito.spy(new Player(deck));
     	
     	stub(method(GameController.class, "updateHand")).toReturn(0);
     	stub(method(GameController.class, "getActivePlayer")).toReturn(player);
@@ -135,7 +137,8 @@ public class AbilityTest {
     public void testHealEffect(){
     	Deck deck = new Deck();
     	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Potion")));
-    	Player player = new Player(deck);
+    	Player player = Mockito.spy(new Player(deck));
+		TargetServiceHandler.getInstance().setYouPlayer(player);
     	
     	stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
     	stub(method(GameController.class, "getHomePlayer")).toReturn(player);

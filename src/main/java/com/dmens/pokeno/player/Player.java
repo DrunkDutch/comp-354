@@ -695,7 +695,7 @@ public class Player {
         StringBuilder sb = new StringBuilder();
         sb.append(mActivePokemon.getName() + ";");
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(i+" "+ mBenchedPokemon.get(i-1).getName()+ ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         if(choice == 0)
@@ -706,7 +706,7 @@ public class Player {
     public Card chooseFromBench(){
         StringBuilder sb = new StringBuilder();
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(i+" "+ mBenchedPokemon.get(i-1).getName()+ ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         return mBenchedPokemon.get(choice);
