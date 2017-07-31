@@ -47,7 +47,7 @@ public class AIPlayer extends Player {
             // Attack if possible
             if(!GameController.hasActivePokemonBlocked(1) && getOpponent().getActivePokemon() != null)
             {
-            	GameController.useActivePokemonForPlayer(1, 0);
+//            	GameController.useActivePokemonForPlayer(1, 0);
             }
             
             // Resolve effects
