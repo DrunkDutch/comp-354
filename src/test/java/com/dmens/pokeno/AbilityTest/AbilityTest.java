@@ -143,6 +143,7 @@ public class AbilityTest {
     	stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
     	stub(method(GameController.class, "getHomePlayer")).toReturn(player);
     	stub(method(Player.class, "createPokemonOptionPane")).toReturn(0);
+    	stub(method(GameController.class, "getActivePlayer")).toReturn(player);
 
     	// Set Froakie as the active pokemon
     	player.setActivePokemon(new Pokemon("Froakie"));
