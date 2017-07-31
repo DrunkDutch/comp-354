@@ -103,6 +103,4 @@ public class AbilityTest {
     	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
     	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
     }
-
-
 }

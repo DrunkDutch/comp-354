@@ -1,6 +1,7 @@
 package com.dmens.pokeno.card;
 
 import com.dmens.pokeno.ability.Ability;
+import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.effect.Effect;
 
 import org.apache.logging.log4j.LogManager;
@@ -42,6 +43,9 @@ public class TrainerCard extends Card {
 	
 	public void use() {
 		mAbility.performAbility();
+		GameController.getActivePlayer().getDiscards().addCard(this);
+		GameController.updateGraveyard(GameController.getActivePlayer().getDiscards().size(), GameController.getActivePlayer().isHumanPlayer());
+		//update counter
 	}
 
 	@Override
