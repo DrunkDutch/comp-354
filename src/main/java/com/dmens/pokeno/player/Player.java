@@ -240,21 +240,19 @@ public class Player {
     	GameController.setActivePokemonOnBoard(mActivePokemon, humanPlayer);
     	updateEnergyCounters(mActivePokemon, false);
     	
-    	// update active pokemon status 
-        int status = -1;
+    	// update active pokemon status
     	if(mActivePokemon.isParalyzed()) {
-    		status = 0;
-    	} else if(mActivePokemon.isSleep()) {
-    		status = 1;
-    	} else if(mActivePokemon.isStuck()) {
-    		status = 2;
-    	} else if(mActivePokemon.isPoisoned()) {
-    		status = 3;
+    		GameController.board.addStatus(0, GameController.getActivePlayer() == this);
+    	} 
+    	if(mActivePokemon.isSleep()) {
+    		GameController.board.addStatus(1, GameController.getActivePlayer() == this);
+    	} 
+    	if(mActivePokemon.isStuck()) {
+    		GameController.board.addStatus(2, GameController.getActivePlayer() == this);
+    	} 
+    	if(mActivePokemon.isPoisoned()) {
+    		GameController.board.addStatus(3, GameController.getActivePlayer() == this);
     	}  
-    	
-    	if(status != -1) {
-    		GameController.board.addStatus(status, GameController.getActivePlayer() == this);
-    	}
     }
 
     /**
@@ -711,7 +709,7 @@ public class Player {
         StringBuilder sb = new StringBuilder();
         sb.append(mActivePokemon.getName() + ";");
         for(int i = 1; i <= mBenchedPokemon.size(); i++){
-            sb.append(i+" "+ mBenchedPokemon.get(i-1)+ ";");
+            sb.append(" "+ mBenchedPokemon.get(i-1) + ";");
         }
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         if(choice == 0)
