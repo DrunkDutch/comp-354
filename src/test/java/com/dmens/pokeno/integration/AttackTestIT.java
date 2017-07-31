@@ -1,4 +1,4 @@
-package com.dmens.pokeno.PlayerTest;
+package com.dmens.pokeno.integration;
 
 import java.awt.*;
 import java.util.Arrays;
@@ -16,7 +16,7 @@ import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.view.GameBoard;
 import com.dmens.pokeno.utils.CardParser;
 
-public class AttackTest {
+public class AttackTestIT {
 
 	private static final Logger LOG = LogManager.getLogger(Pokemon.class);
 	
