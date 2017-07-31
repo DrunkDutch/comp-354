@@ -583,8 +583,12 @@ public class Player {
             		}
             	}else if(mActivePokemon == null)
                     setActivePokemon(pokemon);
-                else
+                else if(mBenchedPokemon.size() < 5)
                     benchPokemon(pokemon);
+                else{
+                    displayMessage("Bench is full");
+                    return false;
+                }
                 break;
             case ENERGY:
             	if(!mHasPlayedEnergy){
