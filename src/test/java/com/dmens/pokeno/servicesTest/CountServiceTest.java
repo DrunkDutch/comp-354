@@ -80,7 +80,7 @@ public class CountServiceTest {
 	
 	@Test
 	public void testGetActiveCount(){	
-		p1.getActivePokemon().setDamageCounter(2);
+		p1.getActivePokemon().addDamage(20);
 		stub(method(GameController.class, "getActivePlayer")).toReturn(p1);
 		assertEquals(service.getCount("target:your-active:damage"), 2);
 
