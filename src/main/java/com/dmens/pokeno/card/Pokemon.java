@@ -89,7 +89,7 @@ public class Pokemon extends Card {
 	public String toString()
 	{
 		StringBuilder abilitiesAsList = new StringBuilder();		
-		return String.format("%s:\t\tNAME: %s\n%s", Pokemon.class, this.getName(), abilitiesAsList.toString());
+		return String.format("%s\n%s", this.getName(), abilitiesAsList.toString());
 	}
 	
 	public boolean addDamage(int damage)
