@@ -160,14 +160,15 @@ public class Ability {
      * 
      * @return		Effect cast as Swap.
      */
-    public Swap getSwapEffect()
-    {
-    	for (Effect effect: mEffects)
-    	{
-    	   if(effect.getClass() == Swap.class)
-    	   {
-    		   return (Swap) effect;
-
+    public Swap getSwapEffect() {
+		for (Effect effect : mEffects) {
+			if (effect.getClass() == Swap.class) {
+				return (Swap) effect;
+			}
+		}
+		return null;
+	}
+	/*
      * Get the single Deenergize effect.
      * Assumption is that there is only one.
      * 

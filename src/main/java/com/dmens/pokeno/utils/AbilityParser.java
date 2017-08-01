@@ -164,15 +164,17 @@ public class AbilityParser {
 	}
 	
 
-	private static Effect getSwapEffect(Stack<String> effectStack){
-		effectStack.pop();	// source
+	private static Effect getSwapEffect(Stack<String> effectStack) {
+		effectStack.pop();    // source
 		String swapSource = effectStack.pop();
-		effectStack.pop();	// destination;
+		effectStack.pop();    // destination;
 		String swapDestination = effectStack.pop();
-		while(!effectStack.isEmpty()) {
+		while (!effectStack.isEmpty()) {
 			String s = effectStack.pop();
-			swapDestination += (":"+ s);
+			swapDestination += (":" + s);
 		}
+		return new Swap(swapSource, swapDestination);
+	}
 
 
 	private static Effect getDeenergizeEffect(Stack<String> effectStack){
