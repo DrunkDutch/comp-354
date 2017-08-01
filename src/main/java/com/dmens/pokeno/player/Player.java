@@ -383,17 +383,17 @@ public class Player {
     
     private void checkGameWon(){
     	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
-            String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
+            String message = (humanPlayer) ? "You Won! You may exit the game." : "You Lost! You may exit the game.";
             displayMessage(message);
-            System.exit(0);
+            GameController.endGame();
         }
     }
     
     public boolean loseGame()
     {
-    	String message = (humanPlayer) ? "You Lost! Game will now exit." : "You Won! Game will now exit.";
+    	String message = (humanPlayer) ? "You Lost! You may exit the game." : "You Won! You may exit the game.";
         displayMessage(message);
-        System.exit(0);
+        GameController.endGame();
         return false;
     }
     

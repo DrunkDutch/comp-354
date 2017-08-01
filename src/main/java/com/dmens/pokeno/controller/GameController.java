@@ -400,4 +400,15 @@ public class GameController {
     public static int displayConfirmDialog(String message, String title){
     	return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
     }
+    
+    public static void endGame()
+    {
+    	board.disablePlayerControls();
+    	mGameOver = true;
+    }
+    
+    public static boolean checkGameOver()
+    {
+    	return mGameOver;
+    }
 }
