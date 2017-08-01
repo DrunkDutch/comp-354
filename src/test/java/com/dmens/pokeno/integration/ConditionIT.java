@@ -58,6 +58,8 @@ public class ConditionIT {
         seaking.addDamage(40);
         
         // "Heal" Seaking
+        Assert.assertNotNull(seaking);
+        System.out.println(seaking.getName());
         seaking.removeDamage(10);
         Assert.assertEquals(true, seaking.isHealed());
         

@@ -13,6 +13,7 @@ import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.CardsDatabase;
 import com.dmens.pokeno.effect.*;
 import com.dmens.pokeno.services.CountService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.utils.Randomizer;
 import com.dmens.pokeno.condition.*;
 
@@ -119,16 +120,8 @@ public class Pokemon extends Card {
 		}
 		mDamage -= damageToRemove;
 		setHealed(true);
-		
-		if(GameController.board == null) {
-			return;
-		}
-		
-		if(this == GameController.getHomePlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getHomePlayer());
-		} else if(this == GameController.getAIPlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getAIPlayer());
-		} 
+		LOG.debug("here");
+		TargetServiceHandler.getInstance().getService().getPlayer("your-active").updateActivePokemonOnBoard();
 	}
 
 	public void addEnergy(EnergyCard energy){

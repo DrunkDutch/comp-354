@@ -61,9 +61,14 @@ public class AbilityIT {
         deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Tierno"),
                 new EnergyCard("Water","water"), new EnergyCard("Water","water"), new EnergyCard("Water", "water")));
         Player player = Mockito.spy(new Player(deck));
+        TargetServiceHandler.getInstance().setYouPlayer(player);
 
-        stub(method(GameController.class, "updateHand")).toReturn(0);
-        stub(method(GameController.class, "getActivePlayer")).toReturn(player);
+        Mockito.doNothing().when(player).setActiveOnBoard();
+        Mockito.doNothing().when(player).updateActivePokemonOnBoard();
+        Mockito.doNothing().when(player).benchPokemonOnBoard();
+        Mockito.doNothing().when(player).updateBoard();
+        Mockito.doNothing().when(player).updateDiscardsOnBoard();
+        
         // Draw Tierno
         player.drawCardsFromDeck(1);
         assertEquals(1, player.getHand().size());
@@ -81,10 +86,11 @@ public class AbilityIT {
         Player player = Mockito.spy(new Player(deck));
         TargetServiceHandler.getInstance().setYouPlayer(player);
 
-        stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
-        stub(method(GameController.class, "getHomePlayer")).toReturn(player);
-        stub(method(Player.class, "createPokemonOptionPane")).toReturn(0);
-        stub(method(GameController.class, "getActivePlayer")).toReturn(player);
+        Mockito.doNothing().when(player).setActiveOnBoard();
+        Mockito.doNothing().when(player).updateActivePokemonOnBoard();
+        Mockito.doNothing().when(player).benchPokemonOnBoard();
+        Mockito.doNothing().when(player).updateBoard();
+        Mockito.doNothing().when(player).updateDiscardsOnBoard();
 
         // Set Froakie as the active pokemon
         player.setActivePokemon(new Pokemon("Froakie"));

@@ -118,6 +118,15 @@ public class Player {
         return mHand;
     }
     
+    public void discardCard(Card card){
+    	this.mDiscards.addCard(card);
+    	updateDiscardsOnBoard();
+    }
+    
+    public void updateDiscardsOnBoard(){
+    	GameController.updateGraveyard(this.mDiscards.size(), isHumanPlayer());
+    }
+    
     public void startTurn()
     {
     	// Reset has picked energy flag every turn
