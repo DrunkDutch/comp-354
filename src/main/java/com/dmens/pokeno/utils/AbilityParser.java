@@ -14,6 +14,7 @@ import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.condition.ConditionTypes;
 import com.dmens.pokeno.condition.Flip;
+import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.Deenergize;
@@ -31,7 +32,7 @@ public class AbilityParser {
     	Ability ability = new Ability(abilityInformation.substring(0,indexName));
     	
     	String restStr = abilityInformation.substring(indexName + 1, abilityInformation.length());
-    	// Dive effects separated by comma
+    	// Divide effects separated by comma
     	Pattern p = Pattern.compile("(.+?(\\(.*?\\))*?)(?:,|$)");
     	Matcher m = p.matcher(restStr);
     	List<String> effects = new LinkedList<String>();
@@ -196,7 +197,8 @@ public class AbilityParser {
 				}
 			case HEALED:
 				String target = getTarget(effectStack);
-				return null;
+				LOG.info("Simple Healed Condition parsed");
+				return new Healed(target);
 			case COUNT:
 				while(!effectStack.pop().contains(")"));
 				return null;

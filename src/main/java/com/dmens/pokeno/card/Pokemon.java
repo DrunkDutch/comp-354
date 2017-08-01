@@ -31,6 +31,7 @@ public class Pokemon extends Card {
     private boolean mParalyzed;
     private boolean mSleep;
     private boolean mStuck;
+    private boolean mHealed;
     
     // Stage-one attributes
     private Pokemon mBaseCardReference;
@@ -71,7 +72,6 @@ public class Pokemon extends Card {
 	public void setCategory(String mCategory) {
 		this.mCategory = mCategory;
 	}
-
 
 	public void setmRetreatCost(int mRetreatCost) {
 		this.mRetreatCost = mRetreatCost;
@@ -114,9 +114,11 @@ public class Pokemon extends Card {
 		
 		if(damageToRemove > mDamage) {
 			mDamage = 0;
+			setHealed(true);
 			return;
 		}
 		mDamage -= damageToRemove;
+		setHealed(true);
 		
 		if(GameController.board == null) {
 			return;
@@ -211,6 +213,11 @@ public class Pokemon extends Card {
     						proceedWithAttack = false;
     						displayMessage(target.getName() + " avoided the attack!");
     					}
+        			}
+        			else if(effect.getCondition() instanceof Healed)
+        			{
+        				if(!isHealed())
+        					proceedWithAttack = false;
         			}
         		}
   
@@ -314,7 +321,6 @@ public class Pokemon extends Card {
         this.mPoisoned = poisoned;
     }
 
-
     public void setParalyzed(boolean paralyzed) {
         this.mParalyzed = paralyzed;
     }
@@ -325,6 +331,10 @@ public class Pokemon extends Card {
     
     public void setStuck(boolean stuck) {
     	this.mStuck = stuck;
+    }
+    
+    public void setHealed(boolean healed) {
+    	this.mHealed = healed;
     }
 
     public int getHP() {
@@ -363,6 +373,10 @@ public class Pokemon extends Card {
     
     public boolean isStuck() {
     	return mStuck;
+    }
+    
+    public boolean isHealed() {
+    	return mHealed;
     }
     
     public boolean isEvolvedCategory(){

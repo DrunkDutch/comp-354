@@ -47,7 +47,7 @@ public class AIPlayer extends Player {
             // Attack if possible
             if(!GameController.hasActivePokemonBlocked(1) && getOpponent().getActivePokemon() != null)
             {
-//            	GameController.useActivePokemonForPlayer(1, 0);
+            	GameController.useActivePokemonForPlayer(1, 0);
             }
             
             // Resolve effects
@@ -71,6 +71,7 @@ public class AIPlayer extends Player {
             			continue;
             		Card energyInHand = mHand.getEnergyOfType(energy);
             		if(energyInHand != null){
+            		    LOG.info("Playing the required energy");
 	            		setEnergy(mHand.getEnergyOfType(energy), pokemon);
 	            		energyPlayed.set(true);
 	            		break;
