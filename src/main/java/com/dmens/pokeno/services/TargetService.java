@@ -138,5 +138,24 @@ public class TargetService {
         them = tmp;
     }
 
+    /**
+     * Get the player associated with the target string
+     */
+    public Player getPlayer(String target) {
+    	 TargetTypes type = TargetTypes.fromName(target);
+         switch(type){
+             case YOUR_ACTIVE:			return you;
+             case OPPONENT_ACTIVE:		return them;
+             case YOUR_BENCH:			return you;
+             case OPPONENT_BENCH:		return them;
+             case YOUR_HAND:			return you;
+             case OPPONENT_HAND:		return them;
+             case CHOICE_YOUR:			return you;
+             case CHOICE_OPPONENT:		return them;
+             case CHOICE_YOUR_BENCH:	return you;
+             case CHOICE_OPPONENT_BENCH:return them;
+         }
+    	return null;
+    }
 }
 
