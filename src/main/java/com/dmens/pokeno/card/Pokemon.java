@@ -216,7 +216,11 @@ public class Pokemon extends Card {
   
         		if(proceedWithAttack)
         		{
-        			if(effect instanceof ApplyStatus)
+        			if(effect instanceof Deenergize)
+        			{
+        				effect.execute();
+        			}
+        			else if(effect instanceof ApplyStatus)
             		{
             			ApplyStatus as = (ApplyStatus) effect;
             			String status = as.getStatus();
