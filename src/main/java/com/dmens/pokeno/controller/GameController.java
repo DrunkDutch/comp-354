@@ -403,12 +403,14 @@ public class GameController {
     
     public static void endGame()
     {
+    	System.out.println("Ending game");
     	board.disablePlayerControls();
     	mGameOver = true;
     }
     
     public static boolean checkGameOver()
     {
+    	System.out.println(mGameOver);
     	return mGameOver;
     }
 }

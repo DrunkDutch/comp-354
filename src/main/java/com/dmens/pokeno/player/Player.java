@@ -124,7 +124,7 @@ public class Player {
         return mHand;
     }
     
-    public boolean startTurn()
+    public void startTurn()
     {
     	// Reset has picked energy flag every turn
     	mHasPlayedEnergy = false;
@@ -133,8 +133,7 @@ public class Player {
         service.setYouPlayer(this);
         service.setThemPlayer(opponent);
         if (getDeck().size() == 0)
-        	return loseGame();
-        
+        	loseGame();
         drawCardsFromDeck(1);
         
         if (this instanceof AIPlayer)
@@ -143,7 +142,6 @@ public class Player {
             ai.startPhase();
             opponent.startTurn();
         }
-        return true;
     }
     
     public void resolveEffects(Pokemon poke)
@@ -389,12 +387,11 @@ public class Player {
         }
     }
     
-    public boolean loseGame()
+    public void loseGame()
     {
     	String message = (humanPlayer) ? "You Lost! You may exit the game." : "You Won! You may exit the game.";
         displayMessage(message);
         GameController.endGame();
-        return false;
     }
     
     private void declareMulligan(){
@@ -727,7 +724,8 @@ public class Player {
         GameController.board.setRewardCount(mRewards.size(), humanPlayer);
         if (mRewards.size() <= 0)
         {
-            GameController.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+            //GameController.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+        	checkGameWon();
         }
     }
     
