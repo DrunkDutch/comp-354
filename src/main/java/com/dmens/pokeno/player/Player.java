@@ -167,11 +167,17 @@ public class Player {
 				GameController.board.clearStatus(2, GameController.getIsHomePlayerPlaying());	
 			}
 			//4 poisoned .. hurt 'em
-			if(poke.isPoisoned())
+			if(poke.isPoisoned()) 
 			{
 				poke.addDamage(GameController.POISON_DAMAGE_AMOUNT);
 				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + poke.getName() + " had been damaged " + GameController.POISON_DAMAGE_AMOUNT + "by Poison." );
 				displayMessage(msgPrefix + poke.getName() + " damaged " + GameController.POISON_DAMAGE_AMOUNT + "by poison." );
+			}
+			//5 healed .. tracks if a pokemon was healed during the turn, set the flag to false once turn has ended.
+			if(poke.isHealed())
+			{
+				LOG.info("Healed pokemon's Healed flag was reset.");
+				poke.setHealed(false);
 			}
     	}
     }
