@@ -370,7 +370,7 @@ public class Player {
     	String message = (humanPlayer) ? "You Lost! Game will now exit." : "You Won! Game will now exit.";
         displayMessage(message);
         //assert(true);
-        //System.exit(0);
+        System.exit(0);
     }
     
     private void declareMulligan(){
