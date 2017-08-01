@@ -13,6 +13,7 @@ import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Swap;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,11 +36,13 @@ public class AbilityTest {
 	
 	 static String mAbilityName = "Ability";
 	 static String mEffectTarget = "opponent-active";
+	 static String mEffectTargetDifferent = "your-active";
 	 static int mEffectValue = 20;
 	 static int mEffectValueDifferent = 10;
 	 static String mEffectStatus = "asleep";
 	 static String mEffectStatusDifferent = "poisoned";
-	 
+	 static String mEffectDestination = "choice:your-bench";
+
 	 @Before
 	 public void setup(){
 		//Mocks
@@ -69,6 +72,10 @@ public class AbilityTest {
     	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
     	Assert.assertEquals(drawCard.getValue(), mEffectValue);
     	
+    	Swap swap = new Swap(mEffectTarget, mEffectDestination);
+    	Assert.assertEquals(swap.getTarget(), mEffectTarget);
+    	Assert.assertEquals(swap.getDestination(), mEffectDestination);
+    	
     	// Add each Effect to the Ability
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
@@ -90,6 +97,11 @@ public class AbilityTest {
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
     	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
     	
+    	ability.addEffect(swap);
+    	Assert.assertEquals(ability.getSwapEffect(), swap);
+    	Assert.assertEquals(ability.getSwapEffect().getTarget(), mEffectTarget);
+    	Assert.assertEquals(ability.getSwapEffect().getDestination(), mEffectDestination);
+    	
     	// change effects... check that effects in abilities are unaffected
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getHealEffect(), heal);
@@ -102,5 +114,8 @@ public class AbilityTest {
     	
     	drawCard = new DrawCard(mEffectValueDifferent, mEffectTarget);
     	Assert.assertNotEquals(ability.getDrawCardEffect(), drawCard);
+    	
+    	swap = new Swap(mEffectTargetDifferent, mEffectDestination);
+    	Assert.assertNotEquals(ability.getSwapEffect(), swap);
     }
 }

@@ -113,4 +113,36 @@ public class AbilityIT {
         assertEquals(10, player.getActivePokemon().getDamage());
     }
 
+    @Test
+    public void testSwapEffect(){
+    	Deck deck = new Deck();
+    	// Need to clear out the null pointers in the card database, otherwise 'queryByName' will raise an exception trying to access null pointer
+    	((CardsDatabase)CardsDatabase.getInstance()).removeNullPointersInDB();
+    	deck.addCards(Arrays.asList(((CardsDatabase)CardsDatabase.getInstance()).queryByName("Switch")));
+    	Player player = new Player(deck);
+    	
+    	stub(method(GameController.class, "updateHand")).toReturn(0);
+    	stub(method(GameController.class, "getActivePlayer")).toReturn(player);
+
+    	player.setActivePokemon(new Pokemon("Froakie"));
+    	assertEquals("Froakie", player.getActivePokemon().getName());
+    	
+    	player.benchPokemon(new Pokemon("Pikachu"));
+    	assertEquals("Pikachu", player.getBenchedPokemon().get(0).getName());
+    	
+    	// Draw Switch
+    	player.drawCardsFromDeck(1);
+    	assertEquals(1, player.getHand().size());
+    	assertEquals("Switch", player.getHand().getCards().get(0).getName());
+    	
+    	// Use Switch
+    	(TargetServiceHandler.getInstance()).setYouPlayer(player);
+    	stub(method(GameController.class, "dispayCustomOptionPane")).toReturn(0);
+    	player.useCard(player.getHand().getCards().get(0));
+    	assertEquals(0, player.getHand().size());
+    	
+    	// varify the active pokemon and the benched pokemon are swapped
+    	assertEquals("Pikachu", player.getActivePokemon().getName());
+    	assertEquals("Froakie", player.getBenchedPokemon().get(0).getName());
+    }
 }
