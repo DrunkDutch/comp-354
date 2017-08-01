@@ -1,4 +1,4 @@
-package com.dmens.pokeno.ConditionTest;
+package com.dmens.pokeno.integration;
 
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Assert;
 
-public class ConditionTest {
+public class ConditionIT {
 
     @Before
     public void setup(){
@@ -45,11 +45,11 @@ public class ConditionTest {
         Mockito.doNothing().when(p2).updateBoard();
 
         Pokemon seaking = (Pokemon) ((CardsDatabase) CardsDatabase.getInstance()).query(6);
-        Pokemon hitmonlee = (Pokemon) ((CardsDatabase) CardsDatabase.getInstance()).query(44);
+        Pokemon suicune = (Pokemon) ((CardsDatabase) CardsDatabase.getInstance()).query(11);
         
         // Sanity checks
         Assert.assertEquals("Seaking", seaking.getName());
-        Assert.assertEquals("Hitmonlee", hitmonlee.getName());
+        Assert.assertEquals("Suicune", suicune.getName());
         
         // Add energy for move
         seaking.addEnergy(new EnergyCard("Water", "water"));
@@ -62,12 +62,12 @@ public class ConditionTest {
         Assert.assertEquals(true, seaking.isHealed());
         
         p1.setActivePokemon(seaking);
-        p2.setActivePokemon(hitmonlee);
+        p2.setActivePokemon(suicune);
         
         boolean usedMove = p1.useActivePokemon(0);
         Assert.assertEquals(true, usedMove);
 
-        // Expect hitmonlee to be damaged 90
+        // Expect suicune to be damaged 90
         Assert.assertEquals(90, p2.getActivePokemon().getDamage());
     }
 }
