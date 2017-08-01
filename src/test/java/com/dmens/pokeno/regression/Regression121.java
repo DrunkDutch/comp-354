@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.powermock.api.easymock.PowerMock;
+import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -51,6 +52,7 @@ public class Regression121
 		stub(method(GameController.class, "updateDeck")).toReturn(0);
 		stub(method(GameController.class, "updateHand")).toReturn(0);
 		stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
+		//PowerMockito.when(System.exit(0)).thenReturn("abc");
 		
 		EnergyCard e1 = new EnergyCard("Water", "water");
 		EnergyCard e2 = new EnergyCard("Water", "water");
@@ -62,12 +64,11 @@ public class Regression121
 		Player player = new Player(deck);//mock(Player.class);
 		stub(method(GameController.class, "getActivePlayer")).toReturn(player);
 		//when(player.getDeck()).thenReturn(deck);
-		
+		stub(method(Player.class, "loseGame")).toReturn(false);
 		player.drawCardsFromDeck(2);
-		player.startTurn();
-		
-		//verify(player, atLeastOnce()).loseGame();
-		assert(true);
+		boolean gameGoing = true;
+		gameGoing = player.startTurn();
+		assert(!gameGoing);
 		
 		//assert(true);
 	}
