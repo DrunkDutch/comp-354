@@ -22,6 +22,7 @@ import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Swap;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
@@ -76,6 +77,8 @@ public class AbilityParser {
 				return getApplyStatusEffect(effectStack);
 			case DRAW:
 				return getDrawCardEffect(effectStack);
+			case SWAP:
+				return getSwapEffect(effectStack);
 			case DEENERGIZE:
 				return getDeenergizeEffect(effectStack);
 			default:
@@ -160,6 +163,20 @@ public class AbilityParser {
 		return new DrawCard(value, target); 
 	}
 	
+
+	private static Effect getSwapEffect(Stack<String> effectStack) {
+		effectStack.pop();    // source
+		String swapSource = effectStack.pop();
+		effectStack.pop();    // destination;
+		String swapDestination = effectStack.pop();
+		while (!effectStack.isEmpty()) {
+			String s = effectStack.pop();
+			swapDestination += (":" + s);
+		}
+		return new Swap(swapSource, swapDestination);
+	}
+
+
 	private static Effect getDeenergizeEffect(Stack<String> effectStack){
 		int amount = 0;
 		String target = "";
@@ -172,6 +189,7 @@ public class AbilityParser {
 		}
 		
 		return new Deenergize(amount, target, null);
+
 	}
 	
 	private static Condition getCondition(Stack<String> effectStack) {
