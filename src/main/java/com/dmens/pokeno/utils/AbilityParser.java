@@ -14,8 +14,10 @@ import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.condition.ConditionTypes;
 import com.dmens.pokeno.condition.Flip;
+import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.Deenergize;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
@@ -25,15 +27,13 @@ import com.dmens.pokeno.effect.Swap;
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
 	
-	//private static String[] unsupportedAbilities = {"Nyan Press", "Exhausted Tackle", "Poison Ring", "Sleep Poison"};
-	
 	public static Ability getAbilityFromString(String abilityInformation){
 		LOG.debug(abilityInformation);
     	int indexName = abilityInformation.indexOf(":");
     	Ability ability = new Ability(abilityInformation.substring(0,indexName));
     	
     	String restStr = abilityInformation.substring(indexName + 1, abilityInformation.length());
-    	// Dive effects separated by comma
+    	// Divide effects separated by comma
     	Pattern p = Pattern.compile("(.+?(\\(.*?\\))*?)(?:,|$)");
     	Matcher m = p.matcher(restStr);
     	List<String> effects = new LinkedList<String>();
@@ -79,6 +79,8 @@ public class AbilityParser {
 				return getDrawCardEffect(effectStack);
 			case SWAP:
 				return getSwapEffect(effectStack);
+			case DEENERGIZE:
+				return getDeenergizeEffect(effectStack);
 			default:
 				return null;
 		}
@@ -161,6 +163,7 @@ public class AbilityParser {
 		return new DrawCard(value, target); 
 	}
 	
+
 	private static Effect getSwapEffect(Stack<String> effectStack){
 		effectStack.pop();	// source
 		String swapSource = effectStack.pop();
@@ -171,7 +174,20 @@ public class AbilityParser {
 			swapDestination += (":"+ s);
 		}
 
-		return new Swap(swapSource, swapDestination); 
+
+	private static Effect getDeenergizeEffect(Stack<String> effectStack){
+		int amount = 0;
+		String target = "";
+		effectStack.pop();	// target
+		
+		if(effectStack.size() == 2) {
+			target = effectStack.pop();
+			amount = Integer.parseInt(effectStack.pop());
+			LOG.debug("Simple Deenergize Effect parsed");
+		}
+		
+		return new Deenergize(amount, target, null);
+
 	}
 	
 	private static Condition getCondition(Stack<String> effectStack) {
@@ -197,7 +213,8 @@ public class AbilityParser {
 				}
 			case HEALED:
 				String target = getTarget(effectStack);
-				return null;
+				LOG.info("Simple Healed Condition parsed");
+				return new Healed(target);
 			case COUNT:
 				while(!effectStack.pop().contains(")"));
 				return null;

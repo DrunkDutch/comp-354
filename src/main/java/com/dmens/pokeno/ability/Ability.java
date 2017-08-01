@@ -154,6 +154,7 @@ public class Ability {
     }
     
     /*
+
      * Get the single Swap effect.
      * Assumption is that there is only one.
      * 
@@ -166,6 +167,20 @@ public class Ability {
     	   if(effect.getClass() == Swap.class)
     	   {
     		   return (Swap) effect;
+
+     * Get the single Deenergize effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as Deenergize.
+     */
+    public Deenergize getDeenergizeEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == Deenergize.class)
+    	   {
+    		   return (Deenergize) effect;
+
     	   }
     	}
     	 return null;

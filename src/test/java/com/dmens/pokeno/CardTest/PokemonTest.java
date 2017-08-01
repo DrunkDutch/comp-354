@@ -100,5 +100,7 @@ public class PokemonTest {
 		Assert.assertEquals(true, froakie.isPoisoned());
 		froakie.setParalyzed(true);
 		Assert.assertEquals(true, froakie.isParalyzed());
+		froakie.setHealed(true);
+		Assert.assertEquals(true, froakie.isHealed());
 	}
 }
