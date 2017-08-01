@@ -154,6 +154,24 @@ public class Ability {
     }
     
     /*
+     * Get the single Deenergize effect.
+     * Assumption is that there is only one.
+     * 
+     * @return		Effect cast as Deenergize.
+     */
+    public Deenergize getDeenergizeEffect()
+    {
+    	for (Effect effect: mEffects)
+    	{
+    	   if(effect.getClass() == Deenergize.class)
+    	   {
+    		   return (Deenergize) effect;
+    	   }
+    	}
+    	 return null;
+    }
+    
+    /*
      * (non-Javadoc)
      * @see java.lang.Object#toString()
      */
