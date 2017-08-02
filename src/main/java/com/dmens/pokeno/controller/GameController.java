@@ -395,4 +395,17 @@ public class GameController {
     public static int displayConfirmDialog(String message, String title){
     	return JOptionPane.showConfirmDialog(null, message, title, JOptionPane.YES_NO_OPTION);
     }
+    
+    public static void endGame()
+    {
+    	System.out.println("Ending game");
+    	board.disablePlayerControls();
+    	mGameOver = true;
+    }
+    
+    public static boolean checkGameOver()
+    {
+    	System.out.println(mGameOver);
+    	return mGameOver;
+    }
 }

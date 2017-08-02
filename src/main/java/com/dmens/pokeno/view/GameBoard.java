@@ -149,7 +149,7 @@ public class GameBoard extends javax.swing.JFrame {
             {
                 //player.useCard(card);
                 //if (the card is valid)
-                if(GameController.useCardForPlayer(card, 0))
+                if(!GameController.checkGameOver() && GameController.useCardForPlayer(card, 0))
                     PlayerHandPanel.remove(newCard);
                 ViewDamageField.setText("");
                 update();
@@ -499,6 +499,14 @@ public class GameBoard extends javax.swing.JFrame {
         //setRewardCount(playerRewardCount, opponentRewardCount);
         showTurnPhase(phase);
         update();
+    }
+    
+    public void disablePlayerControls()
+    {
+    	PlayerAttack1Btn.setEnabled(false);
+    	PlayerAttack2Btn.setEnabled(false);
+    	PlayerRetreatBtn.setEnabled(false);
+    	PassBtn.setEnabled(false);
     }
     
     /**

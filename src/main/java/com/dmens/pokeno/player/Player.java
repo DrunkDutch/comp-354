@@ -61,7 +61,13 @@ public class Player {
     	mDiscards = new CardContainer();
         humanPlayer = true;
     }
-
+    
+    //A rarely used method for if the player's deck ever needs to be set outside of construction
+    public void setDeck(Deck deckList)
+    {
+    	mDeck = deckList;
+    }
+    
     public Pokemon getActivePokemon() {
         return mActivePokemon;
     }
@@ -107,12 +113,12 @@ public class Player {
     
     //NOTE: Size of mHand should be at most 7. 
     public Hand drawCardsFromDeck(int numOfCards) {
-    	assert numOfCards >= 0;
-    	assert mDeck.size() >= numOfCards;
+    	//assert numOfCards >= 0;
+    	//assert mDeck.size() >= numOfCards;
     	
         if (numOfCards > mDeck.size())
             numOfCards = mDeck.size();
-        mHand.addCards(mDeck.draw(numOfCards));
+        mHand.addCards(getDeck().draw(numOfCards));
         updateBoard();
         return mHand;
     }
@@ -139,6 +145,8 @@ public class Player {
         TargetService service = TargetServiceHandler.getInstance().getService();
         service.setYouPlayer(this);
         service.setThemPlayer(opponent);
+        if (getDeck().size() == 0)
+        	loseGame();
         drawCardsFromDeck(1);
         
         if (this instanceof AIPlayer)
@@ -388,10 +396,17 @@ public class Player {
     
     private void checkGameWon(){
     	if(opponent.mBenchedPokemon.size() == 0 || mRewards.size() == 0){
-            String message = (humanPlayer) ? "You Won! Game will now exit." : "You Lost! Game will now exit.";
+            String message = (humanPlayer) ? "You Won! You may exit the game." : "You Lost! You may exit the game.";
             displayMessage(message);
-            System.exit(0);
+            GameController.endGame();
         }
+    }
+    
+    public void loseGame()
+    {
+    	String message = (humanPlayer) ? "You Lost! You may exit the game." : "You Won! You may exit the game.";
+        displayMessage(message);
+        GameController.endGame();
     }
     
     private void declareMulligan(){
@@ -723,7 +738,8 @@ public class Player {
         GameController.board.setRewardCount(mRewards.size(), humanPlayer);
         if (mRewards.size() <= 0)
         {
-            GameController.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+            //GameController.board.AnnouncementBox.setText("No more reward cards! The player wins!");
+        	checkGameWon();
         }
     }
     

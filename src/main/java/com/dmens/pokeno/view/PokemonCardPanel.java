@@ -99,6 +99,10 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         {
         	this.damage1.setText(Integer.toString(ability.getAbility().getDeenergizeEffect().getAmount()));
         }
+        else if(ability.getAbility().getEffects().get(0) instanceof DrawCard)
+        {
+        	this.damage1.setText(Integer.toString(ability.getAbility().getDrawCardEffect().getValue()));
+        }
         
         // Set ability 2 if present
         if(poke.getAbilitiesAndCost().size() >= 2)
@@ -117,7 +121,11 @@ public class PokemonCardPanel extends javax.swing.JPanel {
             }
             else if(ability.getAbility().getEffects().get(0) instanceof Deenergize)
             {
-            	this.damage1.setText(Integer.toString(ability.getAbility().getDeenergizeEffect().getAmount()));
+            	this.damage2.setText(Integer.toString(ability.getAbility().getDeenergizeEffect().getAmount()));
+            }
+            else if(ability.getAbility().getEffects().get(0) instanceof DrawCard)
+            {
+            	this.damage2.setText(Integer.toString(ability.getAbility().getDrawCardEffect().getValue()));
             }
         }
         else

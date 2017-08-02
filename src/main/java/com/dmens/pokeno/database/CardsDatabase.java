@@ -18,15 +18,13 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 
-	 //Doduo, Dodrio for deck 1
-
-	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
+	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
 			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
 			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi"};
 
 	
 
-	private static String[] supportedTrainer = {"Tierno", "Potion", "PokÃ©mon Center Lady", "Clemont","Poké Ball"};
+	private static String[] supportedTrainer = {"Tierno", "Potion", "Clemont","Poké Ball"};
 
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
