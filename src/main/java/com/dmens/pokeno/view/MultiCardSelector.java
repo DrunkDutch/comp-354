@@ -72,8 +72,12 @@ public class MultiCardSelector extends CardSelectorBase {
 	
 	public List<Card> getSelectedCards(){
 		if (panel.getComponentCount() == 0)
+		{
+			dispose();
 			return pickedCards;
-		while(pickedCards.size() < amountOfCardsToPick || panel.getComponentCount() != 0);
+		}
+		System.out.println(pickedCards.size());
+		while(pickedCards.size() < amountOfCardsToPick && panel.getComponentCount() != 0);
 		dispose();
 		return pickedCards;
 	}
