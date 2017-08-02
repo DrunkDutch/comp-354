@@ -22,6 +22,7 @@ import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Reenergize;
 import com.dmens.pokeno.effect.Swap;
 
 public class AbilityParser {
@@ -81,6 +82,8 @@ public class AbilityParser {
 				return getSwapEffect(effectStack);
 			case DEENERGIZE:
 				return getDeenergizeEffect(effectStack);
+			case REENERGIZE:
+				return getReenergizeEffect(effectStack);
 			default:
 				return null;
 		}
@@ -190,6 +193,28 @@ public class AbilityParser {
 		
 		return new Deenergize(amount, target, null);
 
+	}
+	
+	private static Effect getReenergizeEffect(Stack<String> effectStack){
+		int amountS = 0;
+		int amountD = 0;
+		String source = "";
+		String destination = "";
+		
+		effectStack.pop();	// target
+		effectStack.pop();	// choice
+		source = effectStack.pop();
+		amountS = Integer.parseInt(effectStack.pop());
+		
+		effectStack.pop();	// target
+		effectStack.pop();	// choice
+		destination = effectStack.pop();
+		amountD = Integer.parseInt(effectStack.pop());
+		
+		// Source and Destination amounts should be the same
+		assert(amountS == amountD);
+		
+		return  new Reenergize(amountS, source, destination, null);
 	}
 	
 	private static Condition getCondition(Stack<String> effectStack) {
