@@ -149,7 +149,7 @@ public class Pokemon extends Card {
         	System.out.println(e.name() + ": " + cost.get(e));
         }*/
         
-        ArrayList<Integer> energyCounts = GameController.getAttachedEnergyList(getMapOfAttachedEnergies());
+        ArrayList<Integer> energyCounts = getAttachedEnergyList();
         int remainingEnergyCount = 0;
         for (int count : energyCounts)
         {
@@ -441,6 +441,36 @@ public class Pokemon extends Card {
     		}
     	});
         return energies;
+    }
+    
+    public ArrayList<Integer> getAttachedEnergyList(){
+    	Map<EnergyTypes, Integer> energies = getMapOfAttachedEnergies();
+        ArrayList<Integer> energyList = new ArrayList<Integer>(5);
+        energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
+    	energies.forEach((energyType, amount) -> {
+    		switch(energyType){
+    		case FIGHT:
+                    energyList.set(0, amount);
+                    break;
+    		case LIGHTNING:
+                    energyList.set(1, amount);
+                    break;
+    		case PSYCHIC:
+                    energyList.set(2, amount);
+                    break;
+    		case WATER:
+                    energyList.set(3, amount);
+                    break;
+    		case COLORLESS:
+                    energyList.set(4, amount);
+                    break;
+    		case FIRE:
+                    break;
+    		case GRASS:
+                    break;
+    		}
+    	});
+        return energyList;
     }
 	public void displayMessage(String message){
 		GameController.displayMessage(message);

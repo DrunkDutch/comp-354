@@ -24,6 +24,7 @@ public class DeenergizeTest {
         CardsDatabase.getInstance().initialize("cards.txt");
     }
 
+    @Ignore
     @Test
     public void testDeenergizeEffect(){
         Player p1 = Mockito.spy(new Player());

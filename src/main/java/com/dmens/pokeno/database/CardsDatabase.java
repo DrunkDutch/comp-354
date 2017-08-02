@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.FileUtils;
 
@@ -38,7 +39,10 @@ public class CardsDatabase extends Database<Card>{
 	public static void removeNullPointersInDB() {
 		if(database == null)
 			return;
-		((ArrayList<Card>) (database.db)).removeAll(Collections.singleton(null));  
+		for(int i =0; i < database.db.size(); i++){
+			if(database.db.get(i) == null)
+				database.db.set(i, new Pokemon("null"));
+		}
 	}
 	private CardsDatabase(){
 		db = new ArrayList<Card>();

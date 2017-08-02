@@ -408,4 +408,8 @@ public class GameController {
     	System.out.println(mGameOver);
     	return mGameOver;
     }
+    
+    public static void setGameOver(boolean gameOver){
+    	mGameOver = false;
+    }
 }
