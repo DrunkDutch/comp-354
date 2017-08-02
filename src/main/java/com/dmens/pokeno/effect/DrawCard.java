@@ -2,6 +2,7 @@ package com.dmens.pokeno.effect;
 
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.condition.*;
 
 /*
@@ -47,7 +48,7 @@ public class DrawCard extends Effect{
 	@Override
 	public void execute()
 	{
-		Player activePlayer = GameController.getActivePlayer();
+		Player activePlayer = TargetServiceHandler.getInstance().getService().getPlayer("your-active");
 		if(this.mTarget.equals("self")) {
 			activePlayer.drawCardsFromDeck(mValue);
 		} else if(this.mTarget.equals("opponent")) {

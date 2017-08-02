@@ -27,6 +27,7 @@ import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.deck.Deck;
 import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.TargetService;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({GameController.class})
@@ -59,6 +60,7 @@ public class Regression109
 		
 		//set player
 		Player player = new Player(deck);
+		TargetService.getInstance().setYouPlayer(player);
 		stub(method(GameController.class, "getActivePlayer")).toReturn(player);
 		player.drawCardsFromDeck(3);
 		player.useCard(tCard);

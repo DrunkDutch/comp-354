@@ -13,6 +13,7 @@ import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.CardsDatabase;
 import com.dmens.pokeno.effect.*;
 import com.dmens.pokeno.services.CountService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.utils.Randomizer;
 import com.dmens.pokeno.condition.*;
 
@@ -119,16 +120,8 @@ public class Pokemon extends Card {
 		}
 		mDamage -= damageToRemove;
 		setHealed(true);
-		
-		if(GameController.board == null) {
-			return;
-		}
-		
-		if(this == GameController.getHomePlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getHomePlayer());
-		} else if(this == GameController.getAIPlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getAIPlayer());
-		} 
+		LOG.debug("here");
+		TargetServiceHandler.getInstance().getService().getPlayer("your-active").updateActivePokemonOnBoard();
 	}
 
 	public void addEnergy(EnergyCard energy){
@@ -156,7 +149,7 @@ public class Pokemon extends Card {
         	System.out.println(e.name() + ": " + cost.get(e));
         }*/
         
-        ArrayList<Integer> energyCounts = GameController.getAttachedEnergyList(getMapOfAttachedEnergies());
+        ArrayList<Integer> energyCounts = getAttachedEnergyList();
         int remainingEnergyCount = 0;
         for (int count : energyCounts)
         {
@@ -448,6 +441,36 @@ public class Pokemon extends Card {
     		}
     	});
         return energies;
+    }
+    
+    public ArrayList<Integer> getAttachedEnergyList(){
+    	Map<EnergyTypes, Integer> energies = getMapOfAttachedEnergies();
+        ArrayList<Integer> energyList = new ArrayList<Integer>(5);
+        energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);energyList.add(0);
+    	energies.forEach((energyType, amount) -> {
+    		switch(energyType){
+    		case FIGHT:
+                    energyList.set(0, amount);
+                    break;
+    		case LIGHTNING:
+                    energyList.set(1, amount);
+                    break;
+    		case PSYCHIC:
+                    energyList.set(2, amount);
+                    break;
+    		case WATER:
+                    energyList.set(3, amount);
+                    break;
+    		case COLORLESS:
+                    energyList.set(4, amount);
+                    break;
+    		case FIRE:
+                    break;
+    		case GRASS:
+                    break;
+    		}
+    	});
+        return energyList;
     }
 	public void displayMessage(String message){
 		GameController.displayMessage(message);
