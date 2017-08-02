@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
@@ -62,8 +63,22 @@ public class Deck extends CardContainer {
 	}
 	
 	private boolean deckHasMoreThanFourNoneEnergyCard() {
-	     
-		// TODO
+                Hashtable<String,Integer> numberOfEachCard = new Hashtable<String,Integer>();
+		for(int i = 0; i < size(); ++i) {
+                        Card card = cards.get(i);
+                        if(!card.isType(CardTypes.ENERGY)) {
+                            Integer timesCardIsInDeck = numberOfEachCard.put(card.getName(),1);
+                            if(timesCardIsInDeck != null)
+                            {
+                                timesCardIsInDeck += 1;
+                                numberOfEachCard.put(card.getName(), timesCardIsInDeck);
+                            }
+                            else
+                                timesCardIsInDeck = 1;
+                            if(timesCardIsInDeck.intValue() > 4)
+                                return true;
+                        }
+                }
 		return false;
 	}
 	
@@ -72,6 +87,7 @@ public class Deck extends CardContainer {
                 HashSet<Pokemon> pokemonInDeck = new HashSet<Pokemon>();
                 HashSet<String> basePokemonInDeckNames = new HashSet<String>();
                 Hashtable<EnergyTypes,Integer> energyCards = new Hashtable<EnergyTypes,Integer>();
+                int totalEnergyCards = 0;
                 
                 // iterate through the deck only once, then do each validation check
 		for(int i = 0; i < size(); ++i) {
@@ -90,13 +106,14 @@ public class Deck extends CardContainer {
                             Integer cardsOfSameType = energyCards.put(energyType, 1);
                             if(cardsOfSameType != null)
                                 energyCards.put(energyType,cardsOfSameType.intValue()+1);
+                            totalEnergyCards++;
                         }
 		}
                 if(basePokemonInDeckNames.isEmpty())
                     return false;
                 
                 return basePokemonExistsForEachEvolvedPokemonInDeck(evolvedPokemon,basePokemonInDeckNames)
-                        && eachPokemonHasAPlayableAbility(pokemonInDeck,energyCards);
+                        && eachPokemonHasAPlayableAbility(pokemonInDeck,energyCards,totalEnergyCards);
 	}
         
         private boolean basePokemonExistsForEachEvolvedPokemonInDeck(Stack<Pokemon> evolvedPokemon, HashSet<String> basePokemonInDeckNames) {
@@ -111,7 +128,7 @@ public class Deck extends CardContainer {
                 return true;
         }
         
-        private boolean eachPokemonHasAPlayableAbility(HashSet<Pokemon> pokemonInDeck,Hashtable<EnergyTypes,Integer> energyCards) {
+        private boolean eachPokemonHasAPlayableAbility(HashSet<Pokemon> pokemonInDeck,Hashtable<EnergyTypes,Integer> energyCards, int totalEnergyCards) {
             // check there are enough energy cards for each Pokemon to potentially use an ability
                 for(Pokemon pokemon : pokemonInDeck) {
                     ArrayList<AbilityCost> abilityCosts = pokemon.getAbilitiesAndCost();
@@ -126,8 +143,12 @@ public class Deck extends CardContainer {
                         
                         // verify each energy cost for this ability can be satisfied by cards in the deck
                         for(EnergyTypes energyType : abilityCost.getCosts().keySet()) {
-                            if(!energyCards.containsKey(energyType) || abilityCost.getCosts().get(energyType) > energyCards.get(energyType)) {
+                            if(energyType != EnergyTypes.COLORLESS && (!energyCards.containsKey(energyType) || abilityCost.getCosts().get(energyType) > energyCards.get(energyType))) {
                                 // cost is greater than the number of this energy type's cards included in the deck
+                                abilityIsAffordable = false;
+                                break;
+                            }
+                            else if(energyType == EnergyTypes.COLORLESS && totalEnergyCards < abilityCost.getCosts().get(energyType)) {
                                 abilityIsAffordable = false;
                                 break;
                             }
