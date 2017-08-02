@@ -21,6 +21,11 @@ public class MultiCardSelector extends CardSelectorBase {
 		amountOfCardsToPick = amount;
 		setTitle("Select " + amountOfCardsToPick + " cards.");
 		setSize(300, 300);
+		if (panel.getComponentCount() == 0)
+		{
+			dispose();
+			return;
+		}
         setVisible(true);
 	}
 	
@@ -66,7 +71,9 @@ public class MultiCardSelector extends CardSelectorBase {
 	}
 	
 	public List<Card> getSelectedCards(){
-		while(pickedCards.size() < amountOfCardsToPick || panel.getComponentCount() == 0);
+		if (panel.getComponentCount() == 0)
+			return pickedCards;
+		while(pickedCards.size() < amountOfCardsToPick || panel.getComponentCount() != 0);
 		dispose();
 		return pickedCards;
 	}
