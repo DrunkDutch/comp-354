@@ -17,11 +17,14 @@ import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.DeStat;
+import com.dmens.pokeno.effect.DeckEffect;
 import com.dmens.pokeno.effect.Deenergize;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.ShuffleDeck;
 import com.dmens.pokeno.effect.Search;
 import com.dmens.pokeno.effect.Swap;
 
@@ -82,6 +85,12 @@ public class AbilityParser {
 				return getSwapEffect(effectStack);
 			case DEENERGIZE:
 				return getDeenergizeEffect(effectStack);
+			case SHUFFLE:
+				return getShuffleDeckEffect(effectStack);
+			case DECK:
+				return getDeckEffect(effectStack);
+			case DESTAT:
+				return getDestatEffect(effectStack);
 			case SEARCH:
 				return getSearchEffect(effectStack);
 			default:
@@ -166,6 +175,38 @@ public class AbilityParser {
 		return new DrawCard(value, target); 
 	}
 	
+	private static Effect getDeckEffect(Stack<String> effectStack){
+		effectStack.pop();	// target
+		String target = effectStack.pop();
+		effectStack.pop();	//destination
+		String destination = effectStack.pop();
+		String origin = "";
+		if (effectStack.peek().contains("bottom")) {
+			destination += ":" + effectStack.pop();
+		}
+		if (effectStack.peek().contains("count")) {
+			origin = effectStack.pop();
+		}
+		//TODO - it might be "choice" instead of "count"
+		
+		//LOG.debug("Simple Shuffle Effect parsed");
+		return new DeckEffect(target, origin, destination);
+	}
+	
+	private static Effect getShuffleDeckEffect(Stack<String> effectStack){
+		//TODO - conditionals need to be added (here and the obj)
+		String target = "";
+		effectStack.pop();	// target
+		target = effectStack.pop();
+		LOG.debug("Simple Shuffle Effect parsed");
+		return new ShuffleDeck(target);
+	}
+	
+	private static Effect getDestatEffect(Stack<String> effectStack) {
+		effectStack.pop(); //target
+		String target = effectStack.pop();
+		return new DeStat(target);
+	}
 
 	private static Effect getSwapEffect(Stack<String> effectStack) {
 		effectStack.pop();    // source

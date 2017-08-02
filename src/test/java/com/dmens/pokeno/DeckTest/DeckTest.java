@@ -41,8 +41,8 @@ public class DeckTest {
 		Assert.assertNotNull("Card should not be null",c);
 		Assert.assertEquals(59, validDeck.size());
 		//Fix this test when Shauna is implemented
-		//Assert.assertTrue("Card Drawn should be Shauna. Got "+c.getName(), c.getName().equals("Shauna"));
-		Assert.assertTrue("First Card implemented should an energy",c.isType(CardTypes.ENERGY));
+		Assert.assertTrue("Card Drawn should be Shauna. Got "+c.getName(), c.getName().equals("Shauna"));
+		//Assert.assertTrue("First Card implemented should an energy",c.isType(CardTypes.ENERGY));
 	}
 	
 	@Test
