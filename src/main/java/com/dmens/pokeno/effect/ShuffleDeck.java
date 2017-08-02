@@ -19,7 +19,7 @@ public class ShuffleDeck extends Effect
 	@Override
 	public void execute() {
 		Player activePlayer = GameController.getActivePlayer();
-		if(this.mTarget.equals("self")) {
+		if(this.mTarget.equals("your")) {
 			activePlayer.shuffleDeck();
 		} else if(this.mTarget.equals("opponent")) {
 			activePlayer.getOpponent().shuffleDeck();
