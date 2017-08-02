@@ -22,6 +22,7 @@ import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.ShuffleDeck;
 import com.dmens.pokeno.effect.Swap;
 
 public class AbilityParser {
@@ -81,6 +82,8 @@ public class AbilityParser {
 				return getSwapEffect(effectStack);
 			case DEENERGIZE:
 				return getDeenergizeEffect(effectStack);
+			case SHUFFLE:
+				return getShuffleDeckEffect(effectStack);
 			default:
 				return null;
 		}
@@ -163,6 +166,13 @@ public class AbilityParser {
 		return new DrawCard(value, target); 
 	}
 	
+	private static Effect getShuffleDeckEffect(Stack<String> effectStack){
+		String target = "";
+		effectStack.pop();	// target
+		target = effectStack.pop();
+		LOG.debug("Simple Shuffle Effect parsed");
+		return new ShuffleDeck(target);
+	}
 
 	private static Effect getSwapEffect(Stack<String> effectStack) {
 		effectStack.pop();    // source
