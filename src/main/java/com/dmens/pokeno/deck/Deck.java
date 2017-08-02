@@ -5,6 +5,7 @@ import java.util.Collections;
 
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
@@ -62,8 +63,22 @@ public class Deck extends CardContainer {
 	}
 	
 	private boolean deckHasMoreThanFourNoneEnergyCard() {
-	     
-		// TODO
+                Hashtable<String,Integer> numberOfEachCard = new Hashtable<String,Integer>();
+		for(int i = 0; i < size(); ++i) {
+                        Card card = cards.get(i);
+                        if(!card.isType(CardTypes.ENERGY)) {
+                            Integer timesCardIsInDeck = numberOfEachCard.put(card.getName(),1);
+                            if(timesCardIsInDeck != null)
+                            {
+                                timesCardIsInDeck += 1;
+                                numberOfEachCard.put(card.getName(), timesCardIsInDeck);
+                            }
+                            else
+                                timesCardIsInDeck = 1;
+                            if(timesCardIsInDeck.intValue() > 4)
+                                return true;
+                        }
+                }
 		return false;
 	}
 	
