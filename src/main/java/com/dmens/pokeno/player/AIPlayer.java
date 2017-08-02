@@ -1,6 +1,7 @@
 package com.dmens.pokeno.player;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -114,6 +115,12 @@ public class AIPlayer extends Player {
         	}
         	
         	return damagedPokemon;
+        }
+        
+        @Override
+        public List<Card> ChooseMultipleCards(List<Card> cards, int amount) {
+        	// TODO Make it pick random cards
+        	return cards.subList(0, amount);
         }
         
 	//TODO: implement AI specific functions

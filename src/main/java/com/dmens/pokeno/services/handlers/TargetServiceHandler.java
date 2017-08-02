@@ -32,7 +32,7 @@ public class TargetServiceHandler {
     }
 
     /**
-     * Constructor used for methods
+     * Constructor used for tests
      */
     public TargetServiceHandler(TargetService service){
         this.service = service;

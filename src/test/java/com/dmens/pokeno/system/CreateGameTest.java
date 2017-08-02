@@ -115,7 +115,6 @@ public class CreateGameTest {
     
 	@Test
 	public void testSetActivePokemonPlayEnergyAndAttack() {
-		waitSleep(2000);
 		Component c =  board.getPlayerHandPanel().getComponent(2);
 		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
 
@@ -136,10 +135,8 @@ public class CreateGameTest {
 		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
     	
 		Assert.assertEquals(1, mPlayers.get(0).getActivePokemon().getAttachedEnergy().size());
-		waitSleep(2000);
 		// Attack
 		board.getPlayerAttack1Btn().doClick();
-		waitSleep(2000);
 		// Assert opponent damage
 		Assert.assertEquals(10, mPlayers.get(1).getActivePokemon().getDamage());
 		Assert.assertEquals(10, board.getOpponentDamageField());

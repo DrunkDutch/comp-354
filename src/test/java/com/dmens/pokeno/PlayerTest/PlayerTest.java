@@ -181,7 +181,7 @@ public class PlayerTest{
 	public void testBenchLimit(){
 		// Mocks & stubs
 		stub(method(GameController.class, "displayMessage")).toReturn(0);
-		Player player = new Player();
+		Player player = Mockito.spy(new Player());
 		ArrayList<Pokemon> pokecards = new ArrayList<>();
 		Pokemon pokemon1 = new Pokemon("pokemon1");
 		pokemon1.setCategory("basic");
@@ -204,7 +204,7 @@ public class PlayerTest{
 		Pokemon pokemon7 = new Pokemon("pokemon7");
 		pokemon7.setCategory("basic");
 		pokecards.add(pokemon7);
-
+		Mockito.doNothing().when(player).updateBoard();
 		LOG.info("Adding 7 pokemon cards to hand");
 		pokecards.stream().forEach(pokemon -> player.getHand().addCard(pokemon));
 		assertEquals(7, player.getHand().size());
