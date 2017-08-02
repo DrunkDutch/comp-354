@@ -24,7 +24,7 @@ public class CardsDatabase extends Database<Card>{
 
 	
 
-	private static String[] supportedTrainer = {"Tierno", "Potion", "PokÃ©mon Center Lady", "Shauna", "Red Card"};
+	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Shauna", "Red Card"};
 
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);

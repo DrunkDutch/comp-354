@@ -389,11 +389,7 @@ public class Pokemon extends Card {
     	mParalyzed = false;
     	mSleep = false;
     	mStuck = false;
-    	if(this == GameController.getHomePlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getHomePlayer());
-		} else if(this == GameController.getAIPlayer().getActivePokemon()) {
-			GameController.board.updateActivePokemon(GameController.getAIPlayer());
-		}
+		GameController.board.clearAllStatus(this == GameController.getHomePlayer().getActivePokemon());
     }
     
     public boolean isEvolvedCategory(){
