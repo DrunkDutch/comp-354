@@ -227,6 +227,10 @@ public class Pokemon extends Card {
         			{
         				effect.execute();
         			}
+        			else if(effect instanceof DrawCard)
+        			{
+        				effect.execute();
+        			}
         			else if(effect instanceof ApplyStatus)
             		{
             			ApplyStatus as = (ApplyStatus) effect;
