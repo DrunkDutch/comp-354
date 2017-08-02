@@ -29,11 +29,11 @@ import com.dmens.pokeno.utils.DeckCreator;
 @PowerMockIgnore("javax.management.*")
 public class DeckCreatorTest {
 	private final String validDeckString = "33\n26\n26\n33\n26\n26\n33\n26\n26\n33\n" +
-										   "26\n26\n33\n26\n26\n33\n26\n26\n33\n26\n" +
-										   "26\n33\n26\n26\n33\n26\n26\n33\n26\n26\n" +
-										   "33\n26\n26\n33\n26\n26\n33\n26\n26\n33\n" +
-										   "26\n26\n33\n26\n26\n33\n26\n26\n33\n26\n" +
-										   "26\n33\n26\n26\n33\n26\n26\n33\n26\n57";
+										   "26\n26\n8\n26\n26\n8\n26\n26\n8\n26\n" +
+										   "26\n8\n26\n26\n9\n26\n26\n9\n26\n26\n" +
+										   "9\n26\n26\n9\n26\n26\n12\n26\n26\n12\n" +
+										   "26\n26\n12\n26\n26\n12\n26\n26\n13\n26\n" +
+										   "26\n13\n26\n26\n13\n26\n26\n13\n26\n57";
 	
 	private final String invalidDeckString = "26\n26\n26";
 
