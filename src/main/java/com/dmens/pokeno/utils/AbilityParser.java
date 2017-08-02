@@ -240,7 +240,6 @@ public class AbilityParser {
 				}
 			case HEALED:
 				String target = getTarget(effectStack);
-				LOG.info("Simple Healed Condition parsed");
 				return new Healed(target);
 			case COUNT:
 				while(!effectStack.pop().contains(")"));
