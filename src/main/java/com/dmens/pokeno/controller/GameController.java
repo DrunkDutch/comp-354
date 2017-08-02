@@ -121,13 +121,8 @@ public class GameController {
 	public static void  setFirstTurnActivePokemon() {
         if (!(GameController.getHomePlayer().getActivePokemon()  instanceof Pokemon)) {
             GameController.displayMessage("Please choose a starting pokemon");
-            List<Pokemon> startPokemon = GameController.getHomePlayer().getHand().getPokemon();
-			ArrayList<Pokemon> starterPokemon = startPokemon.stream().filter(p -> p instanceof Pokemon).map(
-                    p -> (Pokemon) p).
-                    filter(
-                            p -> !(p.isEvolvedCategory()))
-                    .collect(Collectors.toCollection(ArrayList::new));
-            StarterSelecter starterView = new StarterSelecter(starterPokemon, GameController.getHomePlayer());
+            List<Card> startPokemon = GameController.getHomePlayer().getHand().getAllPokemonOfType("basic");
+            StarterSelecter starterView = new StarterSelecter(startPokemon, GameController.getHomePlayer());
             starterView.setSize(150, 250);
             starterView.setVisible(true);
 			GameController.updateHand(getHomePlayer().getHand(),true);

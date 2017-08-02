@@ -22,6 +22,7 @@ import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Search;
 import com.dmens.pokeno.effect.Swap;
 
 public class AbilityParser {
@@ -81,6 +82,8 @@ public class AbilityParser {
 				return getSwapEffect(effectStack);
 			case DEENERGIZE:
 				return getDeenergizeEffect(effectStack);
+			case SEARCH:
+				return getSearchEffect(effectStack);
 			default:
 				return null;
 		}
@@ -233,6 +236,43 @@ public class AbilityParser {
 	
 	private static String getConditionType(Stack<String> effectStack){
 		effectStack.pop();	// cond
+		return effectStack.pop();
+	}
+	
+	private static Effect getSearchEffect(Stack<String> effectStack){
+		Search searchEffect = new Search();
+		String target = getTarget(effectStack);
+		searchEffect.setTarget(target);
+		String source = getSearchSource(effectStack);
+		searchEffect.setSource(source);
+		String filter = getSearchFilter(effectStack);
+		searchEffect.setFilter(filter);
+		String amount = getAmount(effectStack);
+		searchEffect.setAmount(amount);
+		return searchEffect;
+	}
+	
+	private static String getSearchSource(Stack<String> effectStack){
+		effectStack.pop();	// source
+		return effectStack.pop();
+	}
+	
+	private static String getSearchFilter(Stack<String> effectStack){
+		if(effectStack.size() == 1)
+			return "";	// No filter
+		effectStack.pop();	// filter
+		String filter = effectStack.pop();
+		if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
+			if(effectStack.peek().equalsIgnoreCase("cat")){
+				effectStack.pop();	// cat
+				filter += ":" + effectStack.pop();	// card category
+			}
+		}else
+			filter += ":" + effectStack.pop();	// card category
+		return filter;
+	}
+	
+	private static String getAmount(Stack<String> effectStack){
 		return effectStack.pop();
 	}
 }

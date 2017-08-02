@@ -2,13 +2,10 @@ package com.dmens.pokeno.player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.swing.JOptionPane;
 
-import com.dmens.pokeno.services.TargetService;
-import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -21,7 +18,10 @@ import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.deck.Deck;
 import com.dmens.pokeno.deck.Hand;
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.utils.Randomizer;
+import com.dmens.pokeno.view.MultiCardSelector;
 
 /**
  * Created by Devin on 2017-05-26.
@@ -113,9 +113,13 @@ public class Player {
         if (numOfCards > mDeck.size())
             numOfCards = mDeck.size();
         mHand.addCards(mDeck.draw(numOfCards));
-        GameController.updateHand(mHand, humanPlayer);
-        GameController.updateDeck(mDeck.size(), humanPlayer);
+        updateBoard();
         return mHand;
+    }
+    
+    public void addCardsToHand(List<Card> cards){
+    	mHand.addCards(cards);
+    	updateBoard();
     }
     
     public void discardCard(Card card){
@@ -224,8 +228,10 @@ public class Player {
     }
     
     public void updateBoard(){
+    	GameController.updateHand(mHand, isHumanPlayer());
     	benchPokemonOnBoard();
     	GameController.updateRewards(mRewards.size(), humanPlayer);
+    	updateDiscardsOnBoard();
         GameController.updateDeck(mDeck.size(), humanPlayer);
     }
 
@@ -640,8 +646,7 @@ public class Player {
                 break;
         }
         mHand.getCards().remove(card);
-        GameController.updateHand(mHand, humanPlayer);
-        GameController.updateBenchedPokemon(mBenchedPokemon, isHumanPlayer());
+        updateBoard();
         return true;
     }
     
@@ -767,7 +772,12 @@ public class Player {
         int choice = chooseCards(sb.toString().split(";"), "Choose Card", "Choose Pokemon.");
         if(choice == 0)
             return opponent.getActivePokemon();
-        return opponent.getBenchedPokemon().get(choice);
+        return opponent.getBenchedPokemon().get(choice-1);
+    }
+    
+    public List<Card> ChooseMultipleCards(List<Card> cards, int amount){
+    	MultiCardSelector selector = new MultiCardSelector(cards, this, amount);
+    	return selector.getSelectedCards();
     }
 
     //TODO

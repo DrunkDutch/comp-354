@@ -1,7 +1,9 @@
 package com.dmens.pokeno.view;
 
+import java.awt.Component;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.dmens.pokeno.card.Card;
@@ -9,13 +11,19 @@ import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
 
-public class StarterSelecter extends CardSelectorBase {
+public class MultiCardSelector extends CardSelectorBase {
+	private List<Card> pickedCards;
+	private int amountOfCardsToPick;
 
-    public StarterSelecter(List<Card> cards, Player player)
-    {
-        super(cards, player);
-    }
-
+	public MultiCardSelector(List<Card> cards, Player player, int amount){
+		super(cards, player);
+		pickedCards = new ArrayList<Card>();
+		amountOfCardsToPick = amount;
+		setTitle("Select " + amountOfCardsToPick + " cards.");
+		setSize(300, 300);
+        setVisible(true);
+	}
+	
 	@Override
 	protected MouseListener registerListeners(Card card) {
 		return new java.awt.event.MouseListener()
@@ -28,12 +36,13 @@ public class StarterSelecter extends CardSelectorBase {
 
             @Override
             public void mousePressed(MouseEvent me) {
-                player.useCard(card);
-                GameController.setActivePokemonOnBoard((Pokemon)card, true);
-                GameController.updateHand(GameController.getHomePlayer().getHand(), true);
-                GameController.board.update();
-
-                dispose();
+            	pickedCards.add(card);
+            	panel.remove((Component) me.getSource());
+            	repaint();
+            	if(pickedCards.size() == amountOfCardsToPick){
+	            	setVisible(false);
+            	}
+            	setTitle("Select " + (amountOfCardsToPick - pickedCards.size()) + " cards.");
             }
 
             @Override
@@ -54,5 +63,11 @@ public class StarterSelecter extends CardSelectorBase {
                 GameController.board.cleanCardPreview();
             }
         };
+	}
+	
+	public List<Card> getSelectedCards(){
+		while(pickedCards.size() < amountOfCardsToPick);
+		dispose();
+		return pickedCards;
 	}
 }

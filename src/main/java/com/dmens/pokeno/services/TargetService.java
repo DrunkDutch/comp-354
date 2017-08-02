@@ -18,6 +18,8 @@ enum TargetTypes {
     OPPONENT_BENCH("opponent-bench"),
     YOUR_HAND("your-hand"),
     OPPONENT_HAND("opponent-hand"),
+    YOUR("your"),
+    OPPONENT("opponent"),
     YOU("you"),
     THEM("them");
 
@@ -54,6 +56,10 @@ enum TargetTypes {
             return OPPONENT_HAND;
         if(THEM.equals(type))
             return THEM;
+        if(YOUR.equals(type))
+            return YOUR;
+        if(OPPONENT.equals(type))
+            return OPPONENT;
         else
             return YOU;
     }
@@ -145,6 +151,7 @@ public class TargetService {
     	 TargetTypes type = TargetTypes.fromName(target);
          switch(type){
              case YOUR_ACTIVE:			return you;
+             case YOUR:					return you;
              case OPPONENT_ACTIVE:		return them;
              case YOUR_BENCH:			return you;
              case OPPONENT_BENCH:		return them;

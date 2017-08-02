@@ -22,11 +22,11 @@ public class CardsDatabase extends Database<Card>{
 
 	private static String[] supportedPokemon = {"Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
 			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
-			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric"};
+			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi"};
 
 	
 
-	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady"};
+	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Clemont","Pok� Ball"};
 
 	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
