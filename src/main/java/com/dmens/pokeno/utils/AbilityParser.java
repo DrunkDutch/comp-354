@@ -17,6 +17,7 @@ import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.DeStat;
 import com.dmens.pokeno.effect.DeckEffect;
 import com.dmens.pokeno.effect.Deenergize;
 import com.dmens.pokeno.effect.DrawCard;
@@ -87,6 +88,8 @@ public class AbilityParser {
 				return getShuffleDeckEffect(effectStack);
 			case DECK:
 				return getDeckEffect(effectStack);
+			case DESTAT:
+				return getDestatEffect(effectStack);
 			default:
 				return null;
 		}
@@ -194,6 +197,12 @@ public class AbilityParser {
 		target = effectStack.pop();
 		LOG.debug("Simple Shuffle Effect parsed");
 		return new ShuffleDeck(target);
+	}
+	
+	private static Effect getDestatEffect(Stack<String> effectStack) {
+		effectStack.pop(); //target
+		String target = effectStack.pop();
+		return new DeStat(target);
 	}
 
 	private static Effect getSwapEffect(Stack<String> effectStack) {

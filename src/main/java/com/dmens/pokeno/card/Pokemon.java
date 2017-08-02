@@ -348,7 +348,7 @@ public class Pokemon extends Card {
     public int getDamage() {
         return mDamage;
     }
-
+    
     public ArrayList<EnergyCard> getAttachedEnergy() {
         return mAttachedEnergy;
     }
@@ -381,6 +381,19 @@ public class Pokemon extends Card {
     
     public boolean isHealed() {
     	return mHealed;
+    }
+    
+    public void clearStatus()
+    {
+    	mPoisoned = false;
+    	mParalyzed = false;
+    	mSleep = false;
+    	mStuck = false;
+    	if(this == GameController.getHomePlayer().getActivePokemon()) {
+			GameController.board.updateActivePokemon(GameController.getHomePlayer());
+		} else if(this == GameController.getAIPlayer().getActivePokemon()) {
+			GameController.board.updateActivePokemon(GameController.getAIPlayer());
+		}
     }
     
     public boolean isEvolvedCategory(){
