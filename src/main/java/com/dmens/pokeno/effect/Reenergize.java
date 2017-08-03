@@ -55,6 +55,11 @@ public class Reenergize extends Effect {
 			potentialSources.add(player.getActivePokemon());
 		}
 		
+		if(potentialSources.size() == 0) {
+			player.displayMessage("No pokemon had energy!");
+			return;
+		}
+			
 		int iS = player.createPokemonOptionPane("Select a source Pokemon", "These pokemon have energy:", false, potentialSources);
 		Pokemon pokeSrc = (Pokemon) potentialSources.get(iS);
 		
