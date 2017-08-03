@@ -85,11 +85,13 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         AbilityCost ability = poke.getAbilitiesAndCost().get(0);
         this.ability1.setText(ability.getAbility().getName());
         
-        String ab1 = "";
+        String ab1 = "<html>";
         for (int i = 0; i < ability.getAbility().getEffects().size(); i++) {
         	
-        	ab1 += ability.getAbility().getEffects().get(i).str() + "\n";
+        	ab1 += ability.getAbility().getEffects().get(i).str() + "<br />";
         }
+        
+        ab1 += "</html>";
         
         this.description1.setText(ab1);
         this.damage1.setText(ability.showCosts());
@@ -101,11 +103,13 @@ public class PokemonCardPanel extends javax.swing.JPanel {
             ability = poke.getAbilitiesAndCost().get(1);
             this.ability2.setText(ability.getAbility().getName());
             
-            String ab2 = "";
+            String ab2 = "<html>";
             for (int i = 0; i < ability.getAbility().getEffects().size(); i++) {
             	
-            	ab2 += ability.getAbility().getEffects().get(i).str() + "\n";
+            	ab2 += ability.getAbility().getEffects().get(i).str() + "<br />";
             }
+            
+            ab2 += "</html>";
             
             this.description2.setText(ab2);
             this.damage2.setText(ability.showCosts());
@@ -190,9 +194,11 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         ability2.setHorizontalTextPosition(javax.swing.SwingConstants.LEFT);
 
         damage1.setText("10");
+        damage1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         damage1.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         damage2.setText("10");
+        damage2.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
         damage2.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
 
         description1.setFont(new java.awt.Font("Tahoma", 0, 9)); // NOI18N
