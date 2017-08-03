@@ -288,16 +288,32 @@ public class AbilityParser {
 	private static Effect getDeenergizeEffect(Stack<String> effectStack){
 		int amount = 0;
 		String target = "";
+		String countInfo = "";
 		effectStack.pop();	// target
 		
-		if(effectStack.size() == 2) {
+		System.out.println("Stack Size: " + effectStack.size());
 			target = effectStack.pop();
-			amount = Integer.parseInt(effectStack.pop());
-			LOG.debug("Simple Deenergize Effect parsed");
-		}
-		
-		return new Deenergize(amount, target);
-
+			if (effectStack.size() == 1)
+				amount = Integer.parseInt(effectStack.pop());
+			else
+			{
+				if(effectStack.peek().contains("count")) {
+					while(!effectStack.isEmpty()) {
+						String s = effectStack.pop();
+						if(s.contains(")")) {
+							// the end of count, append the last string and break out of the loop
+							countInfo += s;
+							break;
+						}
+						// reconstruct the count info
+						countInfo += (s + ":");
+					}
+				}
+				if (countInfo != "")
+					countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
+			}
+			LOG.debug("Deenergize Effect parsed");
+		return new Deenergize(amount, target, countInfo);
 	}
 	
 	private static Effect getReenergizeEffect(Stack<String> effectStack){
@@ -324,11 +340,6 @@ public class AbilityParser {
 	
 	private static String getStatus(Stack<String> effectStack){
 		effectStack.pop();	// status
-		return effectStack.pop();
-	}
-	
-	private static String getConditionType(Stack<String> effectStack){
-		effectStack.pop();	// cond
 		return effectStack.pop();
 	}
 	

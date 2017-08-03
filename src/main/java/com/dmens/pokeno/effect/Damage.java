@@ -70,6 +70,7 @@ public class Damage extends Effect {
 		System.out.println(mTarget);
 		int count = 1;
 		if(this.mCountInfo != "") {
+			System.out.println("Good Count info: " + mCountInfo);
 			count = CountService.getInstance().getCount(this.mCountInfo);
 		}
 		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
