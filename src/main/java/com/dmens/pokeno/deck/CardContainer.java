@@ -88,10 +88,6 @@ public class CardContainer {
 		return cards.stream().filter(card -> card.isType(CardTypes.POKEMON) && ((Pokemon)card).getCategory().equalsIgnoreCase(type)).collect(Collectors.toList());
 	}
 	
-	public List<Card> getAllPokemonWithEnergy(){
-		return cards.stream().filter(card -> card.isType(CardTypes.POKEMON) && ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList());
-	}
-	
 	public List<Card> getAllEnergy(){
 		return cards.stream().filter(card -> card.isType(CardTypes.ENERGY)).collect(Collectors.toList());
 	}
