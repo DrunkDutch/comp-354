@@ -504,6 +504,26 @@ public class Player {
         return buttonNum;
     }
     
+    public int createPokemonOptionPane(String title, String message, boolean cancelable, List<Pokemon> cards)
+    {
+        ArrayList<String> buttons = new ArrayList<String>(); 
+
+        int i = 0;
+        for (Card c : cards)
+        {
+            buttons.add(c.getName() + " " + i);
+            i++;
+        }
+        if (cancelable)
+            buttons.add("Cancel");
+        String[] buttonsAsArray = new String[buttons.size()];
+        buttonsAsArray = buttons.toArray(buttonsAsArray);
+        int buttonNum = chooseCards(buttonsAsArray, title, message);
+        if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
+            buttonNum = -1;
+        return buttonNum;
+    }
+    
     public EnergyTypes createEnergyOptionPane(Pokemon target, String title, String message, boolean cancelable)
     {
         ArrayList<String> buttons = new ArrayList<String>(); 
