@@ -4,6 +4,7 @@ import com.dmens.pokeno.condition.Condition;
 import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.CountService;
 import com.dmens.pokeno.services.TargetService;
 import com.dmens.pokeno.utils.Randomizer;
 import com.dmens.pokeno.card.EnergyTypes;
@@ -13,6 +14,7 @@ import com.dmens.pokeno.card.Pokemon;
 public class Deenergize extends Effect {
 
 	private int mAmount;
+	private String mCountInfo;
 	
 	/*
 	 * Constructor
@@ -21,10 +23,11 @@ public class Deenergize extends Effect {
 	 * @param		tar		Target.
 	 * @param		con		Condition.
 	 */
-	public Deenergize(int val, String tar, Condition con)
+	public Deenergize(int val, String tar, Condition con, String countInfo)
 	{
 		super(tar, con);
 		this.mAmount = val;
+		this.mCountInfo = countInfo;
 	}
 	
 	/*
@@ -57,7 +60,15 @@ public class Deenergize extends Effect {
 		boolean proceedWithAttack = true;
 		
 		// 1) Get the target
+		System.out.println("target: " + mTarget);
 		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget).get(0);
+		
+		//int count = 1;
+		System.out.println(mCountInfo);
+		if(this.mCountInfo != "") {
+			mAmount = CountService.getInstance().getCount(this.mCountInfo);
+		}
+		System.out.println("count: " + mAmount);
 		
 		// 2) Determine if there is a condition, if so... handle it
 		if(mCondition != null)
@@ -87,6 +98,7 @@ public class Deenergize extends Effect {
 			}
 		}
 	}
+
 	
 	@Override
 	public String toString()
