@@ -65,4 +65,8 @@ public class DeckEffect extends Effect
 		return String.format("DECK: Target: %s from: %s to: %s", this.mTarget, this.mOrigin, this.mDestination);
 	}
 	
+	@Override
+	public String str() {
+		return String.format("DECK %s, %s", this.mTarget, this.mDestination);
+	}
 }

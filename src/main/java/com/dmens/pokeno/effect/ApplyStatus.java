@@ -58,6 +58,11 @@ public class ApplyStatus extends Effect {
 	}
 	
 	@Override
+	public String str() {
+		return String.format("ST %s, %s", this.mTarget, this.mStatus);
+	}
+	
+	@Override
 	public boolean equals(Object obj)
 	{
 		ApplyStatus a = (ApplyStatus) obj;

@@ -21,5 +21,9 @@ public class DeStat extends Effect
 	public String toString() {
 		return String.format("Clear Status: Target: %s", this.mTarget);
 	}
-
+	
+	@Override
+	public String str() {
+		return String.format("DESTAT %s", this.mTarget);
+	}
 }

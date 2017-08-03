@@ -104,4 +104,9 @@ public class Deenergize extends Effect {
 	{
 		return String.format("Deenergize: Target: %s, Amount: %d", this.mTarget, this.mAmount);
 	}
+	
+	@Override
+	public String str() {
+		return String.format("DEE %s, %d", this.mTarget, this.mAmount);
+	}
 }
