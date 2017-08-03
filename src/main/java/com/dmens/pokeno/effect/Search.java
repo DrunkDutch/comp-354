@@ -11,8 +11,12 @@ import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.SourceServiceHandler;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.view.MultiCardSelector;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 public class Search extends Effect {
+
+	private static final Logger LOG = LogManager.getLogger(Search.class);
 	
 	private String mTarget;
 	private String mSource;
@@ -24,10 +28,14 @@ public class Search extends Effect {
 		Player targetPlayer = TargetServiceHandler.getInstance().getService().getPlayer(mTarget);
 		CardContainer source = SourceServiceHandler.getInstance().getService().getCardContainerSourceFromPlayer(targetPlayer, mSource);
 		List<Card> cardsToSearch = new ArrayList<Card>();
-		if(this.hasFilter())
+		if(this.hasFilter()) {
+			LOG.info("Filtering cards");
 			filterCards(source, cardsToSearch);
-		else
+		}
+		else {
+			LOG.info("Searching without filter");
 			cardsToSearch.addAll(source.getCards());
+		}
 		// shuffle order
 		Collections.shuffle(cardsToSearch);
 		// Search and pick cards
