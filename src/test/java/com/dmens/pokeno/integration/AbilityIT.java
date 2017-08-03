@@ -5,6 +5,7 @@ import static org.powermock.api.support.membermodification.MemberMatcher.method;
 import static org.powermock.api.support.membermodification.MemberModifier.stub;
 
 import java.util.Arrays;
+import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -190,6 +191,7 @@ public class AbilityIT {
         Mockito.doNothing().when(p2).benchPokemonOnBoard();
         Mockito.doNothing().when(p1).updateBoard();
         Mockito.doNothing().when(p2).updateBoard();
+        stub(method(GameController.class, "getHomePlayer")).toReturn(p1);
         Mockito.doReturn(EnergyTypes.LIGHTNING).when(p1).createEnergyOptionPane(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean());
         Mockito.doReturn(EnergyTypes.LIGHTNING).when(p2).createEnergyOptionPane(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean());
         Mockito.doReturn(true).when(p1).flipCoin();

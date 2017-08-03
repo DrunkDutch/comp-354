@@ -238,6 +238,7 @@ public class Pokemon extends Card {
 			if (mAttachedEnergy.get(i).getCategory() == type)
 			{
 				mAttachedEnergy.remove(i);
+				GameController.updateEnergyCounters(getMapOfAttachedEnergies(), this == GameController.getHomePlayer().getActivePokemon());
 				return true;
 			}
 		}
@@ -282,7 +283,7 @@ public class Pokemon extends Card {
     public int getDamage() {
         return mDamage;
     }
-
+    
     public ArrayList<EnergyCard> getAttachedEnergy() {
         return mAttachedEnergy;
     }
@@ -315,6 +316,15 @@ public class Pokemon extends Card {
     
     public boolean isHealed() {
     	return mHealed;
+    }
+    
+    public void clearStatus()
+    {
+    	mPoisoned = false;
+    	mParalyzed = false;
+    	mSleep = false;
+    	mStuck = false;
+		GameController.board.clearAllStatus(this == GameController.getHomePlayer().getActivePokemon());
     }
     
     public boolean isEvolvedCategory(){
