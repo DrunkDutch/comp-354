@@ -1,12 +1,18 @@
 package com.dmens.pokeno.ability;
 
-import com.dmens.pokeno.condition.Condition;
-import com.dmens.pokeno.effect.*;
+import java.util.ArrayList;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
+import com.dmens.pokeno.effect.ApplyStatus;
+import com.dmens.pokeno.effect.Condition;
+import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.Deenergize;
+import com.dmens.pokeno.effect.DrawCard;
+import com.dmens.pokeno.effect.Effect;
+import com.dmens.pokeno.effect.Heal;
+import com.dmens.pokeno.effect.Swap;
 
 /*
  * An Ability has a Name and a list of effects (Damage, Heal, ApplyStatus, etc...) 

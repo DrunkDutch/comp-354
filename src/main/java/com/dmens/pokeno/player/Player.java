@@ -684,6 +684,17 @@ public class Player {
             GameController.updateEnergyCountersPreview(pokemon.getMapOfAttachedEnergies(), humanPlayer);
     }
     
+    public void updatePokemonStatusOnBoard(){
+			if (mActivePokemon.isParalyzed())
+				GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
+			if (mActivePokemon.isSleep())
+				GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
+			if (mActivePokemon.isStuck())
+				GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
+			if (mActivePokemon.isPoisoned())
+				GameController.board.addStatus(3, !GameController.getIsHomePlayerPlaying());
+    }
+    
     public void endTurn(){
     	mHasPlayedEnergy = false;
     }
@@ -794,6 +805,12 @@ public class Player {
     public List<Card> ChooseMultipleCards(List<Card> cards, int amount){
     	MultiCardSelector selector = new MultiCardSelector(cards, this, amount);
     	return selector.getSelectedCards();
+    }
+    
+    public boolean flipCoin(){
+    	boolean heads = Randomizer.Instance().getFiftyPercentChance();
+    	displayMessage("Coin: " + (heads ? "Heads" : "Tails"));
+    	return heads;
     }
 
     //TODO

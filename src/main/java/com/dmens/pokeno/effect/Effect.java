@@ -1,6 +1,9 @@
 package com.dmens.pokeno.effect;
 
-import com.dmens.pokeno.condition.Condition;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.dmens.pokeno.utils.AbilityParser;
 
 /*
  * Effect absract class
@@ -9,16 +12,14 @@ import com.dmens.pokeno.condition.Condition;
  */
 public abstract class Effect 
 {
-	
+	protected static final Logger LOG = LogManager.getLogger(Effect.class);
 	protected String mTarget;
-	protected Condition mCondition;
 	
 	/*
 	 * Default Constructor
 	 */
 	public Effect() {
 		mTarget = "";
-		mCondition = null;
 	}
 	
 	/*
@@ -27,9 +28,8 @@ public abstract class Effect
 	 * @param		value		Integer value (amount).
 	 * @param		target		Target.
 	 */
-	public Effect(String target, Condition mCondition) {
+	public Effect(String target) {
 		this.mTarget = target;
-		this.mCondition = mCondition; 
 	}
 	
 	/*
@@ -40,27 +40,6 @@ public abstract class Effect
 	public String getTarget()
 	{
 		return this.mTarget;
-	}
-	
-
-	/*
-     * Check if a condition applies.
-     * 
-     * @return		Boolean value indicating the presence of a condition.
-     */
-	public boolean hasCondition()
-	{
-		return (this.mCondition != null);
-	}
-	
-	/*
-     * Get the condition.
-     * 
-     * @return		The condition as a Condition.
-     */
-	public Condition getCondition()
-	{
-		return this.mCondition;
 	}
 	
 	public abstract void execute();

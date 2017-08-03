@@ -1,6 +1,11 @@
 package com.dmens.pokeno.effect;
 
-import com.dmens.pokeno.condition.*;
+import java.util.List;
+
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 /*
  * An ApplyStatus effect.
@@ -18,7 +23,7 @@ public class ApplyStatus extends Effect {
 	 */
 	public ApplyStatus(String tar,String stat)
 	{
-		super(tar, null);
+		super(tar);
 		this.mStatus = stat;
 	}
 	
@@ -47,8 +52,13 @@ public class ApplyStatus extends Effect {
 	@Override
 	public void execute()
 	{
-		// TODO Auto-generated method stub
-		
+		Player targetPlayer = TargetServiceHandler.getInstance().getService().getPlayer(this.mTarget);
+		List<Card> targets = TargetServiceHandler.getInstance().getTarget(this.mTarget);
+		targets.forEach(target -> {
+			((Pokemon)target).setStatus(this.mStatus);
+			TargetServiceHandler.getInstance().getPlayingPlayer().displayMessage(target.getName()+ "was " + mStatus);
+			targetPlayer.updatePokemonStatusOnBoard();
+		});
 	}
 
 	@Override

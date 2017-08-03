@@ -3,14 +3,12 @@ package com.dmens.pokeno.effect;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.SourceServiceHandler;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
-import com.dmens.pokeno.view.MultiCardSelector;
 
 public class Search extends Effect {
 	

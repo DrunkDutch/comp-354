@@ -37,7 +37,7 @@ public class PokemonTest {
 	@Test
 	public void testPokemonCreation() {
 		Ability abilityPound = new Ability(mAbilityPoundName);
-        abilityPound.addEffect(new Damage(mAbilityPoundTarget, mAbilityPoundValue, null, ""));
+        abilityPound.addEffect(new Damage(mAbilityPoundTarget, mAbilityPoundValue, ""));
         
         AbilityCost abilityCost = new AbilityCost(abilityPound);
 		abilityCost.addCost(mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);

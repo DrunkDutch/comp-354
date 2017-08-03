@@ -19,7 +19,7 @@ public class Swap extends Effect {
 	 */
 	public Swap(String target, String destination)
 	{
-		super(target, null);
+		super(target);
 		this.mDestination = destination;		
 	}
 	
