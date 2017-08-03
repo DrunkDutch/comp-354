@@ -50,7 +50,7 @@ public class Reenergize extends Effect {
 		ArrayList<EnergyTypes> energies = new ArrayList<EnergyTypes>();
 		Player player = TargetService.getInstance().getPlayer(mSource);
 		
-		List<Pokemon> potentialSources = player.getBenchedPokemon().stream().filter(card -> ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList());
+		List<Pokemon> potentialSources =  new ArrayList<Pokemon>(player.getBenchedPokemon().stream().filter(card -> ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList()));
 		if(player.getActivePokemon().getAttachedEnergy().size() > 0) {
 			potentialSources.add(player.getActivePokemon());
 		}
@@ -60,8 +60,10 @@ public class Reenergize extends Effect {
 		
 		// 2) Choose and remove the n energy
 		for (int i = 0; i < mAmount; i++) {
-			if(pokeSrc.getAttachedEnergy().size() == 0)
+			if(pokeSrc.getAttachedEnergy().size() == 0) {
 				GameController.displayMessage(pokeSrc.getName() + " has no (more) energy to remove!");
+				break;
+			}
 			
 			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy from " + pokeSrc.getName(), "Which energy would you like to remove?", false);	
 			System.out.println("Removed: " + pokeSrc.removeSingleEnergy(type));
@@ -69,7 +71,7 @@ public class Reenergize extends Effect {
 		}
 		
 		// 3) Choose the destination pokemon
-		List<Pokemon> potentialDestinations = player.getBenchedPokemon();
+		List<Pokemon> potentialDestinations =  new ArrayList<Pokemon>(player.getBenchedPokemon());
 		potentialDestinations.add(player.getActivePokemon());
 		int iD = player.createPokemonOptionPane("Select a destination Pokemon", "Energies will be added to:", false, potentialDestinations);
 		Pokemon pokeDest = (Pokemon) potentialSources.get(iD);
