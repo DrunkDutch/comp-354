@@ -101,6 +101,7 @@ public class TargetService {
     public List<Card> getTarget(String target){
         List<Card> targets = new ArrayList<>();
         TargetTypes type = TargetTypes.fromName(target);
+        System.out.println("type: " + type);
         switch(type){
             case YOUR_ACTIVE:
                 targets.add(you.getActivePokemon());
