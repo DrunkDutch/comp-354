@@ -308,6 +308,7 @@ public class Pokemon extends Card {
 			if (mAttachedEnergy.get(i).getCategory() == type)
 			{
 				mAttachedEnergy.remove(i);
+				GameController.updateEnergyCounters(getMapOfAttachedEnergies(), this == GameController.getHomePlayer().getActivePokemon());
 				return true;
 			}
 		}

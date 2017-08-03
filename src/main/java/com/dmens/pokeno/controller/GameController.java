@@ -376,6 +376,9 @@ public class GameController {
     
     public static int dispayCustomOptionPane(Object[] buttons, String title, String prompt)
     {
+    	if (buttons.length == 0)
+    		return -1;
+    	
     	final JOptionPane jop = new JOptionPane(prompt, 0, JOptionPane.DEFAULT_OPTION, null, buttons, buttons[0]);
     	JDialog dialog = jop.createDialog(null, title);
     	dialog.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
