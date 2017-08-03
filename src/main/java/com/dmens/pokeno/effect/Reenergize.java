@@ -76,7 +76,7 @@ public class Reenergize extends Effect {
 				break;
 			}
 			
-			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy from " + pokeSrc.getName(), "Which energy would you like to remove?", false);	
+			EnergyTypes type = player.createEnergyOptionPane(pokeSrc, "Remove an Energy from " + pokeSrc.getName(), "Which energy would you like to remove?", false);	
 			pokeSrc.removeSingleEnergy(type);
 			LOG.info("Removed " + type.toString() + " from " + pokeSrc.getName());
 			energies.add(type);
@@ -107,7 +107,7 @@ public class Reenergize extends Effect {
 					break;
 			}
 		}
-		player.updateBoard();
+		player.updateActivePokemonOnBoard();
 	}
 
 	@Override
