@@ -1,23 +1,17 @@
 package com.dmens.pokeno.effect.condition;
 
+import javax.swing.JOptionPane;
+
 import com.dmens.pokeno.effect.Condition;
 import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
-public class FlipCondition extends Condition {
+public class ChoiceCondition extends Condition {
 	
-	public FlipCondition() {
-		super();
-	}
-	
-	@Override
 	public void execute(){
-		LOG.info("Executing Flip Condtion");
-		// Get player
-		Player player = TargetServiceHandler.getInstance().getPlayingPlayer();
-		// Flip coin
-		boolean heads = player.flipCoin();
-		if(heads)
+		Player currentPlayer = TargetServiceHandler.getInstance().getPlayingPlayer();
+		int reply = currentPlayer.makeChoice("Execute Condition Ability?");
+		if(reply == JOptionPane.YES_OPTION)
 			super.execute(true);
 		else
 			super.execute(false);
@@ -28,5 +22,5 @@ public class FlipCondition extends Condition {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
- 

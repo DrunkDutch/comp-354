@@ -1,26 +1,23 @@
 package com.dmens.pokeno.effect.condition;
 
+import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.effect.Condition;
-import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
-public class FlipCondition extends Condition {
-	
-	public FlipCondition() {
-		super();
-	}
+public class HealedCondition extends Condition {
+	private String mTarget;
 	
 	@Override
 	public void execute(){
-		LOG.info("Executing Flip Condtion");
-		// Get player
-		Player player = TargetServiceHandler.getInstance().getPlayingPlayer();
-		// Flip coin
-		boolean heads = player.flipCoin();
-		if(heads)
+		Pokemon target = (Pokemon) TargetServiceHandler.getInstance().getTarget(this.mTarget).get(0);
+		if(target.isHealed())
 			super.execute(true);
 		else
 			super.execute(false);
+	}
+	
+	public void setTarget(String target){
+		this.mTarget = target;
 	}
 
 	@Override
@@ -28,5 +25,5 @@ public class FlipCondition extends Condition {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
- 

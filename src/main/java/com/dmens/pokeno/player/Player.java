@@ -437,12 +437,16 @@ public class Player {
     
     public void notifyMulligan(){
         if (!this.isInMulliganState()) {
-            int reply = GameController.displayConfirmDialog("Would you like to draw a card?", "Mulligan");
+            int reply = makeChoice("Would you like to draw a card?");
             if (reply == JOptionPane.YES_OPTION) {
                 this.drawCardsFromDeck(1);
                 displayMessage(((humanPlayer) ? "Human " : "AI ") + "Player received an extra card.");
             }
         }
+    }
+    
+    public int makeChoice(String message){
+    	return GameController.displayConfirmDialog(message, "Choice");
     }
 
     // for checking if player should declare a mulligan on their starting hand

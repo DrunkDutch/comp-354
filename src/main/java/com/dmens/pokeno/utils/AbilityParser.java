@@ -1,5 +1,6 @@
 package com.dmens.pokeno.utils;
 
+import java.awt.Choice;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -21,8 +22,11 @@ import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.effect.Search;
 import com.dmens.pokeno.effect.Swap;
 import com.dmens.pokeno.effect.condition.AbilityCondition;
+import com.dmens.pokeno.effect.condition.ChoiceCondition;
 import com.dmens.pokeno.effect.condition.ConditionTypes;
+import com.dmens.pokeno.effect.condition.ExpressionCondition;
 import com.dmens.pokeno.effect.condition.FlipCondition;
+import com.dmens.pokeno.effect.condition.HealedCondition;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
@@ -91,24 +95,38 @@ public class AbilityParser {
 	
 	private static Condition getConditionEffect(Stack<String> effectStack){
 		Condition cond = null;
-		String type = effectStack.pop().toUpperCase().replace("(", "");
-		if(type.contains("COUNT"))
-			return null;
-		switch(ConditionTypes.valueOf(type)){
-		case FLIP:
-			cond = new FlipCondition();
-			break;
-		case HEALED:
-			return null;
-		case ABILITY:
-			cond = new AbilityCondition();
-			String conditionAbilities = effectStack.pop();
-			for(int i = 0; !effectStack.peek().contains("("); i++)
-				conditionAbilities += ":"+effectStack.pop();
-			((AbilityCondition)cond).setEffectCondition(ParseEfect(conditionAbilities));
-			break;
-		default:
-			return null;
+		String rawType = effectStack.pop();
+		String type = rawType.toUpperCase();
+		try{
+			switch(ConditionTypes.valueOf(type)){
+			case FLIP:
+				cond = new FlipCondition();
+				break;
+			case HEALED:
+				cond = new HealedCondition();
+				((HealedCondition)cond).setTarget(getTarget(effectStack));
+				break;
+			case ABILITY:
+				cond = new AbilityCondition();
+				String conditionAbilities = effectStack.pop();
+				for(int i = 0; !effectStack.peek().contains("("); i++)
+					conditionAbilities += ":"+effectStack.pop();
+				((AbilityCondition)cond).setEffectCondition(ParseEfect(conditionAbilities));
+				break;
+			case CHOICE:
+				cond = new ChoiceCondition();
+				break;
+			default:
+				return null;
+			}
+		}catch(Exception e){
+			// expression condition
+			cond = new ExpressionCondition();
+			String expression = rawType;
+			do{
+				expression += ":"+effectStack.pop();
+			}while(!expression.contains(")"));
+			((ExpressionCondition)cond).setCondition(expression);
 		}
 		String conditionAbilities = effectStack.pop();
 		int size = effectStack.size();
