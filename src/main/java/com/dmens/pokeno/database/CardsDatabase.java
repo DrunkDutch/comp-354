@@ -2,7 +2,6 @@ package com.dmens.pokeno.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 
-	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
+	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat", "Glameow",
 			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
 			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi"};
 
