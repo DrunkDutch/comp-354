@@ -2,8 +2,10 @@ package com.dmens.pokeno.effect;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
@@ -45,10 +47,16 @@ public class Reenergize extends Effect {
 	public void execute() {
 		
 		// 1) Choose a pokemon as the source
-		Pokemon pokeSrc = null;
 		ArrayList<EnergyTypes> energies = new ArrayList<EnergyTypes>();
 		Player player = TargetService.getInstance().getPlayer(mSource);
-		List<Card> potentialSources = player.getHand().getAllPokemonWithEnergy();
+		
+		List<Pokemon> potentialSources = player.getBenchedPokemon().stream().filter(card -> ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList());
+		if(player.getActivePokemon().getAttachedEnergy().size() > 0) {
+			potentialSources.add(player.getActivePokemon());
+		}
+		
+		int iS = player.createPokemonOptionPane("Select a source Pokemon", "These pokemon have energy:", false, potentialSources);
+		Pokemon pokeSrc = (Pokemon) potentialSources.get(iS);
 		
 		// 2) Choose and remove the n energy
 		for (int i = 0; i < mAmount; i++) {
@@ -61,8 +69,10 @@ public class Reenergize extends Effect {
 		}
 		
 		// 3) Choose the destination pokemon
-		Pokemon pokeDest = null;
-		List<Card> potentialDestinations = player.getHand().getAllPokemon();
+		List<Pokemon> potentialDestinations = player.getBenchedPokemon();
+		potentialDestinations.add(player.getActivePokemon());
+		int iD = player.createPokemonOptionPane("Select a destination Pokemon", "Energies will be added to:", false, potentialDestinations);
+		Pokemon pokeDest = (Pokemon) potentialSources.get(iD);
 		
 		// 4) Add n energies to the destination
 		for (int i = 0; i < energies.size(); i++) {
