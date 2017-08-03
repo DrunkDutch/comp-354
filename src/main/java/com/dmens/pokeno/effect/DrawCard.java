@@ -63,6 +63,11 @@ public class DrawCard extends Effect{
 	}
 	
 	@Override
+	public String str() {
+		return String.format("DRAW %s, %d", this.mTarget, this.mValue);
+	}
+	
+	@Override
 	public boolean equals(Object obj)
 	{
 		DrawCard d = (DrawCard) obj;

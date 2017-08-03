@@ -84,49 +84,32 @@ public class PokemonCardPanel extends javax.swing.JPanel {
         // set ability 1
         AbilityCost ability = poke.getAbilitiesAndCost().get(0);
         this.ability1.setText(ability.getAbility().getName());
-        this.description1.setText(ability.showCosts());
         
-        //is it a simple ApplyStatus effect or a simple Damage effect
-        if(ability.getAbility().getEffects().get(0) instanceof ApplyStatus)
-       	{
-        	this.damage1.setText(ability.getAbility().getApplyStatusEffect().getStatus());
+        String ab1 = "";
+        for (int i = 0; i < ability.getAbility().getEffects().size(); i++) {
+        	
+        	ab1 += ability.getAbility().getEffects().get(i).str() + "\n";
         }
-        else if(ability.getAbility().getEffects().get(0) instanceof Damage)
-        {
-        	this.damage1.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
-        }
-        else if(ability.getAbility().getEffects().get(0) instanceof Deenergize)
-        {
-        	this.damage1.setText(Integer.toString(ability.getAbility().getDeenergizeEffect().getAmount()));
-        }
-        else if(ability.getAbility().getEffects().get(0) instanceof DrawCard)
-        {
-        	this.damage1.setText(Integer.toString(ability.getAbility().getDrawCardEffect().getValue()));
-        }
+        
+        this.description1.setText(ab1);
+        this.damage1.setText(ability.showCosts());
+       
         
         // Set ability 2 if present
         if(poke.getAbilitiesAndCost().size() >= 2)
         {
             ability = poke.getAbilitiesAndCost().get(1);
             this.ability2.setText(ability.getAbility().getName());
-            this.description2.setText(ability.showCosts());
-            //is it a simple ApplyStatus effect or a simple Damage effect
-            if(ability.getAbility().getEffects().get(0) instanceof ApplyStatus)
-           	{
-            	this.damage2.setText(ability.getAbility().getApplyStatusEffect().getStatus());
+            
+            String ab2 = "";
+            for (int i = 0; i < ability.getAbility().getEffects().size(); i++) {
+            	
+            	ab2 += ability.getAbility().getEffects().get(i).str() + "\n";
             }
-            else if(ability.getAbility().getEffects().get(0) instanceof Damage)
-            {
-            	this.damage2.setText(Integer.toString(ability.getAbility().getDamageEffect().getValue()));
-            }
-            else if(ability.getAbility().getEffects().get(0) instanceof Deenergize)
-            {
-            	this.damage2.setText(Integer.toString(ability.getAbility().getDeenergizeEffect().getAmount()));
-            }
-            else if(ability.getAbility().getEffects().get(0) instanceof DrawCard)
-            {
-            	this.damage2.setText(Integer.toString(ability.getAbility().getDrawCardEffect().getValue()));
-            }
+            
+            this.description2.setText(ab2);
+            this.damage2.setText(ability.showCosts());
+          
         }
         else
         {
