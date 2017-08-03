@@ -292,6 +292,10 @@ public class Pokemon extends Card {
             				youAsTarget.removeDamage(h.getValue());
             			}
             		}
+            		else if (effect instanceof Search){
+        				Search s = (Search) effect;
+        				a.performAbility();
+					}
         		}
         	});
         	
