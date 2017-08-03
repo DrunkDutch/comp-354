@@ -45,19 +45,16 @@ public class Regression121
 	@Before
 	public void setup(){
 		GameController.setBoard(mockBoard);
+		stub(method(GameController.class, "updateDeck")).toReturn(0);
+		stub(method(GameController.class, "updateHand")).toReturn(0);
+		stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
+		stub(method(GameController.class, "displayMessage")).toReturn(0);
+		GameController.setGameOver(false);
 	}
 	
 	@Test
 	public void victoryTest()
 	{
-		
-		//Test for decking out
-		stub(method(GameController.class, "updateDeck")).toReturn(0);
-		stub(method(GameController.class, "updateHand")).toReturn(0);
-		stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
-		stub(method(GameController.class, "displayMessage")).toReturn(0);
-		//PowerMockito.when(System.exit(0)).thenReturn("abc");
-		
 		EnergyCard e1 = new EnergyCard("Water", "water");
 		EnergyCard e2 = new EnergyCard("Water", "water");
 		Deck deck = new Deck();
@@ -76,14 +73,6 @@ public class Regression121
 
 	@Test
 	public void notDeckedTest(){
-
-		//Test for decking out
-		stub(method(GameController.class, "updateDeck")).toReturn(0);
-		stub(method(GameController.class, "updateHand")).toReturn(0);
-		stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
-		stub(method(GameController.class, "displayMessage")).toReturn(0);
-		//PowerMockito.when(System.exit(0)).thenReturn("abc");
-
 		EnergyCard e1 = new EnergyCard("Water", "water");
 		EnergyCard e2 = new EnergyCard("Water", "water");
 		Deck deck = new Deck();
@@ -100,13 +89,7 @@ public class Regression121
 	}
 
 	@Test
-	public void rewardVictoryTest() {        //Test for decking out
-		stub(method(GameController.class, "updateDeck")).toReturn(0);
-		stub(method(GameController.class, "updateHand")).toReturn(0);
-		stub(method(GameController.class, "getIsHomePlayerPlaying")).toReturn(true);
-		stub(method(GameController.class, "displayMessage")).toReturn(0);
-		//PowerMockito.when(System.exit(0)).thenReturn("abc");
-
+	public void rewardVictoryTest() { 
 		EnergyCard e1 = new EnergyCard("Water", "water");
 		EnergyCard e2 = new EnergyCard("Water", "water");
 		EnergyCard e3 = new EnergyCard("Water", "water");

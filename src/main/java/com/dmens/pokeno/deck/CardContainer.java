@@ -2,8 +2,14 @@ package com.dmens.pokeno.deck;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.CardTypes;
+import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.EnergyTypes;
+import com.dmens.pokeno.card.Pokemon;
 
 public class CardContainer {
 	protected ArrayList<Card> cards;
@@ -40,6 +46,13 @@ public class CardContainer {
 	}
 	
 	/**
+	 * Remove card from container
+	 */
+	public void removeCard(Card cardToRemove){
+		cards.remove(cardToRemove);
+	}
+	
+	/**
 	 * Add multiple cards to container
 	 * @param cardsToAdd
 	 */
@@ -65,6 +78,30 @@ public class CardContainer {
 	
 	public int size(){
 		return cards.size();
+	}
+	
+	public List<Card> getAllPokemon(){
+		return cards.stream().filter(card -> card.isType(CardTypes.POKEMON)).collect(Collectors.toList());
+	}
+	
+	public List<Card> getAllPokemonOfType(String type){
+		return cards.stream().filter(card -> card.isType(CardTypes.POKEMON) && ((Pokemon)card).getCategory().equalsIgnoreCase(type)).collect(Collectors.toList());
+	}
+	
+	public List<Card> getAllEnergy(){
+		return cards.stream().filter(card -> card.isType(CardTypes.ENERGY)).collect(Collectors.toList());
+	}
+	
+	public List<Card> getAllEnergyOfType(String type){
+		return cards.stream().filter(card -> card.isType(CardTypes.ENERGY) && ((EnergyCard) card).isCategory(EnergyTypes.valueOf(type.toUpperCase()))).collect(Collectors.toList());
+	}
+	
+	public List<Card> peekFromTop(int amount){
+		return cards.subList(0, amount);
+	}
+	
+	public List<Card> peekFromBottom(int amount){
+		return cards.subList(amount, cards.size());
 	}
 	
 	public String toString(){

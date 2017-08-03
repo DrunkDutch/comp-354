@@ -12,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
+import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.utils.CardParser;
 import com.dmens.pokeno.utils.FileUtils;
 
@@ -20,13 +21,10 @@ public class CardsDatabase extends Database<Card>{
 
 	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
 			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
-			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric"};
+			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi"};
 
-	
+	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Shauna", "Red Card", "Clemont", "Poké Ball", "Energy Switch"};
 
-	private static String[] supportedTrainer = {"Tierno", "Potion", "PokÃ©mon Center Lady", "Energy Switch"};
-
-	
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	
 	public static Database<Card> getInstance(){
@@ -38,7 +36,10 @@ public class CardsDatabase extends Database<Card>{
 	public static void removeNullPointersInDB() {
 		if(database == null)
 			return;
-		((ArrayList<Card>) (database.db)).removeAll(Collections.singleton(null));  
+		for(int i =0; i < database.db.size(); i++){
+			if(database.db.get(i) == null)
+				database.db.set(i, new Pokemon("null"));
+		}
 	}
 	private CardsDatabase(){
 		db = new ArrayList<Card>();
@@ -66,6 +67,7 @@ public class CardsDatabase extends Database<Card>{
 	public Card queryByName(String name){
 		LOG.debug("Query Cards DB By name: "+name);
 		Optional<Card> hit = db.stream().filter(card->card.getName().equals(name)).findAny();
+		LOG.debug(hit.get().getName()+ " found");
 		return hit.get().copy();
 	}
 }

@@ -18,8 +18,11 @@ enum TargetTypes {
     OPPONENT_BENCH("opponent-bench"),
     YOUR_HAND("your-hand"),
     OPPONENT_HAND("opponent-hand"),
+    YOUR("your"),
+    OPPONENT("opponent"),
     YOU("you"),
-    THEM("them");
+    THEM("them"),
+    LAST("last");
 
     private TargetTypes(String name){
         this.name = name;
@@ -54,6 +57,12 @@ enum TargetTypes {
             return OPPONENT_HAND;
         if(THEM.equals(type))
             return THEM;
+        if (LAST.equals(type))
+        	return LAST;
+        if(YOUR.equals(type))
+            return YOUR;
+        if(OPPONENT.equals(type))
+            return OPPONENT;
         else
             return YOU;
     }
@@ -67,6 +76,7 @@ enum TargetTypes {
 public class TargetService {
     private Player you;
     private Player them;
+    private List<Card> last;
 
     private static TargetService service = new TargetService();
 
@@ -124,8 +134,10 @@ public class TargetService {
             	if(opponentCard != null)
             		targets.add(opponentCard);
                 break;
+            case LAST:
+            	targets = last;
         }
-
+        last = targets;
         return targets;
     }
 
@@ -145,6 +157,7 @@ public class TargetService {
     	 TargetTypes type = TargetTypes.fromName(target);
          switch(type){
              case YOUR_ACTIVE:			return you;
+             case YOUR:					return you;
              case OPPONENT_ACTIVE:		return them;
              case YOUR_BENCH:			return you;
              case OPPONENT_BENCH:		return them;

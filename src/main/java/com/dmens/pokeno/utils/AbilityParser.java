@@ -17,12 +17,16 @@ import com.dmens.pokeno.condition.Flip;
 import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
 import com.dmens.pokeno.effect.Damage;
+import com.dmens.pokeno.effect.DeStat;
+import com.dmens.pokeno.effect.DeckEffect;
 import com.dmens.pokeno.effect.Deenergize;
 import com.dmens.pokeno.effect.DrawCard;
 import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.effect.Reenergize;
+import com.dmens.pokeno.effect.ShuffleDeck;
+import com.dmens.pokeno.effect.Search;
 import com.dmens.pokeno.effect.Swap;
 
 public class AbilityParser {
@@ -84,6 +88,14 @@ public class AbilityParser {
 				return getDeenergizeEffect(effectStack);
 			case REENERGIZE:
 				return getReenergizeEffect(effectStack);
+			case SHUFFLE:
+				return getShuffleDeckEffect(effectStack);
+			case DECK:
+				return getDeckEffect(effectStack);
+			case DESTAT:
+				return getDestatEffect(effectStack);
+			case SEARCH:
+				return getSearchEffect(effectStack);
 			default:
 				return null;
 		}
@@ -166,6 +178,38 @@ public class AbilityParser {
 		return new DrawCard(value, target); 
 	}
 	
+	private static Effect getDeckEffect(Stack<String> effectStack){
+		effectStack.pop();	// target
+		String target = effectStack.pop();
+		effectStack.pop();	//destination
+		String destination = effectStack.pop();
+		String origin = "";
+		if (effectStack.peek().contains("bottom")) {
+			destination += ":" + effectStack.pop();
+		}
+		if (effectStack.peek().contains("count")) {
+			origin = effectStack.pop();
+		}
+		//TODO - it might be "choice" instead of "count"
+		
+		//LOG.debug("Simple Shuffle Effect parsed");
+		return new DeckEffect(target, origin, destination);
+	}
+	
+	private static Effect getShuffleDeckEffect(Stack<String> effectStack){
+		//TODO - conditionals need to be added (here and the obj)
+		String target = "";
+		effectStack.pop();	// target
+		target = effectStack.pop();
+		LOG.debug("Simple Shuffle Effect parsed");
+		return new ShuffleDeck(target);
+	}
+	
+	private static Effect getDestatEffect(Stack<String> effectStack) {
+		effectStack.pop(); //target
+		String target = effectStack.pop();
+		return new DeStat(target);
+	}
 
 	private static Effect getSwapEffect(Stack<String> effectStack) {
 		effectStack.pop();    // source
@@ -257,6 +301,43 @@ public class AbilityParser {
 	
 	private static String getConditionType(Stack<String> effectStack){
 		effectStack.pop();	// cond
+		return effectStack.pop();
+	}
+	
+	private static Effect getSearchEffect(Stack<String> effectStack){
+		Search searchEffect = new Search();
+		String target = getTarget(effectStack);
+		searchEffect.setTarget(target);
+		String source = getSearchSource(effectStack);
+		searchEffect.setSource(source);
+		String filter = getSearchFilter(effectStack);
+		searchEffect.setFilter(filter);
+		String amount = getAmount(effectStack);
+		searchEffect.setAmount(amount);
+		return searchEffect;
+	}
+	
+	private static String getSearchSource(Stack<String> effectStack){
+		effectStack.pop();	// source
+		return effectStack.pop();
+	}
+	
+	private static String getSearchFilter(Stack<String> effectStack){
+		if(effectStack.size() == 1)
+			return "";	// No filter
+		effectStack.pop();	// filter
+		String filter = effectStack.pop();
+		if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
+			if(effectStack.peek().equalsIgnoreCase("cat")){
+				effectStack.pop();	// cat
+				filter += ":" + effectStack.pop();	// card category
+			}
+		}else
+			filter += ":" + effectStack.pop();	// card category
+		return filter;
+	}
+	
+	private static String getAmount(Stack<String> effectStack){
 		return effectStack.pop();
 	}
 }
