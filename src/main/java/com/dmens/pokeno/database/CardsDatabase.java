@@ -21,7 +21,7 @@ public class CardsDatabase extends Database<Card>{
 
 	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
 			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
-			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi", "Persian", "Raichu"};
+			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi", "Raichu"};
 
 	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Shauna", "Red Card", "Clemont", "Poké Ball", "Energy Switch",
 												"Pokémon Fan Club"};
