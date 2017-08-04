@@ -212,7 +212,10 @@ public class GameController {
 	
 	public static boolean useActivePokemonForPlayer(int player, int ability){
 		if (!playersMayAttack)
+		{
+			System.out.println("Cannot attack on the first turn!");
 			return false;
+		}
 		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	
