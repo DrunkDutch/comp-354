@@ -54,6 +54,7 @@ public class GameController {
 	private static boolean mIsHomePlayerPlaying = true;
 	
     public static GameBoard board;
+    public static boolean playersMayAttack = false;
         
 	public static void main(String[] args) {
 		AbilitiesDatabase.getInstance().initialize(LOCATION_ABILITIES);
@@ -210,6 +211,11 @@ public class GameController {
 	}
 	
 	public static boolean useActivePokemonForPlayer(int player, int ability){
+		if (!playersMayAttack)
+		{
+			System.out.println("Cannot attack on the first turn!");
+			return false;
+		}
 		return mPlayers.get(player).useActivePokemon(ability);
 	}
 	

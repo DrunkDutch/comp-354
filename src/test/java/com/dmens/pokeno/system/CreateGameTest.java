@@ -115,7 +115,10 @@ public class CreateGameTest {
     
 	@Test
 	public void testSetActivePokemonPlayEnergyAndAttack() {
-    	waitSleep(100);
+    waitSleep(100);
+
+		GameController.playersMayAttack = true;
+
 		Component c =  board.getPlayerHandPanel().getComponent(2);
 		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (38+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
 
