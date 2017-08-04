@@ -10,6 +10,7 @@ import com.dmens.pokeno.card.CardTypes;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.EnergyTypes;
 import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
 
 public class CardContainer {
 	protected ArrayList<Card> cards;
@@ -94,6 +95,14 @@ public class CardContainer {
 	
 	public List<Card> getAllEnergyOfType(String type){
 		return cards.stream().filter(card -> card.isType(CardTypes.ENERGY) && ((EnergyCard) card).isCategory(EnergyTypes.valueOf(type.toUpperCase()))).collect(Collectors.toList());
+	}
+	
+	public List<Card> getAllTrainer(){
+		return cards.stream().filter(card -> card.isType(CardTypes.TRAINER)).collect(Collectors.toList());
+	}
+	
+	public List<Card> getAllTrainerOfType(String type){
+		return cards.stream().filter(card -> card.isType(CardTypes.TRAINER) && ((TrainerCard) card).getCategory().equalsIgnoreCase(type)).collect(Collectors.toList());
 	}
 	
 	public List<Card> peekFromTop(int amount){

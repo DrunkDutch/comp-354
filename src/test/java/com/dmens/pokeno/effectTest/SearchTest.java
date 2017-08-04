@@ -7,9 +7,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.card.TrainerCard;
 import com.dmens.pokeno.deck.CardContainer;
 import com.dmens.pokeno.effect.Search;
 
@@ -92,6 +94,50 @@ public class SearchTest {
 		searchEffect.filterCards(container, resultCards);
 		assertEquals(1, resultCards.size());
 		assertEquals(water, resultCards.get(0));
+	}
+	
+	@Test
+	public void testTrainerAllFilter(){
+		CardContainer container = new CardContainer();
+		Pokemon pikachu = new Pokemon("Pikachu");
+		Pokemon raichu = new Pokemon("Raichu");
+		EnergyCard colorless = new EnergyCard("Colorless", "colorless");
+		EnergyCard water = new EnergyCard("Water", "water");
+		TrainerCard switchItem = new TrainerCard("Switch", "item", new Ability("Switch"));
+		container.addCard(pikachu);
+		container.addCard(colorless);
+		container.addCard(switchItem);
+		container.addCard(raichu);
+		container.addCard(water);
+		Search searchEffect = new Search();
+		searchEffect.setFilter("trainer");
+		List<Card> resultCards = new ArrayList<Card>();
+		searchEffect.filterCards(container, resultCards);
+		assertEquals(1, resultCards.size());
+		assertEquals(switchItem, resultCards.get(0));
+	}
+	
+	@Test
+	public void testTrainerWithTypeFilter(){
+		CardContainer container = new CardContainer();
+		Pokemon pikachu = new Pokemon("Pikachu");
+		Pokemon raichu = new Pokemon("Raichu");
+		EnergyCard colorless = new EnergyCard("Colorless", "colorless");
+		EnergyCard water = new EnergyCard("Water", "water");
+		TrainerCard switchItem = new TrainerCard("Switch", "item", new Ability("Switch"));
+		TrainerCard shauna = new TrainerCard("Shauna", "support", new Ability("Shauna"));
+		container.addCard(pikachu);
+		container.addCard(colorless);
+		container.addCard(switchItem);
+		container.addCard(shauna);
+		container.addCard(raichu);
+		container.addCard(water);
+		Search searchEffect = new Search();
+		searchEffect.setFilter("trainer:support");
+		List<Card> resultCards = new ArrayList<Card>();
+		searchEffect.filterCards(container, resultCards);
+		assertEquals(1, resultCards.size());
+		assertEquals(shauna, resultCards.get(0));
 	}
 
 }

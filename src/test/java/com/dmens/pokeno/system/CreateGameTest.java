@@ -115,8 +115,9 @@ public class CreateGameTest {
     
 	@Test
 	public void testSetActivePokemonPlayEnergyAndAttack() {
+    	waitSleep(100);
 		Component c =  board.getPlayerHandPanel().getComponent(2);
-		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (40+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
+		click(board.getPlayerHandPanel().getX()+c.getX()+board.getX()+20, (38+(c.getY()+board.getY()+(board.getPlayerHandPanel().getY()))));
 
 		// assert pokemon was played
 		Assert.assertNotNull(mPlayers.get(0).getActivePokemon());
@@ -152,6 +153,7 @@ public class CreateGameTest {
 	
 	private void click(int x, int y){
 		robot.mouseMove(x, y);
+		waitSleep(500);
     	robot.mousePress(InputEvent.BUTTON1_MASK);
     	robot.mouseRelease(InputEvent.BUTTON1_MASK);
     	try {

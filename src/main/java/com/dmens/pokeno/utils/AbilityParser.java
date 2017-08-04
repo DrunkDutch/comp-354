@@ -322,7 +322,10 @@ public class AbilityParser {
 			return "";	// No filter
 		effectStack.pop();	// filter
 		String filter = effectStack.pop();
-		if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
+		if(filter.equals("cat")){
+			filter = "trainer:"+effectStack.pop();
+		}
+		else if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
 			if(effectStack.peek().equalsIgnoreCase("cat")){
 				effectStack.pop();	// cat
 				filter += ":" + effectStack.pop();	// card category
