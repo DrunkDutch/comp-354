@@ -54,6 +54,11 @@ public class Swap extends Effect {
 	public String toString() {
 		return String.format("SWAP: Target: %s, Destination: %s", this.mTarget, this.mDestination);
 	}
+	
+	@Override
+	public String str() {
+		return String.format("SW %s, %s", this.mTarget, this.mDestination);
+	}
 
 	@Override
 	public boolean equals(Object obj)

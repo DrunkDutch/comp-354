@@ -74,6 +74,7 @@ public class Damage extends Effect {
 		System.out.println(mTarget);
 		int count = 1;
 		if(this.mCountInfo != "") {
+			System.out.println("Good Count info: " + mCountInfo);
 			count = CountService.getInstance().getCount(this.mCountInfo);
 		}
 		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
@@ -88,6 +89,11 @@ public class Damage extends Effect {
 	public String toString()
 	{
 		return String.format("Damage: Target: %s, Value: %d", this.mTarget, this.mValue);
+	}
+	
+	@Override
+	public String str() {
+		return String.format("DM %s, %d", this.mTarget, this.mValue);
 	}
 	
 	//TODO: condition check
