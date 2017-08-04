@@ -19,9 +19,10 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 
-	private static String[] supportedPokemon = {"Doduo", "Dodrio", "Espurr", "Hitmonchan", "Jynx", "Machop", "Machoke", "Zubat",
-			 "Ducklett", "Cloyster","Electabuzz", "Electivire", "Electrike", "Froakie", "Frogadier", "Goldeen", "Helioptile", "Pikachu", "Pikachu Libre",
-			 "Seaking", "Shellder", "Suicune", "Swanna", "Geodude", "Hitmonlee", "Manectric", "Jirachi", "Raichu"};
+	private static String[] supportedPokemon = {"Glameow","Pikachu Libre","Pikachu","Raichu","Shellder","Seaking","Goldeen","Frogadier","Froakie","Cloyster","Suicune",
+			"Swanna","Ducklett","Purugly","Manectric","Electrike","Electivire","Electabuzz","Helioptile","Clemont",
+			"Jynx","Jirachi","Meowth","Machop","Doduo","Dodrio","Geodude","Zubat","Haunter","Gastly","Slowpoke",
+			"Hitmonlee","Hitmonchan","Machoke","Espurr","Persian"};
 
 	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Shauna", "Red Card", "Clemont", "Poké Ball", "Energy Switch",
 												"Pokémon Fan Club"};

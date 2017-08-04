@@ -322,14 +322,11 @@ public class AbilityParser {
 		String source = "";
 		String destination = "";
 		
-		effectStack.pop();	// target
-		effectStack.pop();	// choice
-		source = effectStack.pop();
+
+		source = getTarget(effectStack);
 		amountS = Integer.parseInt(effectStack.pop());
 		
-		effectStack.pop();	// target
-		effectStack.pop();	// choice
-		destination = effectStack.pop();
+		destination = getTarget(effectStack);
 		amountD = Integer.parseInt(effectStack.pop());
 		
 		// Source and Destination amounts should be the same
