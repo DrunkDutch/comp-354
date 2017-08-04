@@ -42,7 +42,7 @@ public class HandTest {
 	public void testGetPokemon(){
 		hand.addCards(deck.draw(6));
 		List<Pokemon> pokemon = hand.getPokemon();
-		Assert.assertFalse(pokemon.isEmpty());
+		Assert.assertTrue(pokemon.size()==2);
 	}
 
 }
