@@ -41,6 +41,10 @@ public class Search extends Effect {
 		// TODO Change amount to support counters
 		int amount = Integer.parseInt(mAmount);
 		Player currentPlayer = TargetServiceHandler.getInstance().getService().getPlayer("your-active");
+		if(cardsToSearch.size() == 0){
+			currentPlayer.displayMessage("No cards to search on source: "+mTarget+":"+mSource);
+			return;
+		}
 		List<Card> cardsSelected = currentPlayer.ChooseMultipleCards(cardsToSearch, amount);
 		currentPlayer.addCardsToHand(cardsSelected);
 		cardsSelected.forEach(card->source.removeCard(card));

@@ -136,98 +136,62 @@ public class Pokemon extends Card {
 	
     public boolean useAbility(int ability, Pokemon target)
     {
-        if (mAbilitiesAndCost.size() <= ability || target == null)
-            return false;
-        Ability a = mAbilitiesAndCost.get(ability).getAbility();//mAbilities.get(ability);
-        HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ability).getCosts();
-        
-        ArrayList<Integer> energyCounts = getAttachedEnergyList();
-        int remainingEnergyCount = 0;
-        for (int count : energyCounts)
-        {
-            remainingEnergyCount += count;
-        }
-        
-        boolean hasEnoughEnergy = true;
-        if(cost.containsKey(EnergyTypes.FIGHT))
-        {
-            if (cost.get(EnergyTypes.FIGHT) <= energyCounts.get(0))
-                remainingEnergyCount -= cost.get(EnergyTypes.FIGHT);
-            else
-                hasEnoughEnergy = false;
-        }
-        if(cost.containsKey(EnergyTypes.LIGHTNING))
-        {
-            if (cost.get(EnergyTypes.LIGHTNING) <= energyCounts.get(1))
-                remainingEnergyCount -= cost.get(EnergyTypes.LIGHTNING);
-            else
-                hasEnoughEnergy = false;
-        }
-
-        if(cost.containsKey(EnergyTypes.PSYCHIC))
-        {
-            if (cost.get(EnergyTypes.PSYCHIC) <= energyCounts.get(2))
-                remainingEnergyCount -= cost.get(EnergyTypes.PSYCHIC);
-            else
-                hasEnoughEnergy = false;
-        }
-        if(cost.containsKey(EnergyTypes.WATER))
-        {
-            if (cost.get(EnergyTypes.WATER) <= energyCounts.get(3))
-                remainingEnergyCount -= cost.get(EnergyTypes.WATER);
-            else
-                hasEnoughEnergy = false;
-        }
-        if (cost.containsKey(EnergyTypes.COLORLESS) && cost.get(EnergyTypes.COLORLESS) > remainingEnergyCount)
-            hasEnoughEnergy = false;
-        
+		boolean hasEnoughEnergy = hasEnoughEnergyForAttack(ability);
         if (hasEnoughEnergy)
         {
         	// iterate through all effect of an ability
-        	a.getEffects().forEach(effect ->
-        	{
-        		if(effect instanceof Condition){
-        			effect.execute();
-        		}
-    			if(effect instanceof Deenergize)
-    			{
-    				effect.execute();
-    			}
-    			else if(effect instanceof DrawCard)
-    			{
-    				effect.execute();
-    			}
-    			else if(effect instanceof ApplyStatus)
-        		{
-        			effect.execute();
-        		}
-        		else if (effect instanceof Damage)
-            	{
-        			Damage dam = (Damage) effect;
-        			dam.execute();
-            	}
-        		else if (effect instanceof Heal)
-        		{
-        			Heal h = (Heal) effect;
-        			
-        			String targetCheck = h.getTarget();
-        			
-        			if(targetCheck.contentEquals("your-active"))
-        			{
-        				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
-        				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been healed by " + h.getValue() + ".");
-        				youAsTarget.removeDamage(h.getValue());
-        			}
-        		}
-        		else if (effect instanceof Search){
-        			effect.execute();
-				}
-        	});
-        	
-        return true;
+        	mAbilitiesAndCost.get(ability).getAbility().getEffects().forEach(effect -> effect.execute());
         }
-        return false;
+        return hasEnoughEnergy;
     }
+
+    public boolean hasEnoughEnergyForAttack(int ab){
+		if (mAbilitiesAndCost.size() <= ab)
+			return false;
+		Ability a = mAbilitiesAndCost.get(ab).getAbility();//mAbilities.get(ability);
+		HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ab).getCosts();
+
+		ArrayList<Integer> energyCounts = getAttachedEnergyList();
+		int remainingEnergyCount = 0;
+		for (int count : energyCounts)
+		{
+			remainingEnergyCount += count;
+		}
+
+		boolean hasEnoughEnergy = true;
+		if(cost.containsKey(EnergyTypes.FIGHT))
+		{
+			if (cost.get(EnergyTypes.FIGHT) <= energyCounts.get(0))
+				remainingEnergyCount -= cost.get(EnergyTypes.FIGHT);
+			else
+				hasEnoughEnergy = false;
+		}
+		if(cost.containsKey(EnergyTypes.LIGHTNING))
+		{
+			if (cost.get(EnergyTypes.LIGHTNING) <= energyCounts.get(1))
+				remainingEnergyCount -= cost.get(EnergyTypes.LIGHTNING);
+			else
+				hasEnoughEnergy = false;
+		}
+
+		if(cost.containsKey(EnergyTypes.PSYCHIC))
+		{
+			if (cost.get(EnergyTypes.PSYCHIC) <= energyCounts.get(2))
+				remainingEnergyCount -= cost.get(EnergyTypes.PSYCHIC);
+			else
+				hasEnoughEnergy = false;
+		}
+		if(cost.containsKey(EnergyTypes.WATER))
+		{
+			if (cost.get(EnergyTypes.WATER) <= energyCounts.get(3))
+				remainingEnergyCount -= cost.get(EnergyTypes.WATER);
+			else
+				hasEnoughEnergy = false;
+		}
+		if (cost.containsKey(EnergyTypes.COLORLESS) && cost.get(EnergyTypes.COLORLESS) > remainingEnergyCount)
+			hasEnoughEnergy = false;
+		return hasEnoughEnergy;
+	}
     
     public boolean removeSingleEnergy(EnergyTypes type)
 	{
