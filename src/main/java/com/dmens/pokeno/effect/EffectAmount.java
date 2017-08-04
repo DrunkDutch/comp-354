@@ -46,4 +46,8 @@ public class EffectAmount {
 		}
 	}
 
+	public String toString(){
+		return mAmount;
+	}
+
 }

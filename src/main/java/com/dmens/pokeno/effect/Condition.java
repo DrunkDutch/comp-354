@@ -29,4 +29,36 @@ public abstract class Condition extends Effect{
 	public void addEffectFalse(Effect effect){
 		conditionFalseEffects.add(effect);
 	}
+
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		for(Effect e : conditionTrueEffects){
+			sb.append("-"+e.toString()+"\n");
+		}
+		if(!conditionFalseEffects.isEmpty()){
+			sb.append("else:");
+			for(Effect e : conditionTrueEffects){
+				sb.append("-"+e.toString()+"\n");
+			}
+		}
+		return sb.toString().trim();
+	}
+
+	@Override
+	public String str()
+	{
+		StringBuilder sb = new StringBuilder();
+		for(Effect e : conditionTrueEffects){
+			sb.append("-"+e.str()+"\n");
+		}
+		if(!conditionFalseEffects.isEmpty()){
+			sb.append("else:");
+			for(Effect e : conditionTrueEffects){
+				sb.append("-"+e.str()+"\n");
+			}
+		}
+		return sb.toString().trim();
+	}
 }
