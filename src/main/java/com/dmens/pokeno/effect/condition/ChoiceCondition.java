@@ -19,14 +19,12 @@ public class ChoiceCondition extends Condition {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "COND:CHOICE\n"+super.str();
 	}
 
 	@Override
 	public String str() {
-		// TODO Auto-generated method stub
-		return null;
+		return "COND:CHOICE\n"+super.str();
 	}
 
 }

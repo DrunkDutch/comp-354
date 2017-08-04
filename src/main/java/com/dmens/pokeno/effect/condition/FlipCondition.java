@@ -30,7 +30,6 @@ public class FlipCondition extends Condition {
 
 	@Override
 	public String str() {
-		// TODO Auto-generated method stub
 		return "FLIP:\n"+super.str();
 	}
 }
