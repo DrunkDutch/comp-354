@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.Pokemon;
-import com.dmens.pokeno.services.CountService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 /*
@@ -14,8 +13,7 @@ import com.dmens.pokeno.services.handlers.TargetServiceHandler;
  */
 public class Damage extends Effect {
 
-	private int mValue;
-	private String mCountInfo;
+	private EffectAmount mValue;
 	
 	/*
 	 * Constructor
@@ -24,11 +22,10 @@ public class Damage extends Effect {
 	 * @param		val		Integer value (amount).
 	 * @param		con		Condition.
 	 */
-	public Damage(String tar, int val, String countInfo)
+	public Damage(String tar, String val)
 	{
 		super(tar);
-		this.mValue = val;
-		this.mCountInfo = countInfo;
+		this.mValue = new EffectAmount(val);
 	}
 	
 	/*
@@ -49,34 +46,17 @@ public class Damage extends Effect {
      */
 	public int getValue()
 	{
-		return this.mValue;
-	}
-	
-	
-	/*
-     * Get the value of this count info.
-     * 
-     * @return		The count info as an integer.
-     */
-	public String getCountInfo()
-	{
-		return this.mCountInfo;
-	}
-	
+		return this.mValue.eval();
+	}	
 	
 	@Override
 	public void execute() 
 	{
-		System.out.println(mTarget);
-		int count = 1;
-		if(this.mCountInfo != "") {
-			System.out.println("Good Count info: " + mCountInfo);
-			count = CountService.getInstance().getCount(this.mCountInfo);
-		}
+		LOG.info(mTarget);
 		List<Card> targetPokemon = (TargetServiceHandler.getInstance()).getTarget(mTarget);
 		for(Card pokemon: targetPokemon) {
 			System.out.println(pokemon.getName());
-			((Pokemon) pokemon).addDamage(count * mValue);
+			((Pokemon) pokemon).addDamage(getValue());
 		}
 		System.out.println(mValue);
 	}
@@ -89,7 +69,7 @@ public class Damage extends Effect {
 	
 	@Override
 	public String str() {
-		return String.format("DM %s, %d", this.mTarget, this.mValue);
+		return String.format("DM %s, %s", this.mTarget, this.mValue);
 	}
 	
 	//TODO: condition check
@@ -97,7 +77,7 @@ public class Damage extends Effect {
 	public boolean equals(Object obj)
 	{
 		Damage d = (Damage) obj;
-		if(d.mTarget.equals(this.mTarget) && d.mValue == this.mValue)
+		if(d.mTarget.equals(this.mTarget) && d.getValue() == this.getValue())
 			return true;
 		
 		return false;

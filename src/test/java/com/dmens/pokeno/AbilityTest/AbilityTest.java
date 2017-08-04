@@ -37,8 +37,8 @@ public class AbilityTest {
 	 static String mAbilityName = "Ability";
 	 static String mEffectTarget = "opponent-active";
 	 static String mEffectTargetDifferent = "your-active";
-	 static int mEffectValue = 20;
-	 static int mEffectValueDifferent = 10;
+	 static String mEffectValue = "20";
+	 static String mEffectValueDifferent = "10";
 	 static String mEffectStatus = "asleep";
 	 static String mEffectStatusDifferent = "poisoned";
 	 static String mEffectDestination = "choice:your-bench";
@@ -58,11 +58,11 @@ public class AbilityTest {
     	// Stand alone Effects
     	Heal heal = new Heal(mEffectTarget, mEffectValue);
     	Assert.assertEquals(heal.getTarget(), mEffectTarget);
-    	Assert.assertEquals(heal.getValue(), mEffectValue);
+    	Assert.assertEquals(heal.getValue(), Integer.parseInt(mEffectValue));
     	
-    	Damage damage = new Damage(mEffectTarget, mEffectValue, "");
+    	Damage damage = new Damage(mEffectTarget, mEffectValue);
     	Assert.assertEquals(damage.getTarget(), mEffectTarget);
-    	Assert.assertEquals(damage.getValue(), mEffectValue);
+    	Assert.assertEquals(damage.getValue(), Integer.parseInt(mEffectValue));
     	
     	ApplyStatus applyStatus = new ApplyStatus(mEffectTarget, mEffectStatus);
     	Assert.assertEquals(applyStatus.getTarget(), mEffectTarget);
@@ -70,7 +70,7 @@ public class AbilityTest {
     	
     	DrawCard drawCard = new DrawCard(mEffectValue, mEffectTarget);
     	Assert.assertEquals(drawCard.getTarget(), mEffectTarget);
-    	Assert.assertEquals(drawCard.getValue(), mEffectValue);
+    	Assert.assertEquals(drawCard.getValue(), Integer.parseInt(mEffectValue));
     	
     	Swap swap = new Swap(mEffectTarget, mEffectDestination);
     	Assert.assertEquals(swap.getTarget(), mEffectTarget);
@@ -80,12 +80,12 @@ public class AbilityTest {
     	ability.addEffect(heal);
     	Assert.assertEquals(ability.getHealEffect(), heal);
     	Assert.assertEquals(ability.getHealEffect().getTarget(), mEffectTarget);
-    	Assert.assertEquals(ability.getHealEffect().getValue(), mEffectValue);
+    	Assert.assertEquals(ability.getHealEffect().getValue(), Integer.parseInt(mEffectValue));
     	
     	ability.addEffect(damage);
     	Assert.assertEquals(ability.getDamageEffect(), damage);
     	Assert.assertEquals(ability.getDamageEffect().getTarget(), mEffectTarget);
-    	Assert.assertEquals(ability.getDamageEffect().getValue(), mEffectValue);
+    	Assert.assertEquals(ability.getDamageEffect().getValue(), Integer.parseInt(mEffectValue));
     	
     	ability.addEffect(applyStatus);
     	Assert.assertEquals(ability.getApplyStatusEffect(), applyStatus);
@@ -95,7 +95,7 @@ public class AbilityTest {
     	ability.addEffect(drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect(), drawCard);
     	Assert.assertEquals(ability.getDrawCardEffect().getTarget(), mEffectTarget);
-    	Assert.assertEquals(ability.getDrawCardEffect().getValue(), mEffectValue);
+    	Assert.assertEquals(ability.getDrawCardEffect().getValue(), Integer.parseInt(mEffectValue));
     	
     	ability.addEffect(swap);
     	Assert.assertEquals(ability.getSwapEffect(), swap);
@@ -106,7 +106,7 @@ public class AbilityTest {
     	heal = new Heal(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getHealEffect(), heal);
     	
-    	damage = new Damage(mEffectTarget, mEffectValueDifferent, "");
+    	damage = new Damage(mEffectTarget, mEffectValueDifferent);
     	Assert.assertNotEquals(ability.getDamageEffect(), damage);
     	
     	applyStatus = new ApplyStatus(mEffectTarget, mEffectStatusDifferent);
