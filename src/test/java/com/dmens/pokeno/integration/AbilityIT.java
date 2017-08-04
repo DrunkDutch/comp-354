@@ -194,7 +194,8 @@ public class AbilityIT {
         stub(method(GameController.class, "getHomePlayer")).toReturn(p1);
         Mockito.doReturn(EnergyTypes.LIGHTNING).when(p1).createEnergyOptionPane(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean());
         Mockito.doReturn(EnergyTypes.LIGHTNING).when(p2).createEnergyOptionPane(Mockito.any(), Mockito.any(), Mockito.any(), Mockito.anyBoolean());
-
+        Mockito.doReturn(true).when(p1).flipCoin();
+        
         Pokemon zubat = (Pokemon) ((CardsDatabase) CardsDatabase.getInstance()).query(37);
         zubat.addEnergy(new EnergyCard("Lightning", "lightning"));
         Pokemon helioptile = (Pokemon) ((CardsDatabase) CardsDatabase.getInstance()).query(19);

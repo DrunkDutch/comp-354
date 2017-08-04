@@ -7,7 +7,7 @@ public class ShuffleDeck extends Effect
 {
 	public ShuffleDeck(String target)
 	{
-		super(target, null);
+		super(target);
 		
 	}
 	

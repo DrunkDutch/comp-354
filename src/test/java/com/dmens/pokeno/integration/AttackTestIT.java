@@ -1,20 +1,26 @@
 package com.dmens.pokeno.integration;
 
-import java.awt.*;
+import java.awt.AWTException;
+import java.awt.Robot;
 import java.util.Arrays;
-import com.dmens.pokeno.services.TargetService;
-import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.mockito.Mockito;
 
+import com.dmens.pokeno.card.EnergyCard;
 import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
-import com.dmens.pokeno.database.*;
-import com.dmens.pokeno.card.EnergyCard;
-import com.dmens.pokeno.view.GameBoard;
+import com.dmens.pokeno.database.AbilitiesDatabase;
+import com.dmens.pokeno.database.CardsDatabase;
+import com.dmens.pokeno.player.Player;
+import com.dmens.pokeno.services.TargetService;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 import com.dmens.pokeno.utils.CardParser;
+import com.dmens.pokeno.view.GameBoard;
 
 public class AttackTestIT {
 
@@ -30,12 +36,20 @@ public class AttackTestIT {
 
 	static Robot robot;
 	public Robot okRobot;
-
+	static Player p1;
+	static Player p2;
 
 	@BeforeClass
 	public static void setup(){
 		AbilitiesDatabase.getInstance().initialize("abilities.txt");
 		CardsDatabase.getInstance().initialize("cards.txt");
+		
+		p1 = Mockito.spy(new Player());
+		p2 = Mockito.spy(new Player());
+		TargetServiceHandler.getInstance().setYouPlayer(p1);
+		TargetServiceHandler.getInstance().setThemPlayer(p2);
+		Mockito.doReturn(true).when(p1).flipCoin();
+		Mockito.doNothing().when(p1).displayMessage(Mockito.anyString());
 
 		mockBoard = new GameBoard();
 
@@ -52,8 +66,8 @@ public class AttackTestIT {
 	{
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(PikachuStr));
-		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
-		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
+		p1.setActivePokemon(poke2);
+		p2.setActivePokemon(poke1);
 		Assert.assertEquals(poke1.getName(), "Hitmonchan");
 		Assert.assertEquals(poke2.getName(), "Pikachu");
 
@@ -68,8 +82,8 @@ public class AttackTestIT {
 	{
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(EspurrStr));
-		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
-		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
+		p1.setActivePokemon(poke2);
+		p2.setActivePokemon(poke1);
 		Assert.assertEquals(poke1.getName(), "Hitmonchan");
 		Assert.assertEquals(poke2.getName(), "Espurr");
 
@@ -81,15 +95,12 @@ public class AttackTestIT {
 
 	@Test 
 	public void stuckAttack() {
-		TargetService service = Mockito.mock(TargetService.class);
-		TargetServiceHandler.getInstance(service);
 		Pokemon poke1 = Mockito.spy((Pokemon) CardParser.getCardFromString(HitmonchanStr));
 		Pokemon poke2 = Mockito.spy((Pokemon) CardParser.getCardFromString(JynxStr));
-		Mockito.doNothing().when(poke1).displayMessage(Mockito.anyString());
-		Mockito.doNothing().when(poke2).displayMessage(Mockito.anyString());
+		p1.setActivePokemon(poke2);
+		p2.setActivePokemon(poke1);
 		Assert.assertEquals(poke1.getName(), "Hitmonchan");
 		Assert.assertEquals(poke2.getName(), "Jynx");
-		Mockito.doReturn(Arrays.asList(poke1)).when(service).getTarget(Mockito.anyString());
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.addEnergy(new EnergyCard("Colorless", "colorless"));
 		poke2.addEnergy(new EnergyCard("Psychic", "psychic"));

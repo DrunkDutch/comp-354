@@ -1,13 +1,10 @@
 package com.dmens.pokeno.effect;
 
-import com.dmens.pokeno.card.Card;
-import com.dmens.pokeno.controller.GameController;
-import com.dmens.pokeno.player.*;
-import com.dmens.pokeno.card.Pokemon;
-import com.dmens.pokeno.condition.*;
-import com.dmens.pokeno.services.handlers.TargetServiceHandler;
-
 import java.util.List;
+
+import com.dmens.pokeno.card.Card;
+import com.dmens.pokeno.card.Pokemon;
+import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 /*
  * A Heal effect.
@@ -31,7 +28,7 @@ public class Heal extends Effect {
 	 */
 	public Heal(String tar, int val)
 	{
-		super(tar, null);
+		super(tar);
 		this.mValue = val;		
 	}
 	

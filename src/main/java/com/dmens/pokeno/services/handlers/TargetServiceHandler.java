@@ -53,4 +53,8 @@ public class TargetServiceHandler {
     public void setThemPlayer(Player them){
         service.setThemPlayer(them);
     }
+    
+    public Player getPlayingPlayer(){
+    	return service.getPlayer("your");
+    }
 }

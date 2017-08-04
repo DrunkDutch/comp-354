@@ -2,8 +2,10 @@ package com.dmens.pokeno.card;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import com.dmens.pokeno.effect.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -11,11 +13,7 @@ import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.CardsDatabase;
-import com.dmens.pokeno.effect.*;
-import com.dmens.pokeno.services.CountService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
-import com.dmens.pokeno.utils.Randomizer;
-import com.dmens.pokeno.condition.*;
 
 public class Pokemon extends Card {
 
@@ -128,13 +126,13 @@ public class Pokemon extends Card {
 		mAttachedEnergy.add(energy);
 	}
 
-	public void removeEnergy(ArrayList<EnergyCard> energy){
-		
+	public void removeEnergy(List<EnergyCard> energy){
+		mAttachedEnergy.removeAll(energy);
 	}
 
 	public void setBasePokemonName(String basePokemonName) {
 		mBasePokemonName = basePokemonName;
-	}
+	} 
 	
     public boolean useAbility(int ability, Pokemon target)
     {
@@ -142,12 +140,6 @@ public class Pokemon extends Card {
             return false;
         Ability a = mAbilitiesAndCost.get(ability).getAbility();//mAbilities.get(ability);
         HashMap <EnergyTypes, Integer> cost = mAbilitiesAndCost.get(ability).getCosts();
-        
-        // Print Energy Cost
-        /*for (EnergyTypes e : cost.keySet())
-        {
-        	System.out.println(e.name() + ": " + cost.get(e));
-        }*/
         
         ArrayList<Integer> energyCounts = getAttachedEnergyList();
         int remainingEnergyCount = 0;
@@ -194,113 +186,42 @@ public class Pokemon extends Card {
         	// iterate through all effect of an ability
         	a.getEffects().forEach(effect ->
         	{
-        		boolean proceedWithAttack = true;
-       
-        		// Does the condition allow you to use the attack (flipped in your favor)
-        		if(effect.hasCondition())
+        		if(effect instanceof Condition){
+        			effect.execute();
+        		}
+    			if(effect instanceof Deenergize)
+    			{
+    				effect.execute();
+    			}
+    			else if(effect instanceof DrawCard)
+    			{
+    				effect.execute();
+    			}
+    			else if(effect instanceof ApplyStatus)
         		{
-        			if(effect.getCondition() instanceof Flip)
+        			effect.execute();
+        		}
+        		else if (effect instanceof Damage)
+            	{
+        			Damage dam = (Damage) effect;
+        			dam.execute();
+            	}
+        		else if (effect instanceof Heal)
+        		{
+        			Heal h = (Heal) effect;
+        			
+        			String targetCheck = h.getTarget();
+        			
+        			if(targetCheck.contentEquals("your-active"))
         			{
-        				if(Randomizer.Instance().getFiftyPercentChance())
-    					{
-    						proceedWithAttack = false;
-    						displayMessage(target.getName() + " avoided the attack!");
-    					}
-        			}
-        			else if(effect.getCondition() instanceof Healed)
-        			{
-        				if(!isHealed())
-        					proceedWithAttack = false;
+        				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
+        				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been healed by " + h.getValue() + ".");
+        				youAsTarget.removeDamage(h.getValue());
         			}
         		}
-  
-        		if(proceedWithAttack)
-        		{
-        			if(effect instanceof Deenergize)
-        			{
-        				effect.execute();
-        			}
-        			else if(effect instanceof DrawCard)
-        			{
-        				effect.execute();
-        			}
-        			else if(effect instanceof DeckEffect)
-        			{
-        				effect.execute();
-        			}
-        			else if(effect instanceof ApplyStatus)
-            		{
-            			ApplyStatus as = (ApplyStatus) effect;
-            			String status = as.getStatus();
-            			
-            			//TODO check target
-                		// target should be used instead of !GameController.getIsHomePlayerPlaying()
-                		if(status.compareTo("paralyzed") == 0)
-            			{
-            				if (!target.isParalyzed())
-							{
-								target.setParalyzed(true);
-								LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Paralyzed.");
-								displayMessage(target.getName() + " has been paralyzed!");
-								GameController.board.addStatus(0, !GameController.getIsHomePlayerPlaying());
-							}
-							else
-							{
-            					displayMessage("Target is already paralyzed");
-							}
-            			}
-                		else if (status.compareTo("asleep") == 0)
-                		{
-                			if (!target.isSleep())
-							{
-								target.setSleep(true);
-								LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Sleep.");
-								displayMessage(target.getName() + " has fallen asleep!");
-								GameController.board.addStatus(1, !GameController.getIsHomePlayerPlaying());
-							}
-							else
-							{
-                				displayMessage("Target is already asleep");
-							}
-						}
-                		else if (status.compareTo("stuck") == 0 && !target.isStuck())
-                		{
-                			target.setStuck(true);
-                			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Stuck.");
-                			displayMessage(target.getName() + " is now stuck!");
-                			GameController.board.addStatus(2, !GameController.getIsHomePlayerPlaying());
-                		}
-                		else if (status.compareTo("poisoned") == 0 && !target.isPoisoned())
-                		{
-                			target.setPoisoned(true);
-                			LOG.debug((!GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + target.getName() + " has been set to Poisoned.");
-                			displayMessage(target.getName() + " is now poisoned!");
-                			GameController.board.addStatus(3, !GameController.getIsHomePlayerPlaying());
-                		}
-            		}
-            		else if (effect instanceof Damage)
-                	{
-            			Damage dam = (Damage) effect;
-            			dam.execute();
-                	}
-            		else if (effect instanceof Heal)
-            		{
-            			Heal h = (Heal) effect;
-            			
-            			String targetCheck = h.getTarget();
-            			
-            			if(targetCheck.contentEquals("your-active"))
-            			{
-            				Pokemon youAsTarget = GameController.getIsHomePlayerPlaying() ? GameController.getActivePlayer().getActivePokemon() : GameController.getAIPlayer().getActivePokemon();
-            				LOG.debug((GameController.getIsHomePlayerPlaying() ? "Home's " : "AI's ") + youAsTarget.getName() + " has been healed by " + h.getValue() + ".");
-            				youAsTarget.removeDamage(h.getValue());
-            			}
-            		}
-            		else if (effect instanceof Search){
-        				Search s = (Search) effect;
-        				a.performAbility();
-					}
-        		}
+        		else if (effect instanceof Search){
+        			effect.execute();
+				}
         	});
         	
         return true;
@@ -322,6 +243,17 @@ public class Pokemon extends Card {
 		}
 		return false;
 	}
+    
+    public void setStatus(String status){
+    	if(status.equals("paralyzed"))
+			this.setParalyzed(true);
+		else if (status.equals("asleep"))
+			this.setSleep(true);
+		else if (status.equals("stuck"))
+			this.setStuck(true);
+		else if (status.equals("poisoned"))
+			this.setPoisoned(true);
+    }
     
     public void setPoisoned(boolean poisoned) {
         this.mPoisoned = poisoned;

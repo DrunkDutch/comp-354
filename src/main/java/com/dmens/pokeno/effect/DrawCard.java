@@ -1,9 +1,7 @@
 package com.dmens.pokeno.effect;
 
-import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
-import com.dmens.pokeno.condition.*;
 
 /*
  * A Draw card effect.
@@ -21,7 +19,7 @@ public class DrawCard extends Effect{
 	 * @param		target		Target.
 	 */
 	public DrawCard(int value, String target) {
-		super(target, null);
+		super(target);
 		this.mValue = value;
 	}
 	

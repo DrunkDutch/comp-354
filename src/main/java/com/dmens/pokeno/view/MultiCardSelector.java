@@ -11,7 +11,7 @@ import com.dmens.pokeno.card.Pokemon;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.player.Player;
 
-public class MultiCardSelector extends CardSelectorBase {
+public class MultiCardSelector <T extends Card> extends CardSelectorBase {
 	private List<Card> pickedCards;
 	private int amountOfCardsToPick;
 

@@ -118,7 +118,7 @@ public class AIPlayer extends Player {
         }
         
         @Override
-        public List<Card> ChooseMultipleCards(List<Card> cards, int amount) {
+        public <T extends Card> List<T> ChooseMultipleCards(List<T> cards, int amount) {
         	// TODO Make it pick random cards
         	return cards.subList(0, amount);
         }

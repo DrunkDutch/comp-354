@@ -1,6 +1,5 @@
 package com.dmens.pokeno.utils;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
@@ -11,11 +10,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import com.dmens.pokeno.ability.Ability;
-import com.dmens.pokeno.condition.Condition;
-import com.dmens.pokeno.condition.ConditionTypes;
-import com.dmens.pokeno.condition.Flip;
-import com.dmens.pokeno.condition.Healed;
 import com.dmens.pokeno.effect.ApplyStatus;
+import com.dmens.pokeno.effect.Condition;
 import com.dmens.pokeno.effect.Damage;
 import com.dmens.pokeno.effect.DeStat;
 import com.dmens.pokeno.effect.DeckEffect;
@@ -25,9 +21,15 @@ import com.dmens.pokeno.effect.Effect;
 import com.dmens.pokeno.effect.EffectTypes;
 import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.effect.Reenergize;
-import com.dmens.pokeno.effect.ShuffleDeck;
 import com.dmens.pokeno.effect.Search;
+import com.dmens.pokeno.effect.ShuffleDeck;
 import com.dmens.pokeno.effect.Swap;
+import com.dmens.pokeno.effect.condition.AbilityCondition;
+import com.dmens.pokeno.effect.condition.ChoiceCondition;
+import com.dmens.pokeno.effect.condition.ConditionTypes;
+import com.dmens.pokeno.effect.condition.ExpressionCondition;
+import com.dmens.pokeno.effect.condition.FlipCondition;
+import com.dmens.pokeno.effect.condition.HealedCondition;
 
 public class AbilityParser {
 	private static final Logger LOG = LogManager.getLogger(AbilityParser.class);
@@ -62,20 +64,12 @@ public class AbilityParser {
 		String[] parsedString = effect.split(":");
 		for (int i = parsedString.length -1; i >= 0; i--) 
 			effectStack.add(parsedString[i]);
-		
-		Condition effectCondition = null;
-		
-		// If there is a condition, parse it
-		if(EffectTypes.valueOf(effectStack.peek().toUpperCase()) == EffectTypes.COND)
-		{
-			effectCondition = getCondition(effectStack);
-		}
-		if (effectStack.isEmpty())
-			return null;
 		switch(EffectTypes.valueOf(effectStack.pop().toUpperCase()))
 		{
+			case COND:
+				return getConditionEffect(effectStack);
 			case DAM:
-				return getDamageEffect(effectStack, effectCondition);
+				return getDamageEffect(effectStack);
 			case HEAL:
 				return getHealEffect(effectStack);
 			case APPLYSTAT:
@@ -110,7 +104,74 @@ public class AbilityParser {
 		return target;
 	}
 	
-	private static Effect getDamageEffect(Stack<String> effectStack, Condition effectCondition){
+	private static Condition getConditionEffect(Stack<String> effectStack){
+		Condition cond = null;
+		String rawType = effectStack.pop();
+		String type = rawType.toUpperCase();
+		try{
+			switch(ConditionTypes.valueOf(type)){
+			case FLIP:
+				cond = new FlipCondition();
+				break;
+			case HEALED:
+				cond = new HealedCondition();
+				((HealedCondition)cond).setTarget(getTarget(effectStack));
+				break;
+			case ABILITY:
+				cond = new AbilityCondition();
+				String conditionAbilities = effectStack.pop();
+				for(int i = 0; !effectStack.peek().contains("("); i++)
+					conditionAbilities += ":"+effectStack.pop();
+				((AbilityCondition)cond).setEffectCondition(ParseEfect(conditionAbilities));
+				break;
+			case CHOICE:
+				cond = new ChoiceCondition();
+				break;
+			default:
+				return null;
+			}
+		}catch(Exception e){
+			// expression condition
+			cond = new ExpressionCondition();
+			String expression = rawType;
+			do{
+				expression += ":"+effectStack.pop();
+			}while(!expression.contains(")"));
+			((ExpressionCondition)cond).setCondition(expression);
+		}
+		String conditionAbilities = effectStack.pop();
+		int size = effectStack.size();
+		for(int i = 0; i < size && !effectStack.peek().equals("else"); i++)
+			conditionAbilities += ":"+effectStack.pop();
+		conditionAbilities = conditionAbilities.replaceAll("[()]", "");
+		// Divide effects separated by comma
+    	Pattern p = Pattern.compile("(.+?(\\(.*?\\))*?)(?:,|$)");
+    	Matcher m = p.matcher(conditionAbilities);
+    	List<String> effects = new LinkedList<String>();
+    	while(m.find())
+    		effects.add(m.group( 1 ));
+    	for(String effect : effects)
+    		cond.addEffectTrue(ParseEfect(effect));
+		if(!effectStack.isEmpty()){
+			effectStack.pop();	// else
+			conditionAbilities = effectStack.pop();
+			size = effectStack.size();
+			for(int i = 0; i < size; i++)
+				conditionAbilities += ":"+effectStack.pop();
+			conditionAbilities = conditionAbilities.replaceAll("[()]", "");
+			// Divide effects separated by comma
+	    	p = Pattern.compile("(.+?(\\(.*?\\))*?)(?:,|$)");
+	    	m = p.matcher(conditionAbilities);
+	    	effects = new LinkedList<String>();
+	    	while(m.find())
+	    	  effects.add(m.group( 1 ));
+	    	for(String effect : effects)
+	    		cond.addEffectFalse(ParseEfect(effect));
+		}
+		return cond;
+	}
+	
+	private static Effect getDamageEffect(Stack<String> effectStack){
 		String target = getTarget(effectStack);
 		if(target == null)
 			return null;
@@ -145,7 +206,7 @@ public class AbilityParser {
 		} else {
 			damage = Integer.parseInt(effectStack.pop());
 		}
-		return new Damage(target, damage, effectCondition, countInfo); 
+		return new Damage(target, damage, countInfo); 
 	}
 	
 	private static Effect getHealEffect(Stack<String> effectStack){
@@ -262,8 +323,7 @@ public class AbilityParser {
 					countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
 			}
 			LOG.debug("Deenergize Effect parsed");
-		return new Deenergize(amount, target, null, countInfo);
-
+		return new Deenergize(amount, target, countInfo);
 	}
 	
 	private static Effect getReenergizeEffect(Stack<String> effectStack){
@@ -272,62 +332,21 @@ public class AbilityParser {
 		String source = "";
 		String destination = "";
 		
-		effectStack.pop();	// target
-		effectStack.pop();	// choice
-		source = effectStack.pop();
+
+		source = getTarget(effectStack);
 		amountS = Integer.parseInt(effectStack.pop());
 		
-		effectStack.pop();	// target
-		effectStack.pop();	// choice
-		destination = effectStack.pop();
+		destination = getTarget(effectStack);
 		amountD = Integer.parseInt(effectStack.pop());
 		
 		// Source and Destination amounts should be the same
 		assert(amountS == amountD);
 		
-		return  new Reenergize(amountS, source, destination, null);
-	}
-	
-	private static Condition getCondition(Stack<String> effectStack) {
-		
-		String cond = getConditionType(effectStack);
-		
-		if(cond.contains("count("))	// cannot parse the count(target yet
-			cond = "count";
-		
-		switch(ConditionTypes.valueOf(cond.toUpperCase()))
-		{
-			case FLIP:
-				// some flip conditions are proceeded by a pair of parenthesis
-				if(effectStack.peek().contains("("))
-				{
-					while(!effectStack.pop().contains(")"));
-					break;
-				}
-				else
-				{
-					LOG.debug("Simple Flip Condition parsed");
-					return new Flip();
-				}
-			case HEALED:
-				String target = getTarget(effectStack);
-				return new Healed(target);
-			case COUNT:
-				while(!effectStack.pop().contains(")"));
-				return null;
-			default:
-				return null;
-		}
-		return null;
+		return  new Reenergize(amountS, source, destination);
 	}
 	
 	private static String getStatus(Stack<String> effectStack){
 		effectStack.pop();	// status
-		return effectStack.pop();
-	}
-	
-	private static String getConditionType(Stack<String> effectStack){
-		effectStack.pop();	// cond
 		return effectStack.pop();
 	}
 	

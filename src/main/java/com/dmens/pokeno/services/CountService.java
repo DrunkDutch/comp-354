@@ -61,7 +61,7 @@ public class CountService {
 	    return instance;
 	}			
 	
-	public static int getCount(String countInfo) {
+	public int getCount(String countInfo) {
 		int count = 0;
 		
 		Stack<String> countInfoStack = new Stack<String>();

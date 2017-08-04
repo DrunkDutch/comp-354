@@ -1,12 +1,11 @@
 package com.dmens.pokeno.effect;
 
+import java.util.List;
+
 import com.dmens.pokeno.card.Card;
 import com.dmens.pokeno.card.Pokemon;
-import com.dmens.pokeno.condition.*;
-import com.dmens.pokeno.services.*;
+import com.dmens.pokeno.services.CountService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
-
-import java.util.List;
 
 /*
  * A Damage effect.
@@ -25,9 +24,9 @@ public class Damage extends Effect {
 	 * @param		val		Integer value (amount).
 	 * @param		con		Condition.
 	 */
-	public Damage(String tar, int val, Condition con, String countInfo)
+	public Damage(String tar, int val, String countInfo)
 	{
-		super(tar, con);
+		super(tar);
 		this.mValue = val;
 		this.mCountInfo = countInfo;
 	}
@@ -41,9 +40,6 @@ public class Damage extends Effect {
 	{
 		this.mTarget = d.mTarget;
 		this.mValue = d.mValue;
-		
-		if(d.mCondition instanceof Flip)
-			this.mCondition = new Flip();
 	}
 	
 	/*

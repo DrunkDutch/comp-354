@@ -25,7 +25,7 @@ public class ConditionIT {
         AbilitiesDatabase.getInstance().initialize("abilities.txt");
         CardsDatabase.getInstance().initialize("cards.txt");
     }
-
+    
     @Test
     public void testHealedCondition(){
         Player p1 = Mockito.spy(new Player());
