@@ -20,7 +20,7 @@ public class Reenergize extends Effect {
 
 	private static final Logger LOG = LogManager.getLogger(Reenergize.class);
 	
-	private int mAmount;
+	private EffectAmount mAmount;
 	private String mSource;
 	private String mDestination;
 	
@@ -30,15 +30,15 @@ public class Reenergize extends Effect {
 	 * @param		target			String.
 	 * @param		destination		String.
 	 */
-	public Reenergize(int amt, String src, String dst) {
+	public Reenergize(String amt, String src, String dst) {
 		super("");
-		this.mAmount = amt;
+		this.mAmount = new EffectAmount(amt);
 		this.mSource = src;
 		this.mDestination = dst;
 	}
 	
 	public int getAmount() {
-		return this.mAmount;
+		return this.mAmount.eval();
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class Reenergize extends Effect {
 			currentPlayer.displayMessage("Pokemon has no energy");
 			return;
 		}
-		List<EnergyCard> cardsChosen = currentPlayer.ChooseMultipleCards(sourcePokemon.getAttachedEnergy(), mAmount);
+		List<EnergyCard> cardsChosen = currentPlayer.ChooseMultipleCards(sourcePokemon.getAttachedEnergy(), mAmount.eval());
 		Pokemon destination = (Pokemon) TargetServiceHandler.getInstance().getTarget(mDestination).get(0);
 		sourcePokemon.removeEnergy(cardsChosen);
 		cardsChosen.forEach(energy ->destination.addEnergy(energy));
@@ -59,11 +59,11 @@ public class Reenergize extends Effect {
 
 	@Override
 	public String toString() {
-		return String.format("Reenergize: Src: %s, Dst: %s, Amt: %d", this.mSource, this.mDestination, this.mAmount);
+		return String.format("Reenergize: Src: %s, Dst: %s, Amt: %s", this.mSource, this.mDestination, this.mAmount);
 	}
 	
 	@Override
 	public String str() {
-		return String.format("REE %d", this.mAmount);
+		return String.format("REE %s", this.mAmount);
 	}
 }

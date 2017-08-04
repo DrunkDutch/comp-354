@@ -61,6 +61,11 @@ public class Search extends Effect {
 				cardsToSearch.addAll(source.getAllEnergy());
 		}else if(filters[0].equals("top")){
 			cardsToSearch.addAll(source.peekFromTop(Integer.parseInt(filters[1])));
+		}else if(filters[0].equals("trainer")){
+			if(filters.length == 2)
+				cardsToSearch.addAll(source.getAllTrainerOfType(filters[1]));
+			else	
+				cardsToSearch.addAll(source.getAllTrainer());
 		}else if(filters[0].equals("bottom")){
 			cardsToSearch.addAll(source.peekFromBottom(Integer.parseInt(filters[1])));
 		}

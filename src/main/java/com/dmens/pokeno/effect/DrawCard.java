@@ -10,7 +10,7 @@ import com.dmens.pokeno.services.handlers.TargetServiceHandler;
  */
 public class DrawCard extends Effect{
 
-	private int mValue;
+	private EffectAmount mValue;
 	
 	/*
 	 * Constructor
@@ -18,9 +18,9 @@ public class DrawCard extends Effect{
 	 * @param		value		Integer value (amount).
 	 * @param		target		Target.
 	 */
-	public DrawCard(int value, String target) {
+	public DrawCard(String value, String target) {
 		super(target);
-		this.mValue = value;
+		this.mValue = new EffectAmount(value);
 	}
 	
 	/*
@@ -31,7 +31,7 @@ public class DrawCard extends Effect{
 	public DrawCard(DrawCard d)
 	{
 		this.mTarget = d.getTarget();
-		this.mValue = d.getValue();		
+		this.mValue = d.mValue;		
 	}
 	
 	/*
@@ -40,7 +40,7 @@ public class DrawCard extends Effect{
      * @return		The value as an integer.
      */
 	public int getValue() {
-		return this.mValue;
+		return this.mValue.eval();
 	}
 	
 	@Override
@@ -48,28 +48,28 @@ public class DrawCard extends Effect{
 	{
 		Player activePlayer = TargetServiceHandler.getInstance().getService().getPlayer("your-active");
 		if(this.mTarget.equals("self")) {
-			activePlayer.drawCardsFromDeck(mValue);
+			activePlayer.drawCardsFromDeck(getValue());
 		} else if(this.mTarget.equals("opponent")) {
-			activePlayer.getOpponent().drawCardsFromDeck(mValue);
+			activePlayer.getOpponent().drawCardsFromDeck(getValue());
 		}
 	}
 
 	@Override
 	public String toString()
 	{
-		return String.format("DRAW: Target: %s, Value: %d", this.mTarget, this.mValue);
+		return String.format("DRAW: Target: %s, Value: %s", this.mTarget, this.mValue);
 	}
 	
 	@Override
 	public String str() {
-		return String.format("DRAW %s, %d", this.mTarget, this.mValue);
+		return String.format("DRAW %s, %s", this.mTarget, this.mValue);
 	}
 	
 	@Override
 	public boolean equals(Object obj)
 	{
 		DrawCard d = (DrawCard) obj;
-		if(d.mTarget.equals(this.mTarget) && d.mValue == this.mValue)
+		if(d.mTarget.equals(this.mTarget) && d.getValue() == this.getValue())
 			return true;
 		
 		return false;

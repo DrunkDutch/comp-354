@@ -18,13 +18,22 @@ import com.dmens.pokeno.utils.FileUtils;
 public class CardsDatabase extends Database<Card>{
 	private static Database<Card> database;
 
-	private static String[] supportedPokemon = {"Glameow","Pikachu Libre","Pikachu","Raichu","Shellder","Seaking","Goldeen","Frogadier","Froakie","Cloyster","Suicune",
-			"Swanna","Ducklett","Purugly","Manectric","Electrike","Electivire","Electabuzz","Helioptile","Clemont",
-			"Jynx","Jirachi","Meowth","Machop","Doduo","Dodrio","Geodude","Zubat","Haunter","Gastly","Slowpoke",
-			"Hitmonlee","Hitmonchan","Machoke","Espurr","Persian"};
+	private static String[] supportedPokemon = {
+			"Glameow","Pikachu Libre","Pikachu","Raichu","Shellder",
+			"Seaking","Goldeen","Frogadier","Froakie","Cloyster","Suicune",
+			"Swanna","Ducklett","Purugly","Manectric","Electrike","Electivire",
+			"Electabuzz","Helioptile","Clemont","Jynx","Jirachi",
+			"Meowth","Machop","Doduo","Dodrio","Geodude","Zubat","Haunter","Gastly"
+			,"Slowpoke","Hitmonlee","Hitmonchan","Machoke","Espurr","Persian"
+			,"Diglett", "Dugtrio"//, "Meowstic"
+	};
 
-	private static String[] supportedTrainer = {"Tierno", "Potion", "Pokémon Center Lady", "Shauna", "Red Card", "Clemont", "Poké Ball", "Energy Switch",
-												"Pokémon Fan Club"};
+	private static String[] supportedTrainer = {
+			"Tierno","Potion","Misty's Determination",
+			"Pokémon Center Lady","Clemont","Poké Ball","Shauna",
+			"Pokémon Fan Club","Switch","Energy Switch","Red Card"
+			//,"Floral Crown", "Wally"
+	};
 
 	private static final Logger LOG = LogManager.getLogger(CardsDatabase.class);
 	

@@ -19,7 +19,7 @@ public class CardTest {
 	
 	static String mAbilityPotionName = "Potion";
 	static String mAbilityPotionTarget = "your";
-	static int mAbilityPotionValue = 30;
+	static String mAbilityPotionValue = "30";
     
 	@Test
     public void testCardCreation(){
@@ -39,7 +39,7 @@ public class CardTest {
         
         Assert.assertEquals(trainerCard.getAbility().getName(), mAbilityPotionName);
         Assert.assertEquals(trainerCard.getAbility().getHealEffect().getTarget(), mAbilityPotionTarget);
-        Assert.assertEquals(trainerCard.getAbility().getHealEffect().getValue(), mAbilityPotionValue);
+        Assert.assertEquals(trainerCard.getAbility().getHealEffect().getValue(), Integer.parseInt(mAbilityPotionValue));
     }
 
 }

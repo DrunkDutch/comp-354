@@ -25,7 +25,7 @@ public class PokemonTest {
 	//Pound:dam:target:opponent-active:10
 	static String mAbilityPoundName = "Pound";
 	static String mAbilityPoundTarget = "opponent-active";
-	static int mAbilityPoundValue = 10;
+	static String mAbilityPoundValue = "10";
 
 	static Pokemon froakie;
 
@@ -37,7 +37,7 @@ public class PokemonTest {
 	@Test
 	public void testPokemonCreation() {
 		Ability abilityPound = new Ability(mAbilityPoundName);
-        abilityPound.addEffect(new Damage(mAbilityPoundTarget, mAbilityPoundValue, ""));
+        abilityPound.addEffect(new Damage(mAbilityPoundTarget, mAbilityPoundValue));
         
         AbilityCost abilityCost = new AbilityCost(abilityPound);
 		abilityCost.addCost(mPokemonFroakieAttackRequiredType, mPokemonFroakieAttackCost);

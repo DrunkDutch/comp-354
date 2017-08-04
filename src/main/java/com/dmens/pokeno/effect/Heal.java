@@ -13,12 +13,7 @@ import com.dmens.pokeno.services.handlers.TargetServiceHandler;
  */
 public class Heal extends Effect {
 
-	private int mValue;
-	
-	// we have three possible targets to heal
-	private final String YOUR_ACTIVE = "your-active";
-	private final String YOUR = "your";
-	private final String SELF = "self";
+	private EffectAmount mValue;
 
 	/*
 	 * Constructor
@@ -26,10 +21,10 @@ public class Heal extends Effect {
 	 * @param		tar		Target.
 	 * @param		val		Integer value (amount).
 	 */
-	public Heal(String tar, int val)
+	public Heal(String tar, String val)
 	{
 		super(tar);
-		this.mValue = val;		
+		this.mValue = new EffectAmount(val);		
 	}
 	
 	/*
@@ -50,25 +45,25 @@ public class Heal extends Effect {
      */
 	public int getValue()
 	{
-		return this.mValue;
+		return this.mValue.eval();
 	}
 
 	@Override
 	public void execute()
 	{
 		List<Card> pokemonToHeal = TargetServiceHandler.getInstance().getTarget(mTarget);
-		pokemonToHeal.forEach(poke -> ((Pokemon)poke).removeDamage(this.mValue));
+		pokemonToHeal.forEach(poke -> ((Pokemon)poke).removeDamage(getValue()));
 	}
 
 	@Override
 	public String toString()
 	{
-		return String.format("HEAL: Target: %s, Value: %d", this.mTarget, this.mValue);
+		return String.format("HEAL: Target: %s, Value: %s", this.mTarget, this.mValue);
 	}
 	
 	@Override
 	public String str() {
-		return String.format("HL %s, %d", this.mTarget, this.mValue);
+		return String.format("HL %s, %s", this.mTarget, this.mValue);
 	}
 	
 	@Override

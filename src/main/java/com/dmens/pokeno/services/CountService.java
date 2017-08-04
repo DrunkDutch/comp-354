@@ -65,11 +65,11 @@ public class CountService {
 		int count = 0;
 		
 		Stack<String> countInfoStack = new Stack<String>();
-		String[] parsedString = countInfo.split(":");
+		String[] parsedString = countInfo.replaceAll("[()]", ":").split(":");
 		for (int i = parsedString.length - 1; i >= 0; --i) {
 			countInfoStack.add(parsedString[i]);
 		}
-		
+		countInfoStack.pop(); //count
 		countInfoStack.pop(); //target
 		CountTypes type = CountTypes.fromName(countInfoStack.pop());
 

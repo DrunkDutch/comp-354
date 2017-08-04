@@ -14,7 +14,7 @@ import com.dmens.pokeno.effect.Damage;
 public class AbilityCostTest {
 	static String mAbilityName = "Ability";
 	static String mEffectTarget = "opponent-active";
-	static int mEffectValue = 20;
+	static String mEffectValue = "20";
 	static int cost1 = 2;
 	static int cost2 = 1;
 	private Ability ability;
@@ -22,7 +22,7 @@ public class AbilityCostTest {
 	@Before
 	public void createAbility(){
 		ability = new Ability(mAbilityName);
-		Damage damage = new Damage(mEffectTarget, mEffectValue, "");
+		Damage damage = new Damage(mEffectTarget, mEffectValue);
 		ability.addEffect(damage);
 	}
 

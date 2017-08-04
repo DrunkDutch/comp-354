@@ -160,6 +160,7 @@ public class TargetService {
              case YOUR_ACTIVE:			return you;
              case YOUR:					return you;
              case OPPONENT_ACTIVE:		return them;
+             case OPPONENT:				return them;
              case YOUR_BENCH:			return you;
              case OPPONENT_BENCH:		return them;
              case YOUR_HAND:			return you;

@@ -175,45 +175,14 @@ public class AbilityParser {
 		String target = getTarget(effectStack);
 		if(target == null)
 			return null;
-		// Count multiplier
-		String countInfo = "";
-		if(effectStack.peek().contains("count")) {
-			while(!effectStack.isEmpty()) {
-				String s = effectStack.pop();
-				if(s.contains(")")) {
-					// the end of count, append the last string and break out of the loop
-					countInfo += s;
-					break;
-				}
-				// reconstruct the count info
-				countInfo += (s + ":");
-			}
-		}
-		
-		int damage = 0;
-		if(countInfo != "") {
-			String[] parsedCountInfo = countInfo.split("\\*");
-			try {
-				damage = Integer.parseInt(parsedCountInfo[0]);
-				countInfo = parsedCountInfo[1];
-			} catch(NumberFormatException ex) {
-				damage = Integer.parseInt(parsedCountInfo[1]);
-				countInfo = parsedCountInfo[0];
-			}
-			
-			countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
-
-		} else {
-			damage = Integer.parseInt(effectStack.pop());
-		}
-		return new Damage(target, damage, countInfo); 
+		return new Damage(target, effectStack.pop()); 
 	}
 	
 	private static Effect getHealEffect(Stack<String> effectStack){
 		String target = getTarget(effectStack);
 		if(target == null)
 			return null;
-		int healValue = Integer.parseInt(effectStack.pop());
+		String healValue = effectStack.pop();
 		return new Heal(target, healValue); 
 	}
 	
@@ -224,16 +193,16 @@ public class AbilityParser {
 	}
 	
 	private static Effect getDrawCardEffect(Stack<String> effectStack){
-		int value = 0;
+		String value = null;
 		String target = "";
 		
 		if(effectStack.size() == 2) {
 			target = effectStack.pop();
-			value = Integer.parseInt(effectStack.pop());
+			value = effectStack.pop();
 
 		} else if(effectStack.size() == 1) {
 			target = "self";
-			value = Integer.parseInt(effectStack.pop());
+			value = effectStack.pop();
 		}
 
 		return new DrawCard(value, target); 
@@ -296,51 +265,31 @@ public class AbilityParser {
 
 
 	private static Effect getDeenergizeEffect(Stack<String> effectStack){
-		int amount = 0;
+		String amount = "";
 		String target = "";
-		String countInfo = "";
-		effectStack.pop();	// target
 		
 		System.out.println("Stack Size: " + effectStack.size());
-			target = effectStack.pop();
-			if (effectStack.size() == 1)
-				amount = Integer.parseInt(effectStack.pop());
-			else
-			{
-				if(effectStack.peek().contains("count")) {
-					while(!effectStack.isEmpty()) {
-						String s = effectStack.pop();
-						if(s.contains(")")) {
-							// the end of count, append the last string and break out of the loop
-							countInfo += s;
-							break;
-						}
-						// reconstruct the count info
-						countInfo += (s + ":");
-					}
-				}
-				if (countInfo != "")
-					countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
-			}
-			LOG.debug("Deenergize Effect parsed");
-		return new Deenergize(amount, target, countInfo);
+		target = getTarget(effectStack);
+		amount = effectStack.pop();
+		LOG.debug("Deenergize Effect parsed");
+		return new Deenergize(amount, target);
 	}
 	
 	private static Effect getReenergizeEffect(Stack<String> effectStack){
-		int amountS = 0;
-		int amountD = 0;
+		String amountS = "";
+		String amountD = "";
 		String source = "";
 		String destination = "";
 		
 
 		source = getTarget(effectStack);
-		amountS = Integer.parseInt(effectStack.pop());
+		amountS = effectStack.pop();
 		
 		destination = getTarget(effectStack);
-		amountD = Integer.parseInt(effectStack.pop());
+		amountD = effectStack.pop();
 		
 		// Source and Destination amounts should be the same
-		assert(amountS == amountD);
+		assert(amountS.equals(amountD));
 		
 		return  new Reenergize(amountS, source, destination);
 	}
@@ -373,7 +322,10 @@ public class AbilityParser {
 			return "";	// No filter
 		effectStack.pop();	// filter
 		String filter = effectStack.pop();
-		if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
+		if(filter.equals("cat")){
+			filter = "trainer:"+effectStack.pop();
+		}
+		else if(filter.equals("pokemon") || filter.equals("energy") || filter.equals("trainer")){
 			if(effectStack.peek().equalsIgnoreCase("cat")){
 				effectStack.pop();	// cat
 				filter += ":" + effectStack.pop();	// card category
