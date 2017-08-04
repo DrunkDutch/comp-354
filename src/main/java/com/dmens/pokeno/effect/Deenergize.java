@@ -62,13 +62,16 @@ public class Deenergize extends Effect {
 		System.out.println("count: " + mAmount);
 	
 		// 2) Use the effect!
-		if(poke.getAttachedEnergy().size() == 0)
-			GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");
-		
-		Player player = TargetService.getInstance().getPlayer(mTarget);
-		EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy from " + poke.getName(), "Which energy would you like to remove?", false);
-		
-		System.out.println("Removed: " + poke.removeSingleEnergy(type));
+		for (int i = 0; i < mAmount; i++)
+		{
+			if(poke.getAttachedEnergy().size() == 0)
+				GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");
+
+			Player player = TargetService.getInstance().getPlayer(mTarget);
+			EnergyTypes type = player.createEnergyOptionPane(player.getActivePokemon(), "Remove an Energy from " + poke.getName(), "Which energy would you like to remove?", false);
+
+			System.out.println("Removed: " + poke.removeSingleEnergy(type));
+		}
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.dmens.pokeno.effect.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -12,12 +13,6 @@ import com.dmens.pokeno.ability.Ability;
 import com.dmens.pokeno.ability.AbilityCost;
 import com.dmens.pokeno.controller.GameController;
 import com.dmens.pokeno.database.CardsDatabase;
-import com.dmens.pokeno.effect.ApplyStatus;
-import com.dmens.pokeno.effect.Condition;
-import com.dmens.pokeno.effect.Damage;
-import com.dmens.pokeno.effect.Deenergize;
-import com.dmens.pokeno.effect.DrawCard;
-import com.dmens.pokeno.effect.Heal;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
 
 public class Pokemon extends Card {
@@ -224,6 +219,9 @@ public class Pokemon extends Card {
         				youAsTarget.removeDamage(h.getValue());
         			}
         		}
+        		else if (effect instanceof Search){
+        			effect.execute();
+				}
         	});
         	
         return true;
