@@ -97,5 +97,7 @@ public class DeckEffect extends Effect {
 		return String.format("DECK: Target: %s count: %s to: %s amt: %d", this.mTarget, this.mCountType, this.mDestination, this.mAmount);
 	}
 
+	public String str(){
+		return String.format("DEE %s, %d", this.mTarget, this.mAmount);
+	}
 }
-
