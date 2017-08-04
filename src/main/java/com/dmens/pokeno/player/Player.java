@@ -1,6 +1,7 @@
 package com.dmens.pokeno.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -827,6 +828,8 @@ public class Player {
     }
     
     public <T extends Card> List<T> ChooseMultipleCards(List<T> cards, int amount){
+    	if(amount == 0)
+    		return Arrays.asList(cards.get(0));
     	MultiCardSelector selector = new MultiCardSelector(cards, this, amount);
     	return selector.getSelectedCards();
     }
