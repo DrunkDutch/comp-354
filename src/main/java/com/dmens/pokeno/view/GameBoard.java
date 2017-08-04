@@ -1206,6 +1206,7 @@ public class GameBoard extends javax.swing.JFrame {
     }//GEN-LAST:event_PlayerRetreatBtnActionPerformed
 
     private void PassBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PassBtnActionPerformed
+    	GameController.playersMayAttack = true;
     	GameController.getHomePlayer().resolveEffects(GameController.getHomePlayer().getActivePokemon());
     	GameController.startAITurn();
     }//GEN-LAST:event_PassBtnActionPerformed
