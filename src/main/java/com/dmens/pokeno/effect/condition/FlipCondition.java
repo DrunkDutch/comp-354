@@ -25,14 +25,12 @@ public class FlipCondition extends Condition {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "Flip Cond:\n"+super.str();
 	}
 
 	@Override
 	public String str() {
-		// TODO Auto-generated method stub
-		return null;
+		return "FLIP:\n"+super.str();
 	}
 }
  

@@ -52,9 +52,9 @@ public class Deenergize extends Effect {
 		// 1) Get the target
 		System.out.println("target: " + mTarget);
 		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget).get(0);
-	
+		int amount = mAmount.eval();
 		// 2) Use the effect!
-		for (int i = 0; i < mAmount.eval(); i++)
+		for (int i = 0; i < amount; i++)
 		{
 			if(poke.getAttachedEnergy().size() == 0)
 				GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");

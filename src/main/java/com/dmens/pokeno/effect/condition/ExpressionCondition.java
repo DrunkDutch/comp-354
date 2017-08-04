@@ -46,13 +46,11 @@ public class ExpressionCondition extends Condition {
 
 	@Override
 	public String toString() {
-		// TODO Auto-generated method stub
-		return null;
+		return "COND:"+mCondition+"\n"+super.str();
 	}
 	@Override
 	public String str() {
-		// TODO Auto-generated method stub
-		return null;
+		return "COND:"+mCondition+"\n"+super.str();
 	}
 
 }

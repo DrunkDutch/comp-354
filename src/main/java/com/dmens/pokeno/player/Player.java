@@ -572,7 +572,7 @@ public class Player {
             buttons.add("Cancel");
         String[] buttonsAsArray = new String[buttons.size()];
         buttonsAsArray = buttons.toArray(buttonsAsArray);
-        int buttonNum = GameController.dispayCustomOptionPane(buttonsAsArray, title, message);
+        int buttonNum = chooseCards(buttonsAsArray, title, message);
         if (cancelable && buttonNum == buttonsAsArray.length-1) //If the user clicks cancel it will return -1
             buttonNum = -1;
         

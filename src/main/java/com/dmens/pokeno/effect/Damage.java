@@ -64,7 +64,7 @@ public class Damage extends Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("Damage: Target: %s, Value: %d", this.mTarget, this.mValue);
+		return String.format("Damage: Target: %s, Value: %s", this.mTarget, this.mValue);
 	}
 	
 	@Override

@@ -1,12 +1,14 @@
 package com.dmens.pokeno.player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import com.dmens.pokeno.services.TargetService;
 import com.dmens.pokeno.services.handlers.TargetServiceHandler;
+import com.dmens.pokeno.utils.Randomizer;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -42,13 +44,23 @@ public class AIPlayer extends Player {
             			break;
             	};
             }
-            
             // Use trainer cards in hand
+            getHand().getAllTrainer().forEach(card -> useCard(card));
             
             // Attack if possible
             if(!GameController.hasActivePokemonBlocked(1) && getOpponent().getActivePokemon() != null)
             {
-            	//GameController.useActivePokemonForPlayer(1, 0);
+                boolean attackSucess = false;
+                if(getActivePokemon().getAbilitiesAndCost().size() == 2) {
+                    // if status effect, attack with 25% probability
+                    if (getActivePokemon().getAbilitiesAndCost().get(1).getAbility().getApplyStatusEffect() != null &&
+                            Randomizer.Instance().getFiftyPercentChance() && Randomizer.Instance().getFiftyPercentChance()) {
+                        //attackSucess = GameController.useActivePokemonForPlayer(1, 1);
+                    }else{}
+                        //attackSucess = GameController.useActivePokemonForPlayer(1, 1);
+                }
+                if(!attackSucess){}
+                    //GameController.useActivePokemonForPlayer(1, 0);
             }
             
             // Resolve effects
@@ -120,7 +132,15 @@ public class AIPlayer extends Player {
         @Override
         public <T extends Card> List<T> ChooseMultipleCards(List<T> cards, int amount) {
         	// TODO Make it pick random cards
-        	return cards.subList(0, amount);
+            List<T> list = new ArrayList<>();
+            for(int i = 0; i < amount; i++)
+                list.add(cards.get(0));
+        	return list;
+        }
+
+        @Override
+        public void displayMessage(String msg){
+            return;
         }
         
 	//TODO: implement AI specific functions

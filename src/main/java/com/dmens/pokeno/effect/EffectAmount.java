@@ -13,14 +13,14 @@ public class EffectAmount {
 			int value = Integer.parseInt(mAmount);
 			return value;
 		}catch(Exception e){
-			final String[] SUPPORTED_OPPERATIONS = {"+", "-", "*", "/"};
+			final String[] SUPPORTED_OPPERATIONS = {"\\+", "\\*", "/"};
 			String amount = this.mAmount;
 			for(int i = 0; i < SUPPORTED_OPPERATIONS.length; i++){
 				String opperation = SUPPORTED_OPPERATIONS[i];
 				String[] binary = amount.split(opperation);
 				if(binary.length == 2){
 					int[] binaryValues = new int[2];
-					for(int j = 0; j < SUPPORTED_OPPERATIONS.length; j++){
+					for(int j = 0; j < 2; j++){
 						String part = binary[j];
 						if(part.contains("count") || part.contains("COUNT"))
 							binaryValues[j] = CountService.getInstance().getCount(part.trim());
@@ -31,10 +31,8 @@ public class EffectAmount {
 						case 0:
 							return binaryValues[0] + binaryValues[1];
 						case 1:
-							return binaryValues[0] - binaryValues[1];
-						case 2:
 							return binaryValues[0] * binaryValues[1];
-						case 3:
+						case 2:
 							return binaryValues[0] / binaryValues[1];
 					}
 				}
@@ -44,6 +42,10 @@ public class EffectAmount {
 			else
 				return 0;
 		}
+	}
+
+	public String toString(){
+		return mAmount;
 	}
 
 }

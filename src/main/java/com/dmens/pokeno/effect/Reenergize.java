@@ -53,7 +53,8 @@ public class Reenergize extends Effect {
 		List<EnergyCard> cardsChosen = currentPlayer.ChooseMultipleCards(sourcePokemon.getAttachedEnergy(), mAmount.eval());
 		Pokemon destination = (Pokemon) TargetServiceHandler.getInstance().getTarget(mDestination).get(0);
 		sourcePokemon.removeEnergy(cardsChosen);
-		cardsChosen.forEach(energy ->destination.addEnergy(energy));
+		for(int i = 0; i < cardsChosen.size(); i++)
+			destination.addEnergy(cardsChosen.get(0));
 		currentPlayer.updateBoard();
 	}
 

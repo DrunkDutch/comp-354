@@ -173,9 +173,13 @@ public class AbilityParser {
 	
 	private static Effect getDamageEffect(Stack<String> effectStack){
 		String target = getTarget(effectStack);
+		String amount = effectStack.pop();
+		while(!effectStack.isEmpty()){
+			amount += ":"+effectStack.pop();
+		}
 		if(target == null)
 			return null;
-		return new Damage(target, effectStack.pop()); 
+		return new Damage(target, amount);
 	}
 	
 	private static Effect getHealEffect(Stack<String> effectStack){
@@ -271,6 +275,10 @@ public class AbilityParser {
 		System.out.println("Stack Size: " + effectStack.size());
 		target = getTarget(effectStack);
 		amount = effectStack.pop();
+		while (!effectStack.isEmpty()) {
+			String s = effectStack.pop();
+			amount += (":" + s);
+		}
 		LOG.debug("Deenergize Effect parsed");
 		return new Deenergize(amount, target);
 	}
