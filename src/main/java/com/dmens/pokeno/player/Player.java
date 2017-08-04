@@ -504,7 +504,7 @@ public class Player {
         return buttonNum;
     }
     
-    public int createPokemonOptionPane(String title, String message, boolean cancelable, List<Pokemon> cards)
+    public int createPokemonOptionPane(String title, String message, boolean cancelable, List<Card> cards)
     {
         ArrayList<String> buttons = new ArrayList<String>(); 
 

@@ -224,6 +224,10 @@ public class Pokemon extends Card {
         			{
         				effect.execute();
         			}
+        			else if(effect instanceof DeckEffect)
+        			{
+        				effect.execute();
+        			}
         			else if(effect instanceof ApplyStatus)
             		{
             			ApplyStatus as = (ApplyStatus) effect;

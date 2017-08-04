@@ -55,7 +55,7 @@ public class Reenergize extends Effect {
 		ArrayList<EnergyTypes> energies = new ArrayList<EnergyTypes>();
 		Player player = TargetService.getInstance().getPlayer(mSource);
 		
-		List<Pokemon> potentialSources =  new ArrayList<Pokemon>(player.getBenchedPokemon().stream().filter(card -> ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList()));
+		List<Card> potentialSources =  new ArrayList<Card>(player.getBenchedPokemon().stream().filter(card -> ((Pokemon)card).getAttachedEnergy().size() > 0).collect(Collectors.toList()));
 		if(player.getActivePokemon().getAttachedEnergy().size() > 0) {
 			potentialSources.add(player.getActivePokemon());
 		}
@@ -83,7 +83,7 @@ public class Reenergize extends Effect {
 		}
 		
 		// 3) Choose the destination pokemon
-		List<Pokemon> potentialDestinations =  new ArrayList<Pokemon>(player.getBenchedPokemon());
+		List<Card> potentialDestinations =  new ArrayList<Card>(player.getBenchedPokemon());
 		potentialDestinations.add(player.getActivePokemon());
 		int iD = player.createPokemonOptionPane("Destination selection", "Energies will be added to:", false, potentialDestinations);
 		Pokemon pokeDest = (Pokemon) potentialSources.get(iD);
