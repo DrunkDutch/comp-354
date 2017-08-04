@@ -47,10 +47,7 @@ public class Search extends Effect {
 		}
 		List<Card> cardsSelected = currentPlayer.ChooseMultipleCards(cardsToSearch, amount);
 		currentPlayer.addCardsToHand(cardsSelected);
-		for(int i = 0; i< cardsSelected.size(); i++){
-			source.removeCard(cardsSelected.get(0));
-		}
-		
+		cardsSelected.forEach(card->source.removeCard(card));
 	}
 	
 	public void filterCards(CardContainer source, List<Card> cardsToSearch){
