@@ -155,6 +155,8 @@ public class Player {
             ai.startPhase();
             opponent.startTurn();
         }
+        //first player's first turn is over so players may attack
+        GameController.playersMayAttack = true;
     }
     
     public void resolveEffects(Pokemon poke)
