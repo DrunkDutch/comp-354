@@ -826,7 +826,7 @@ public class Player {
         return opponent.getBenchedPokemon().get(choice-1);
     }
     
-    public List<Card> ChooseMultipleCards(List<Card> cards, int amount){
+    public <T extends Card> List<T> ChooseMultipleCards(List<T> cards, int amount){
     	MultiCardSelector selector = new MultiCardSelector(cards, this, amount);
     	return selector.getSelectedCards();
     }

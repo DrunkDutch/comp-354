@@ -2,6 +2,7 @@ package com.dmens.pokeno.card;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
@@ -130,8 +131,8 @@ public class Pokemon extends Card {
 		mAttachedEnergy.add(energy);
 	}
 
-	public void removeEnergy(ArrayList<EnergyCard> energy){
-		
+	public void removeEnergy(List<EnergyCard> energy){
+		mAttachedEnergy.removeAll(energy);
 	}
 
 	public void setBasePokemonName(String basePokemonName) {
