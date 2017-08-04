@@ -10,8 +10,7 @@ import com.dmens.pokeno.services.TargetService;
 
 public class Deenergize extends Effect {
 
-	private int mAmount;
-	private String mCountInfo;
+	private EffectAmount mAmount;
 	
 	/*
 	 * Constructor
@@ -20,11 +19,10 @@ public class Deenergize extends Effect {
 	 * @param		tar		Target.
 	 * @param		con		Condition.
 	 */
-	public Deenergize(int val, String tar, String countInfo)
+	public Deenergize(String val, String tar)
 	{
 		super(tar);
-		this.mAmount = val;
-		this.mCountInfo = countInfo;
+		this.mAmount = new EffectAmount(val);
 	}
 	
 	/*
@@ -45,7 +43,7 @@ public class Deenergize extends Effect {
      */
 	public int getAmount()
 	{
-		return this.mAmount;
+		return this.mAmount.eval();
 	}
 
 	@Override
@@ -54,15 +52,9 @@ public class Deenergize extends Effect {
 		// 1) Get the target
 		System.out.println("target: " + mTarget);
 		Pokemon poke = (Pokemon) TargetService.getInstance().getTarget(mTarget).get(0);
-		//int count = 1;
-		System.out.println(mCountInfo);
-		if(this.mCountInfo != "") {
-			mAmount = CountService.getInstance().getCount(this.mCountInfo);
-		}
-		System.out.println("count: " + mAmount);
 	
 		// 2) Use the effect!
-		for (int i = 0; i < mAmount; i++)
+		for (int i = 0; i < mAmount.eval(); i++)
 		{
 			if(poke.getAttachedEnergy().size() == 0)
 				GameController.displayMessage(poke.getName() + " has no (more) energy to remove!");
@@ -77,11 +69,11 @@ public class Deenergize extends Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("Deenergize: Target: %s, Amount: %d", this.mTarget, this.mAmount);
+		return String.format("Deenergize: Target: %s, Amount: %s", this.mTarget, this.mAmount);
 	}
 	
 	@Override
 	public String str() {
-		return String.format("DEE %s, %d", this.mTarget, this.mAmount);
+		return String.format("DEE %s, %s", this.mTarget, this.mAmount);
 	}
 }

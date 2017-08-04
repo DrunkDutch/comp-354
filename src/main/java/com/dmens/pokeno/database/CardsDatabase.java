@@ -30,8 +30,8 @@ public class CardsDatabase extends Database<Card>{
 
 	private static String[] supportedTrainer = {
 			"Tierno","Potion","Misty's Determination",
-			"Pokémon Center Lady","Clemont","Poké Ball","Shauna",
-			"Pokémon Fan Club","Switch","Energy Switch","Red Card"
+			"PokÃ©mon Center Lady","Clemont","PokÃ© Ball","Shauna",
+			"PokÃ©mon Fan Club","Switch","Energy Switch","Red Card"
 			//,"Floral Crown", "Wally"
 	};
 

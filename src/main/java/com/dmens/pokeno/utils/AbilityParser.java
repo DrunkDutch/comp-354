@@ -265,51 +265,31 @@ public class AbilityParser {
 
 
 	private static Effect getDeenergizeEffect(Stack<String> effectStack){
-		int amount = 0;
+		String amount = "";
 		String target = "";
-		String countInfo = "";
-		effectStack.pop();	// target
 		
 		System.out.println("Stack Size: " + effectStack.size());
-			target = effectStack.pop();
-			if (effectStack.size() == 1)
-				amount = Integer.parseInt(effectStack.pop());
-			else
-			{
-				if(effectStack.peek().contains("count")) {
-					while(!effectStack.isEmpty()) {
-						String s = effectStack.pop();
-						if(s.contains(")")) {
-							// the end of count, append the last string and break out of the loop
-							countInfo += s;
-							break;
-						}
-						// reconstruct the count info
-						countInfo += (s + ":");
-					}
-				}
-				if (countInfo != "")
-					countInfo = countInfo.substring(countInfo.indexOf("(")+1,countInfo.indexOf(")"));
-			}
-			LOG.debug("Deenergize Effect parsed");
-		return new Deenergize(amount, target, countInfo);
+		target = getTarget(effectStack);
+		amount = effectStack.pop();
+		LOG.debug("Deenergize Effect parsed");
+		return new Deenergize(amount, target);
 	}
 	
 	private static Effect getReenergizeEffect(Stack<String> effectStack){
-		int amountS = 0;
-		int amountD = 0;
+		String amountS = "";
+		String amountD = "";
 		String source = "";
 		String destination = "";
 		
 
 		source = getTarget(effectStack);
-		amountS = Integer.parseInt(effectStack.pop());
+		amountS = effectStack.pop();
 		
 		destination = getTarget(effectStack);
-		amountD = Integer.parseInt(effectStack.pop());
+		amountD = effectStack.pop();
 		
 		// Source and Destination amounts should be the same
-		assert(amountS == amountD);
+		assert(amountS.equals(amountD));
 		
 		return  new Reenergize(amountS, source, destination);
 	}

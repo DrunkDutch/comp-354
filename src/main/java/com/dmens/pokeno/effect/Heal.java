@@ -58,12 +58,12 @@ public class Heal extends Effect {
 	@Override
 	public String toString()
 	{
-		return String.format("HEAL: Target: %s, Value: %d", this.mTarget, this.mValue);
+		return String.format("HEAL: Target: %s, Value: %s", this.mTarget, this.mValue);
 	}
 	
 	@Override
 	public String str() {
-		return String.format("HL %s, %d", this.mTarget, this.mValue);
+		return String.format("HL %s, %s", this.mTarget, this.mValue);
 	}
 	
 	@Override
