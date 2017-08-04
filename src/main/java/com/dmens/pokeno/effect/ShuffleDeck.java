@@ -31,4 +31,9 @@ public class ShuffleDeck extends Effect
 		return String.format("SHUFFLE: Target: %s", this.mTarget);
 	}
 	
+	@Override
+	public String str() {
+		return String.format("SHUFFLE %s", this.mTarget);
+	}
+	
 }

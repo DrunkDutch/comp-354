@@ -26,4 +26,10 @@ public class HealedCondition extends Condition {
 		return null;
 	}
 
+	@Override
+	public String str() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

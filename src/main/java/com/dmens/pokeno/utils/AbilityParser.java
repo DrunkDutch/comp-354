@@ -240,21 +240,31 @@ public class AbilityParser {
 	}
 	
 	private static Effect getDeckEffect(Stack<String> effectStack){
+		String target = "";
+		String destination = "";
+		String countType = "";
+		int amount = 0;
+		
 		effectStack.pop();	// target
-		String target = effectStack.pop();
+		target = effectStack.pop();
 		effectStack.pop();	//destination
-		String destination = effectStack.pop();
-		String origin = "";
+		destination = effectStack.pop();
+		LOG.info(destination);
+				
 		if (effectStack.peek().contains("bottom")) {
 			destination += ":" + effectStack.pop();
 		}
 		if (effectStack.peek().contains("count")) {
-			origin = effectStack.pop();
+			countType = effectStack.pop();
+		}else if(effectStack.peek().contains("choice")) {
+			effectStack.pop(); // choice
+			effectStack.pop(); // you
+			amount = Integer.parseInt(effectStack.pop());
 		}
-		//TODO - it might be "choice" instead of "count"
 		
-		//LOG.debug("Simple Shuffle Effect parsed");
-		return new DeckEffect(target, origin, destination);
+		DeckEffect d = new DeckEffect(target, countType, destination, amount);
+		LOG.info(d.toString());
+		return d;
 	}
 	
 	private static Effect getShuffleDeckEffect(Stack<String> effectStack){

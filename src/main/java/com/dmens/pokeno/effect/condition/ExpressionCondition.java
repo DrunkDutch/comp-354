@@ -49,5 +49,10 @@ public class ExpressionCondition extends Condition {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	@Override
+	public String str() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 }

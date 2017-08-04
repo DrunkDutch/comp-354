@@ -2,7 +2,6 @@ package com.dmens.pokeno.database;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -67,7 +66,7 @@ public class CardsDatabase extends Database<Card>{
 	}
 	
 	public Card queryByName(String name){
-		LOG.debug("Query Cards DB By name: "+name);
+ 		LOG.debug("Query Cards DB By name: "+name);
 		Optional<Card> hit = db.stream().filter(card->card.getName().equals(name)).findAny();
 		LOG.debug(hit.get().getName()+ " found");
 		return hit.get().copy();

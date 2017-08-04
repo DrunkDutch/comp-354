@@ -87,6 +87,11 @@ public class Damage extends Effect {
 		return String.format("Damage: Target: %s, Value: %d", this.mTarget, this.mValue);
 	}
 	
+	@Override
+	public String str() {
+		return String.format("DM %s, %d", this.mTarget, this.mValue);
+	}
+	
 	//TODO: condition check
 	@Override
 	public boolean equals(Object obj)

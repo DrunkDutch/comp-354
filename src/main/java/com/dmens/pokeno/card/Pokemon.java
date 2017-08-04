@@ -132,7 +132,7 @@ public class Pokemon extends Card {
 
 	public void setBasePokemonName(String basePokemonName) {
 		mBasePokemonName = basePokemonName;
-	}
+	} 
 	
     public boolean useAbility(int ability, Pokemon target)
     {

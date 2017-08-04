@@ -67,6 +67,11 @@ public class Heal extends Effect {
 	}
 	
 	@Override
+	public String str() {
+		return String.format("HL %s, %d", this.mTarget, this.mValue);
+	}
+	
+	@Override
 	public boolean equals(Object obj)
 	{
 		Heal h = (Heal) obj;

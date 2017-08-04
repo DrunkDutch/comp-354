@@ -61,4 +61,9 @@ public class Reenergize extends Effect {
 	public String toString() {
 		return String.format("Reenergize: Src: %s, Dst: %s, Amt: %d", this.mSource, this.mDestination, this.mAmount);
 	}
+	
+	@Override
+	public String str() {
+		return String.format("REE %d", this.mAmount);
+	}
 }

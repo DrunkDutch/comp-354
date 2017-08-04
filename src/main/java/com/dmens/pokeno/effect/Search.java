@@ -133,5 +133,10 @@ public class Search extends Effect {
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
+	@Override
+	public String str() {
+		return String.format("SEARCH");
+	}
 
 }
