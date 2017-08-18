@@ -56,11 +56,11 @@ public class AIPlayer extends Player {
                     if (getActivePokemon().getAbilitiesAndCost().get(1).getAbility().getApplyStatusEffect() != null &&
                             Randomizer.Instance().getFiftyPercentChance() && Randomizer.Instance().getFiftyPercentChance()) {
                         attackSucess = GameController.useActivePokemonForPlayer(1, 1);
-                    }else{}
-                        attackSucess = GameController.useActivePokemonForPlayer(1, 1);
+                    }else{attackSucess = GameController.useActivePokemonForPlayer(1, 1);}
+
                 }
-                if(!attackSucess){}
-                    GameController.useActivePokemonForPlayer(1, 0);
+                if(!attackSucess){GameController.useActivePokemonForPlayer(1, 0);}
+
             }
             
             // Resolve effects
