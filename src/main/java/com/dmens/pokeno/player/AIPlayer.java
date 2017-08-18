@@ -55,12 +55,12 @@ public class AIPlayer extends Player {
                     // if status effect, attack with 25% probability
                     if (getActivePokemon().getAbilitiesAndCost().get(1).getAbility().getApplyStatusEffect() != null &&
                             Randomizer.Instance().getFiftyPercentChance() && Randomizer.Instance().getFiftyPercentChance()) {
-                        //attackSucess = GameController.useActivePokemonForPlayer(1, 1);
+                        attackSucess = GameController.useActivePokemonForPlayer(1, 1);
                     }else{}
-                        //attackSucess = GameController.useActivePokemonForPlayer(1, 1);
+                        attackSucess = GameController.useActivePokemonForPlayer(1, 1);
                 }
                 if(!attackSucess){}
-                    //GameController.useActivePokemonForPlayer(1, 0);
+                    GameController.useActivePokemonForPlayer(1, 0);
             }
             
             // Resolve effects
